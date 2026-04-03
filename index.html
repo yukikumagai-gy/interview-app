@@ -1,843 +1,798 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>面接予約管理システム</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #F7F6F3;
-      --surface: #FFFFFF;
-      --surface2: #F0EFE9;
-      --border: #E2E0D8;
-      --border2: #CCC9BE;
-      --text: #1A1916;
-      --text2: #6B6860;
-      --text3: #9E9C96;
-      --accent: #2563EB;
-      --accent-bg: #EFF4FF;
-      --accent-text: #1D4ED8;
-      --green: #059669;
-      --green-bg: #ECFDF5;
-      --green-text: #065F46;
-      --amber: #D97706;
-      --amber-bg: #FFFBEB;
-      --amber-text: #92400E;
-      --red: #DC2626;
-      --red-bg: #FEF2F2;
-      --red-text: #991B1B;
-      --radius: 10px;
-      --radius-sm: 6px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 14px;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>採用管理システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c1:#4CAF50;--c1d:#388E3C;--c1l:#E8F5E9;--c1ll:#F1F8F1;
+  --c2:#ffffff;--bg:#F4F6F4;--surf:#ffffff;--surf2:#F0F4F0;
+  --bd:#DCE5DC;--bd2:#C5D4C5;
+  --tx:#1C2B1C;--tx2:#4A6045;--tx3:#7A9B7A;
+  --red:#D32F2F;--red-bg:#FFEBEE;--red-tx:#B71C1C;
+  --amber:#F57C00;--amber-bg:#FFF3E0;--amber-tx:#E65100;
+  --blue:#1565C0;--blue-bg:#E3F2FD;--blue-tx:#0D47A1;
+  --teal:#00695C;--teal-bg:#E0F2F1;--teal-tx:#004D40;
+  --r:10px;--rs:6px;--sh:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);--shm:0 4px 20px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans','Noto Sans JP',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.6;min-height:100vh}
 
-    /* Layout */
-    .layout { display: flex; min-height: 100vh; }
-    .sidebar {
-      width: 220px;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 10;
-    }
-    .sidebar-logo {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .logo-mark {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .logo-icon {
-      width: 32px; height: 32px;
-      background: var(--text);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo-icon svg { color: white; }
-    .logo-text { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; }
-    .logo-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-    .sidebar-nav { padding: 12px 10px; flex: 1; }
-    .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      color: var(--text2);
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.15s;
-      margin-bottom: 2px;
-    }
-    .nav-item:hover { background: var(--surface2); color: var(--text); }
-    .nav-item.active { background: var(--text); color: white; }
-    .nav-item svg { flex-shrink: 0; opacity: 0.7; }
-    .nav-item.active svg { opacity: 1; }
-    .sidebar-footer {
-      padding: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--text3);
-    }
+/* Layout */
+.wrap{display:flex;min-height:100vh}
+.side{width:220px;background:var(--surf);border-right:1px solid var(--bd);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:20}
+.side-logo{padding:18px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px}
+.logo-icon{width:34px;height:34px;background:var(--c1);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon svg{color:#fff}
+.logo-name{font-size:14px;font-weight:600;color:var(--tx);letter-spacing:-.3px}
+.logo-sub{font-size:11px;color:var(--tx3)}
+.side-nav{padding:10px 8px;flex:1;overflow-y:auto}
+.nav-section{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;padding:10px 10px 4px;margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--rs);cursor:pointer;color:var(--tx2);font-size:13px;font-weight:500;transition:all .15s;margin-bottom:1px;user-select:none}
+.nav-item:hover{background:var(--c1l);color:var(--c1d)}
+.nav-item.active{background:var(--c1);color:#fff}
+.nav-item.active svg{opacity:1}
+.nav-item svg{opacity:.6;flex-shrink:0}
+.side-foot{padding:14px 16px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx3)}
+.main{margin-left:220px;flex:1;min-width:0}
+.topbar{background:var(--surf);border-bottom:1px solid var(--bd);height:54px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:15px;font-weight:600;color:var(--tx)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.content{padding:22px 24px}
 
-    .main { margin-left: 220px; flex: 1; }
-    .topbar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 28px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 9;
-    }
-    .topbar-title { font-size: 15px; font-weight: 600; }
-    .topbar-right { display: flex; align-items: center; gap: 10px; }
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--rs);border:1px solid var(--bd2);background:var(--surf);color:var(--tx);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--surf2)}
+.btn-primary{background:var(--c1);border-color:var(--c1);color:#fff}
+.btn-primary:hover{background:var(--c1d);border-color:var(--c1d)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{color:var(--red);border-color:#FFCDD2}
+.btn-danger:hover{background:var(--red-bg)}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn-ghost:hover{background:var(--surf2);border-color:var(--bd)}
 
-    .content { padding: 24px 28px; }
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:22px}
+.stat{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh)}
+.stat-label{font-size:11px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.stat-val{font-size:26px;font-weight:600;letter-spacing:-.5px;line-height:1}
+.stat-sub{font-size:11px;color:var(--tx3);margin-top:3px}
+.stat-pct{font-size:11px;font-weight:600;padding:1px 6px;border-radius:3px;margin-left:6px}
 
-    /* Stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-    }
-    .stat-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .stat-value { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
-    .stat-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+/* Funnel */
+.funnel-wrap{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;margin-bottom:22px;box-shadow:var(--sh)}
+.funnel-title{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--tx)}
+.funnel-steps{display:flex;align-items:stretch;gap:0}
+.funnel-step{flex:1;min-width:0}
+.funnel-bar-wrap{display:flex;align-items:center;gap:0}
+.funnel-block{flex:1;padding:12px 8px;text-align:center;border-radius:0;transition:all .2s;cursor:default}
+.funnel-block:first-child{border-radius:8px 0 0 8px}
+.funnel-arrow{width:20px;display:flex;align-items:center;justify-content:center;color:var(--tx3);font-size:10px;flex-shrink:0}
+.funnel-num{font-size:20px;font-weight:700;line-height:1}
+.funnel-lbl{font-size:10px;font-weight:600;margin-top:3px;opacity:.85}
+.funnel-pct{font-size:10px;margin-top:1px;opacity:.7}
+.fb-apply{background:#E8F5E9;color:#1B5E20}
+.fb-done{background:#E3F2FD;color:#0D47A1}
+.fb-no-contact{background:#FFF8E1;color:#F57F17}
+.fb-decline{background:#FFEBEE;color:#B71C1C}
+.fb-offer{background:#E0F2F1;color:#004D40}
+.fb-accept{background:#F3E5F5;color:#4A148C}
 
-    /* Buttons */
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-      text-decoration: none;
-    }
-    .btn:hover { background: var(--surface2); border-color: var(--border2); }
-    .btn-primary {
-      background: var(--text);
-      border-color: var(--text);
-      color: white;
-    }
-    .btn-primary:hover { opacity: 0.85; }
-    .btn-sm { padding: 5px 10px; font-size: 12px; }
-    .btn-danger { color: var(--red); border-color: #FECACA; }
-    .btn-danger:hover { background: var(--red-bg); }
-    .btn-gcal { color: var(--accent-text); border-color: #BFDBFE; }
-    .btn-gcal:hover { background: var(--accent-bg); }
+/* Table */
+.tcard{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.srch{position:relative;flex:1;min-width:180px}
+.srch svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--tx3);pointer-events:none}
+.srch input{width:100%;padding:7px 10px 7px 32px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--surf);color:var(--tx);font-size:13px;font-family:inherit}
+.srch input:focus{outline:none;border-color:var(--c1)}
+select.flt{padding:7px 10px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--surf);color:var(--tx);font-size:13px;font-family:inherit;cursor:pointer}
+select.flt:focus{outline:none}
+table{width:100%;border-collapse:collapse}
+th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;background:var(--surf2);border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--bd);font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFCFA}
+.av{width:30px;height:30px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--c1d);flex-shrink:0}
+.nm{display:flex;align-items:center;gap:9px}
+.nm-name{font-weight:500}
+.nm-sub{font-size:11px;color:var(--tx3)}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.b-done{background:var(--blue-bg);color:var(--blue-tx)}
+.b-nodone{background:var(--amber-bg);color:var(--amber-tx)}
+.b-decline{background:var(--red-bg);color:var(--red-tx)}
+.b-hire{background:var(--teal-bg);color:var(--teal-tx)}
+.b-nohire{background:var(--red-bg);color:var(--red-tx)}
+.b-consult{background:#EDE7F6;color:#4527A0}
+.b-accept{background:#E8F5E9;color:#1B5E20}
+.b-wait{background:var(--amber-bg);color:var(--amber-tx)}
+.b-offdecline{background:var(--red-bg);color:var(--red-tx)}
+.b-nocontact{background:#F5F5F5;color:#424242}
+.empty{text-align:center;padding:36px;color:var(--tx3);font-size:13px}
 
-    /* Filters */
-    .toolbar {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-    .search-wrap {
-      position: relative; flex: 1; min-width: 200px;
-    }
-    .search-icon {
-      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-      color: var(--text3); pointer-events: none;
-    }
-    .search-wrap input {
-      width: 100%; padding: 7px 12px 7px 34px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--surface);
-      font-size: 13px;
-      color: var(--text);
-      font-family: inherit;
-    }
-    .search-wrap input:focus { outline: none; border-color: var(--border2); }
-    select.filter {
-      padding: 7px 10px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--surface);
-      font-size: 13px;
-      color: var(--text);
-      font-family: inherit;
-      cursor: pointer;
-    }
-    select.filter:focus { outline: none; }
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.modal{background:var(--surf);border-radius:14px;border:1px solid var(--bd);box-shadow:var(--shm);width:100%;max-width:780px;margin:auto}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surf);z-index:1;border-radius:14px 14px 0 0}
+.modal-title{font-size:15px;font-weight:600}
+.modal-close{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;color:var(--tx3);font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--surf2)}
+.modal-body{padding:18px 20px}
+.modal-foot{padding:12px 20px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.sec-title{font-size:12px;font-weight:600;color:var(--c1d);text-transform:uppercase;letter-spacing:.5px;padding:0 0 8px;border-bottom:1px solid var(--c1l);margin-bottom:14px;margin-top:20px}
+.sec-title:first-child{margin-top:0}
+.frow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.frow2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
+.frow1{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.3px}
+.fg input,.fg select,.fg textarea{padding:7px 10px;border:1px solid var(--bd);border-radius:var(--rs);background:#FAFCFA;color:var(--tx);font-size:13px;font-family:inherit;width:100%;transition:border .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);background:var(--surf)}
+.fg textarea{resize:vertical}
+.check-group{display:flex;flex-wrap:wrap;gap:8px;padding:6px 0}
+.chk-item{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer}
+.chk-item input[type=checkbox]{accent-color:var(--c1);width:14px;height:14px}
+.note-small{font-size:11px;color:var(--tx3);margin-top:3px}
 
-    /* Table */
-    .table-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-      padding: 10px 16px;
-      text-align: left;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      background: var(--surface2);
-      border-bottom: 1px solid var(--border);
-    }
-    tbody td {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      vertical-align: middle;
-    }
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: var(--surface2); }
+/* Agent page */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.agent-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.agent-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.agent-name{font-size:14px;font-weight:600}
+.agent-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.ast{text-align:center;padding:8px 4px;background:var(--surf2);border-radius:var(--rs)}
+.ast-v{font-size:18px;font-weight:700;color:var(--tx)}
+.ast-l{font-size:10px;color:var(--tx3);margin-top:1px}
 
-    .avatar {
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text2);
-      flex-shrink: 0;
-    }
-    .name-cell { display: flex; align-items: center; gap: 10px; }
-    .name-text { font-weight: 500; }
-    .name-pos { font-size: 11px; color: var(--text3); }
+/* Dashboard charts */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.chart-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:14px}
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:12px;color:var(--tx2);width:80px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:20px;background:var(--surf2);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease;display:flex;align-items:center;padding-left:6px}
+.bar-val{font-size:10px;font-weight:600;color:#fff;white-space:nowrap}
+.bar-num{font-size:12px;color:var(--tx2);width:30px;flex-shrink:0}
+.pie-wrap{display:flex;align-items:center;gap:20px}
+.pie-svg{flex-shrink:0}
+.pie-legend{display:flex;flex-direction:column;gap:6px}
+.pie-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.pie-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 
-    .badge {
-      display: inline-flex; align-items: center;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .badge-confirmed { background: var(--green-bg); color: var(--green-text); }
-    .badge-pending { background: var(--amber-bg); color: var(--amber-text); }
-    .badge-cancelled { background: var(--red-bg); color: var(--red-text); }
-    .badge-completed { background: var(--accent-bg); color: var(--accent-text); }
-
-    .row-actions { display: flex; gap: 6px; }
-
-    /* Calendar */
-    .cal-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .cal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface2);
-    }
-    .cal-month { font-size: 15px; font-weight: 600; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-    .cal-dow {
-      padding: 8px 4px;
-      text-align: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      border-bottom: 1px solid var(--border);
-    }
-    .cal-day {
-      min-height: 80px;
-      padding: 6px;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      transition: background 0.1s;
-    }
-    .cal-day:nth-child(7n) { border-right: none; }
-    .cal-day:hover { background: var(--surface2); }
-    .cal-day.other { opacity: 0.4; }
-    .cal-day.today .d-num {
-      background: var(--text);
-      color: white;
-      width: 22px; height: 22px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%;
-    }
-    .d-num { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
-    .cal-ev {
-      font-size: 10px;
-      padding: 1px 5px;
-      border-radius: 3px;
-      margin-bottom: 1px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 500;
-    }
-    .ev-confirmed { background: var(--green-bg); color: var(--green-text); }
-    .ev-pending { background: var(--amber-bg); color: var(--amber-text); }
-    .ev-cancelled { background: var(--red-bg); color: var(--red-text); }
-    .ev-completed { background: var(--accent-bg); color: var(--accent-text); }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.35);
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .modal {
-      background: var(--surface);
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-md);
-      width: 100%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .modal-header {
-      padding: 18px 20px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .modal-title { font-size: 15px; font-weight: 600; }
-    .modal-close {
-      width: 28px; height: 28px;
-      border-radius: 6px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text3);
-      font-size: 18px;
-    }
-    .modal-close:hover { background: var(--surface2); color: var(--text); }
-    .modal-body { padding: 16px 20px; }
-    .modal-footer {
-      padding: 12px 20px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .form-group { margin-bottom: 12px; }
-    .form-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text2);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 5px;
-    }
-    .form-control {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 13px;
-      font-family: inherit;
-      transition: border 0.15s;
-    }
-    .form-control:focus { outline: none; border-color: var(--border2); background: var(--surface); }
-    textarea.form-control { resize: vertical; }
-
-    .gcal-hint {
-      display: flex; align-items: center; gap: 8px;
-      padding: 8px 12px;
-      background: var(--accent-bg);
-      border: 1px solid #BFDBFE;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      color: var(--accent-text);
-      margin-bottom: 12px;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 40px;
-      color: var(--text3);
-      font-size: 13px;
-    }
-    .empty-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.4; }
-
-    /* Views */
-    .view { display: none; }
-    .view.active { display: block; }
-
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .form-row { grid-template-columns: 1fr; }
-    }
-  </style>
+/* Views */
+.view{display:none}.view.on{display:block}
+</style>
 </head>
 <body>
-<div class="layout">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-mark">
-        <div class="logo-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+<div class="wrap">
+<aside class="side">
+  <div class="side-logo">
+    <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <div><div class="logo-name">RecruitOS</div><div class="logo-sub">採用管理システム</div></div>
+  </div>
+  <nav class="side-nav">
+    <div class="nav-section">メニュー</div>
+    <div class="nav-item active" onclick="nav('dashboard',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>ダッシュボード
+    </div>
+    <div class="nav-item" onclick="nav('booking',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>予約
+    </div>
+    <div class="nav-item" onclick="nav('candidates',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>応募者管理
+    </div>
+    <div class="nav-item" onclick="nav('agents',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>エージェント
+    </div>
+    <div class="nav-item" onclick="nav('calendar',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>カレンダー
+    </div>
+  </nav>
+  <div class="side-foot">RecruitOS v2.0</div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">ダッシュボード</div>
+    <div class="topbar-right">
+      <button class="btn btn-primary" id="add-btn" onclick="openAdd()" style="display:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>新規追加
+      </button>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="view on" id="view-dashboard">
+      <div class="stats" id="dash-stats"></div>
+      <div class="funnel-wrap">
+        <div class="funnel-title">採用ファネル（今月）</div>
+        <div id="funnel"></div>
+      </div>
+      <div class="dash-grid">
+        <div class="chart-card">
+          <div class="chart-title">流入経路別 応募数</div>
+          <div class="bar-chart" id="chart-source"></div>
         </div>
-        <div>
-          <div class="logo-text">InterviewOS</div>
-          <div class="logo-sub">採用面接管理</div>
+        <div class="chart-card">
+          <div class="chart-title">エージェント別 実績</div>
+          <div class="bar-chart" id="chart-agent"></div>
         </div>
       </div>
     </div>
-    <nav class="sidebar-nav">
-      <div class="nav-item active" onclick="switchView('list', this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-        一覧
-      </div>
-      <div class="nav-item" onclick="switchView('calendar', this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        カレンダー
-      </div>
-    </nav>
-    <div class="sidebar-footer">InterviewOS v1.0</div>
-  </aside>
 
-  <div class="main">
-    <div class="topbar">
-      <div class="topbar-title" id="topbar-title">候補者一覧</div>
-      <div class="topbar-right">
-        <button class="btn btn-primary" onclick="openModal()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          新規予約
-        </button>
+    <!-- BOOKING -->
+    <div class="view" id="view-booking">
+      <div class="toolbar">
+        <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="bk-search" placeholder="氏名・ポジションで検索..." oninput="renderBooking()"></div>
+        <select class="flt" id="bk-status" onchange="renderBooking()">
+          <option value="">すべてのステータス</option>
+          <option value="pending">調整中</option>
+          <option value="confirmed">確定</option>
+          <option value="completed">完了</option>
+          <option value="cancelled">キャンセル</option>
+        </select>
+        <select class="flt" id="bk-round" onchange="renderBooking()">
+          <option value="">すべての選考</option>
+          <option value="1次面接">1次面接</option>
+          <option value="2次面接">2次面接</option>
+          <option value="最終面接">最終面接</option>
+          <option value="カジュアル面談">カジュアル面談</option>
+        </select>
       </div>
+      <div class="tcard"><table><thead><tr>
+        <th>候補者</th><th>選考</th><th>日時</th><th>面接官</th><th>場所</th><th>ステータス</th><th></th>
+      </tr></thead><tbody id="bk-body"></tbody></table></div>
+      <div class="empty" id="bk-empty" style="display:none">該当する予約がありません</div>
     </div>
 
-    <div class="content">
-      <!-- Stats -->
-      <div class="stats-grid" id="stats-grid"></div>
+    <!-- CANDIDATES -->
+    <div class="view" id="view-candidates">
+      <div class="toolbar">
+        <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="cd-search" placeholder="氏名・流入経路で検索..." oninput="renderCandidates()"></div>
+        <select class="flt" id="cd-interview" onchange="renderCandidates()">
+          <option value="">面接の着地</option>
+          <option value="実施">実施</option>
+          <option value="応募辞退">応募辞退</option>
+          <option value="未接触">未接触</option>
+        </select>
+        <select class="flt" id="cd-status" onchange="renderCandidates()">
+          <option value="">面接後ステータス</option>
+          <option value="営業相談中">営業相談中</option>
+          <option value="採用">採用</option>
+          <option value="不採用">不採用</option>
+        </select>
+        <select class="flt" id="cd-offer" onchange="renderCandidates()">
+          <option value="">内定後ステータス</option>
+          <option value="承諾待ち">承諾待ち</option>
+          <option value="内定辞退">内定辞退</option>
+          <option value="内定承諾">内定承諾</option>
+        </select>
+      </div>
+      <div class="tcard"><table><thead><tr>
+        <th>氏名</th><th>応募日</th><th>流入経路</th><th>面接の着地</th><th>面接後</th><th>内定後</th><th>入社日</th><th></th>
+      </tr></thead><tbody id="cd-body"></tbody></table></div>
+      <div class="empty" id="cd-empty" style="display:none">該当する応募者がいません</div>
+    </div>
 
-      <!-- List view -->
-      <div class="view active" id="view-list">
-        <div class="toolbar">
-          <div class="search-wrap">
-            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" id="search" placeholder="氏名・ポジションで検索..." oninput="renderList()">
+    <!-- AGENTS -->
+    <div class="view" id="view-agents">
+      <div class="toolbar">
+        <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="ag-search" placeholder="エージェント名で検索..." oninput="renderAgents()"></div>
+      </div>
+      <div class="agent-grid" id="ag-grid"></div>
+      <div class="empty" id="ag-empty" style="display:none">エージェントがいません</div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="view" id="view-calendar">
+      <div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--surf2)">
+          <div style="font-size:15px;font-weight:600" id="cal-title"></div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm" onclick="calMov(-1)">←</button>
+            <button class="btn btn-sm" onclick="calMov(0)">今月</button>
+            <button class="btn btn-sm" onclick="calMov(1)">→</button>
           </div>
-          <select class="filter" id="filter-status" onchange="renderList()">
-            <option value="">すべてのステータス</option>
-            <option value="pending">調整中</option>
-            <option value="confirmed">確定</option>
-            <option value="completed">完了</option>
-            <option value="cancelled">キャンセル</option>
-          </select>
-          <select class="filter" id="filter-round" onchange="renderList()">
-            <option value="">すべての選考</option>
-            <option value="1次面接">1次面接</option>
-            <option value="2次面接">2次面接</option>
-            <option value="最終面接">最終面接</option>
-            <option value="カジュアル面談">カジュアル面談</option>
-          </select>
         </div>
-        <div class="table-card" id="table-card">
-          <table>
-            <thead>
-              <tr>
-                <th>候補者</th>
-                <th>選考</th>
-                <th>日時</th>
-                <th>面接官</th>
-                <th>場所</th>
-                <th>ステータス</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="list-body"></tbody>
-          </table>
-        </div>
-        <div class="empty" id="list-empty" style="display:none">
-          <div class="empty-icon">🔍</div>
-          該当する予約が見つかりません
-        </div>
-      </div>
-
-      <!-- Calendar view -->
-      <div class="view" id="view-calendar">
-        <div class="cal-card">
-          <div class="cal-header">
-            <div class="cal-month" id="cal-title"></div>
-            <div style="display:flex;gap:6px">
-              <button class="btn btn-sm" onclick="changeMonth(-1)">←</button>
-              <button class="btn btn-sm" onclick="changeMonth(0)">今月</button>
-              <button class="btn btn-sm" onclick="changeMonth(1)">→</button>
-            </div>
-          </div>
-          <div class="cal-grid" id="cal-dows"></div>
-          <div class="cal-grid" id="cal-days"></div>
-        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr)" id="cal-dows"></div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr)" id="cal-days"></div>
       </div>
     </div>
+
   </div>
 </div>
+</div>
 
-<!-- Modal -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title">新規予約</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+<!-- BOOKING MODAL -->
+<div class="modal-bg" id="bk-modal">
+<div class="modal">
+  <div class="modal-head">
+    <div class="modal-title" id="bk-modal-title">面接予約</div>
+    <button class="modal-close" onclick="closeModal('bk-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="bk-id">
+    <div class="sec-title">基本情報</div>
+    <div class="frow"><div class="fg"><label>氏名 *</label><input id="bk-name" placeholder="山田 太郎"></div><div class="fg"><label>ポジション</label><input id="bk-position" placeholder="エンジニア"></div><div class="fg"><label>選考ラウンド</label><select id="bk-round"><option>カジュアル面談</option><option>1次面接</option><option>2次面接</option><option>最終面接</option></select></div></div>
+    <div class="frow"><div class="fg"><label>日付 *</label><input type="date" id="bk-date"></div><div class="fg"><label>時刻</label><input type="time" id="bk-time" value="10:00"></div><div class="fg"><label>所要時間</label><select id="bk-dur"><option value="30">30分</option><option value="60" selected>60分</option><option value="90">90分</option><option value="120">120分</option></select></div></div>
+    <div class="frow"><div class="fg"><label>面接官</label><input id="bk-interviewer" placeholder="鈴木 部長"></div><div class="fg"><label>場所/URL</label><input id="bk-location" placeholder="会議室A / Zoom"></div><div class="fg"><label>ステータス</label><select id="bk-status2"><option value="pending">調整中</option><option value="confirmed">確定</option><option value="completed">完了</option><option value="cancelled">キャンセル</option></select></div></div>
+    <div class="frow1"><div class="fg"><label>メモ</label><textarea id="bk-memo" rows="2"></textarea></div></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-danger" id="bk-del" style="display:none;margin-right:auto" onclick="delBooking()">削除</button>
+    <a id="bk-gcal" href="#" class="btn btn-sm" style="display:none;margin-right:auto;border-color:#BFDBFE;color:#1565C0" onclick="window.open(this.href,'_blank');return false">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Googleカレンダー
+    </a>
+    <button class="btn" onclick="closeModal('bk-modal')">キャンセル</button>
+    <button class="btn btn-primary" onclick="saveBooking()">保存</button>
+  </div>
+</div>
+</div>
+
+<!-- CANDIDATE MODAL -->
+<div class="modal-bg" id="cd-modal">
+<div class="modal">
+  <div class="modal-head">
+    <div class="modal-title" id="cd-modal-title">応募者登録</div>
+    <button class="modal-close" onclick="closeModal('cd-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="cd-id">
+
+    <div class="sec-title">基本情報</div>
+    <div class="frow"><div class="fg"><label>氏名 *</label><input id="cd-name" placeholder="山田 花子"></div><div class="fg"><label>応募日</label><input type="date" id="cd-apply-date"></div><div class="fg"><label>面接日</label><input type="date" id="cd-interview-date"></div></div>
+    <div class="frow"><div class="fg"><label>流入経路</label><select id="cd-source"><option value="">選択</option><option>Indeed</option><option>リクナビNEXT</option><option>マイナビ転職</option><option>doda</option><option>ハローワーク</option><option>エージェント</option><option>リファラル</option><option>自社HP</option><option>その他</option></select></div><div class="fg"><label>エージェント名</label><input id="cd-agent" placeholder="例：パーソル"></div><div class="fg"><label>面接担当者</label><input id="cd-interviewer" placeholder="鈴木 部長"></div></div>
+    <div class="frow"><div class="fg"><label>電話番号①</label><input id="cd-tel1" placeholder="090-0000-0000" type="tel"></div><div class="fg"><label>電話番号②</label><input id="cd-tel2" placeholder="03-0000-0000" type="tel"></div><div class="fg"><label>メールアドレス</label><input id="cd-email" placeholder="example@email.com" type="email"></div></div>
+    <div class="frow"><div class="fg"><label>都道府県</label><input id="cd-pref" placeholder="東京都"></div><div class="fg"><label>市区町村</label><input id="cd-city" placeholder="渋谷区"></div><div class="fg"><label>以降の住所</label><input id="cd-addr" placeholder="1-1-1"></div></div>
+    <div class="frow2"><div class="fg"><label>最寄り駅</label><input id="cd-station" placeholder="渋谷駅"></div><div class="fg"><label>最寄り駅→自宅（徒歩）</label><input id="cd-walk" placeholder="徒歩10分"></div></div>
+    <div class="frow1"><div class="fg"><label>職務経歴（概要）</label><textarea id="cd-career" rows="3" placeholder="直近の職歴・スキルを入力"></textarea></div></div>
+
+    <div class="sec-title">職歴情報</div>
+    <div class="frow"><div class="fg"><label>会社名</label><input id="cd-company" placeholder="株式会社◯◯"></div><div class="fg"><label>雇用形態</label><select id="cd-employ"><option value="">選択</option><option>正社員</option><option>契約社員</option><option>派遣社員</option><option>アルバイト</option><option>業務委託</option></select></div><div class="fg"><label>業種</label><input id="cd-industry" placeholder="IT・通信"></div></div>
+    <div class="frow"><div class="fg"><label>職種</label><input id="cd-job-type" placeholder="営業・エンジニア等"></div><div class="fg"><label>業務内容</label><input id="cd-job-desc" placeholder="概要を入力"></div><div class="fg"><label>退職理由</label><input id="cd-resign" placeholder="退職理由"></div></div>
+    <div class="frow1"><div class="fg"><label>メモ</label><textarea id="cd-memo" rows="2"></textarea></div></div>
+
+    <div class="sec-title">基本情報②（ステータス管理）</div>
+    <div class="frow"><div class="fg"><label>面接の着地</label><select id="cd-interview-result"><option value="">選択</option><option>実施</option><option>応募辞退</option><option>未接触</option></select></div><div class="fg"><label>面接後ステータス</label><select id="cd-after-status"><option value="">選択</option><option>営業相談中</option><option>採用</option><option>不採用</option></select></div><div class="fg"><label>内定後ステータス</label><select id="cd-offer-status"><option value="">選択</option><option>承諾待ち</option><option>内定辞退</option><option>内定承諾</option></select></div></div>
+    <div class="frow"><div class="fg"><label>内定通知書</label><select id="cd-offer-notice"><option value="">選択</option><option>送信済み</option><option>未送信</option></select></div><div class="fg"><label>入社日</label><input type="date" id="cd-join-date"></div><div class="fg"><label>退社日</label><input type="date" id="cd-leave-date"></div></div>
+    <div class="frow2"><div class="fg"><label>紹介料（円）</label><input type="number" id="cd-fee" placeholder="0"></div><div class="fg"><label>レジュメ格納フォルダ/リンク</label><input id="cd-resume-url" placeholder="Google DriveのURLなど"></div></div>
+    <div class="frow2">
+      <div class="fg"><label>結婚の有無</label><select id="cd-married"><option value="">選択</option><option>既婚</option><option>未婚</option></select><input id="cd-married-note" placeholder="備考" style="margin-top:5px"></div>
+      <div class="fg"><label>子供の有無・人数</label><select id="cd-children"><option value="">選択</option><option>なし</option><option>1人</option><option>2人</option><option>3人以上</option></select><input id="cd-children-note" placeholder="備考（年齢等）" style="margin-top:5px"></div>
     </div>
-    <div class="modal-body">
-      <input type="hidden" id="edit-id">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">氏名 *</label>
-          <input class="form-control" type="text" id="f-name" placeholder="山田 太郎">
-        </div>
-        <div class="form-group">
-          <label class="form-label">ポジション *</label>
-          <input class="form-control" type="text" id="f-position" placeholder="エンジニア">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">選考ラウンド</label>
-          <select class="form-control" id="f-round">
-            <option>カジュアル面談</option>
-            <option>1次面接</option>
-            <option>2次面接</option>
-            <option>最終面接</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">ステータス</label>
-          <select class="form-control" id="f-status">
-            <option value="pending">調整中</option>
-            <option value="confirmed">確定</option>
-            <option value="completed">完了</option>
-            <option value="cancelled">キャンセル</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">日付 *</label>
-          <input class="form-control" type="date" id="f-date">
-        </div>
-        <div class="form-group">
-          <label class="form-label">時刻</label>
-          <input class="form-control" type="time" id="f-time" value="10:00">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">所要時間（分）</label>
-          <select class="form-control" id="f-duration">
-            <option value="30">30分</option>
-            <option value="60" selected>60分</option>
-            <option value="90">90分</option>
-            <option value="120">120分</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">場所 / URL</label>
-          <input class="form-control" type="text" id="f-location" placeholder="会議室A / Zoom">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">面接官</label>
-        <input class="form-control" type="text" id="f-interviewer" placeholder="鈴木 部長">
-      </div>
-      <div class="form-group">
-        <label class="form-label">メモ</label>
-        <textarea class="form-control" id="f-memo" rows="2" placeholder="備考があれば..."></textarea>
-      </div>
-      <div class="gcal-hint" id="gcal-hint" style="display:none">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        保存後にGoogleカレンダーへ登録できます
-      </div>
+    <div class="frow1"><div class="fg"><label>健康状態（既往歴・服薬・通院）</label><textarea id="cd-health" rows="2" placeholder="特記事項があれば入力"></textarea></div></div>
+
+    <div class="sec-title">希望条件</div>
+    <div class="frow1"><div class="fg"><label>応募理由</label><textarea id="cd-reason" rows="2" placeholder="応募した理由・動機"></textarea></div></div>
+    <div class="frow"><div class="fg"><label>勤務開始日</label><input type="date" id="cd-start-date"></div><div class="fg"><label>現在の就業状況</label><select id="cd-work-status"><option value="">選択</option><option>在職中</option><option>離職中</option><option>内定待ち</option></select></div><div class="fg"><label>就業状況備考</label><input id="cd-work-note" placeholder="備考"></div></div>
+    <div class="frow2">
+      <div class="fg"><label>勤務可能時間</label><input id="cd-work-hours" placeholder="例：8:00〜17:00"><input id="cd-work-hours-note" placeholder="備考" style="margin-top:5px"></div>
+      <div class="fg"><label>土日祝日勤務</label><select id="cd-holiday"><option value="">選択</option><option>可能</option><option>不可</option><option>できれば休み希望</option></select><input id="cd-holiday-note" placeholder="備考" style="margin-top:5px"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-danger" id="btn-delete" style="display:none;margin-right:auto" onclick="deleteBooking()">削除</button>
-      <a id="gcal-btn" href="#" target="_blank" class="btn btn-gcal btn-sm" style="display:none;margin-right:auto" onclick="handleGcalOpen(event)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Googleカレンダーに追加
-      </a>
-      <button class="btn" onclick="closeModal()">キャンセル</button>
-      <button class="btn btn-primary" onclick="saveBooking()">保存する</button>
+    <div class="frow2">
+      <div class="fg"><label>コールセンター勤務</label><select id="cd-call"><option value="">選択</option><option>可能</option><option>不可</option><option>応相談</option></select></div>
+      <div class="fg"><label>休み希望</label><input id="cd-dayoff" placeholder="例：毎週水曜、第1・3土曜"></div>
+    </div>
+    <div class="fg" style="margin-bottom:10px"><label>PCスキル（該当するものにチェック）</label>
+      <div class="check-group">
+        <label class="chk-item"><input type="checkbox" id="sk-excel-basic"> Excel（基本）</label>
+        <label class="chk-item"><input type="checkbox" id="sk-excel-mid"> Excel（関数）</label>
+        <label class="chk-item"><input type="checkbox" id="sk-excel-adv"> Excel（マクロ）</label>
+        <label class="chk-item"><input type="checkbox" id="sk-word"> Word</label>
+        <label class="chk-item"><input type="checkbox" id="sk-ppt"> PowerPoint</label>
+        <label class="chk-item"><input type="checkbox" id="sk-email"> ビジネスメール</label>
+        <label class="chk-item"><input type="checkbox" id="sk-teams"> Teams/Slack</label>
+        <label class="chk-item"><input type="checkbox" id="sk-crm"> CRM/SFA</label>
+      </div>
     </div>
   </div>
+  <div class="modal-foot">
+    <button class="btn btn-danger" id="cd-del" style="display:none;margin-right:auto" onclick="delCandidate()">削除</button>
+    <button class="btn" onclick="closeModal('cd-modal')">キャンセル</button>
+    <button class="btn btn-primary" onclick="saveCandidate()">保存</button>
+  </div>
+</div>
+</div>
+
+<!-- AGENT MODAL -->
+<div class="modal-bg" id="ag-modal">
+<div class="modal" style="max-width:440px">
+  <div class="modal-head">
+    <div class="modal-title" id="ag-modal-title">エージェント登録</div>
+    <button class="modal-close" onclick="closeModal('ag-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="ag-id">
+    <div class="sec-title">基本情報</div>
+    <div class="frow1"><div class="fg"><label>会社名 *</label><input id="ag-name" placeholder="株式会社◯◯"></div></div>
+    <div class="frow2"><div class="fg"><label>担当者名</label><input id="ag-contact" placeholder="担当者名"></div><div class="fg"><label>メールアドレス</label><input id="ag-email" type="email" placeholder="agent@example.com"></div></div>
+    <div class="frow2"><div class="fg"><label>電話番号</label><input id="ag-tel" type="tel" placeholder="03-0000-0000"></div><div class="fg"><label>メモ</label><input id="ag-note" placeholder="備考"></div></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-danger" id="ag-del" style="display:none;margin-right:auto" onclick="delAgent()">削除</button>
+    <button class="btn" onclick="closeModal('ag-modal')">キャンセル</button>
+    <button class="btn btn-primary" onclick="saveAgent()">保存</button>
+  </div>
+</div>
 </div>
 
 <script>
-const STORAGE_KEY = 'interview_bookings_v1';
-let bookings = [];
-let calYear, calMonth;
+const SK='recruit_os_v2';
+let DB={bookings:[],candidates:[],agents:[]};
+let calY,calM;
 
-function load() {
-  try { bookings = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { bookings = []; }
-  if (!bookings.length) bookings = sampleData();
-  renderStats();
-  renderList();
+function loadDB(){try{const d=localStorage.getItem(SK);if(d)DB=JSON.parse(d);}catch(e){}
+  if(!DB.bookings.length&&!DB.candidates.length&&!DB.agents.length)DB=sampleDB();
+}
+function saveDB(){localStorage.setItem(SK,JSON.stringify(DB));}
+
+function sampleDB(){
+  const y=new Date().getFullYear(),m=new Date().getMonth();
+  const p=n=>String(n).padStart(2,'0');
+  return{
+    agents:[
+      {id:1,name:'パーソルキャリア',contact:'田中 様',email:'tanaka@persol.co.jp',tel:'03-0000-0001',note:''},
+      {id:2,name:'リクルートエージェント',contact:'佐藤 様',email:'sato@recruit.co.jp',tel:'03-0000-0002',note:''},
+      {id:3,name:'doda',contact:'鈴木 様',email:'suzuki@doda.jp',tel:'03-0000-0003',note:''},
+    ],
+    bookings:[
+      {id:1,name:'田中 花子',position:'フロントエンドエンジニア',round:'1次面接',status:'confirmed',date:`${y}-${p(m+1)}-10`,time:'10:00',duration:60,interviewer:'佐藤 部長',location:'会議室A',memo:''},
+      {id:2,name:'鈴木 健太',position:'プロダクトマネージャー',round:'最終面接',status:'pending',date:`${y}-${p(m+1)}-15`,time:'14:00',duration:60,interviewer:'山本 CTO',location:'Zoom',memo:''},
+      {id:3,name:'伊藤 美咲',position:'デザイナー',round:'2次面接',status:'completed',date:`${y}-${p(m+1)}-05`,time:'11:00',duration:60,interviewer:'中村 MG',location:'会議室B',memo:''},
+    ],
+    candidates:[
+      {id:1,name:'田中 花子',applyDate:`${y}-${p(m+1)}-01`,interviewDate:`${y}-${p(m+1)}-10`,source:'エージェント',agent:'パーソルキャリア',interviewer:'佐藤 部長',tel1:'090-1111-0001',tel2:'',email:'hanako@example.com',pref:'東京都',city:'渋谷区',addr:'1-1-1',station:'渋谷駅',walk:'徒歩5分',career:'IT系営業3年',company:'株式会社ABC',employ:'正社員',industry:'IT',jobType:'営業',jobDesc:'法人営業',resign:'キャリアアップ',memo:'',interviewResult:'実施',afterStatus:'採用',offerStatus:'内定承諾',offerNotice:'送信済み',joinDate:`${y}-${p(m+2)}-01`,leaveDate:'',fee:500000,resumeUrl:'',married:'既婚',marriedNote:'',children:'1人',childrenNote:'3歳',health:'',reason:'ITへの転職希望',startDate:`${y}-${p(m+2)}-01`,workStatus:'在職中',workNote:'',workHours:'9:00〜18:00',workHoursNote:'',holiday:'できれば休み希望',holidayNote:'',call:'不可',dayoff:'',skills:{excelBasic:true,excelMid:true,excelAdv:false,word:true,ppt:true,email:true,teams:false,crm:false}},
+      {id:2,name:'鈴木 健太',applyDate:`${y}-${p(m+1)}-03`,interviewDate:`${y}-${p(m+1)}-15`,source:'doda',agent:'doda',interviewer:'山本 CTO',tel1:'090-2222-0002',tel2:'',email:'kenta@example.com',pref:'神奈川県',city:'横浜市',addr:'2-2-2',station:'横浜駅',walk:'バス15分',career:'PM経験5年',company:'株式会社DEF',employ:'正社員',industry:'IT',jobType:'PM',jobDesc:'プロダクト管理',resign:'会社都合',memo:'優秀候補',interviewResult:'実施',afterStatus:'営業相談中',offerStatus:'承諾待ち',offerNotice:'未送信',joinDate:'',leaveDate:'',fee:0,resumeUrl:'',married:'未婚',marriedNote:'',children:'なし',childrenNote:'',health:'',reason:'新しい挑戦',startDate:'',workStatus:'離職中',workNote:'',workHours:'フレックス希望',workHoursNote:'',holiday:'可能',holidayNote:'',call:'応相談',dayoff:'',skills:{excelBasic:true,excelMid:false,excelAdv:false,word:true,ppt:true,email:true,teams:true,crm:true}},
+      {id:3,name:'高橋 龍一',applyDate:`${y}-${p(m+1)}-02`,interviewDate:'',source:'ハローワーク',agent:'',interviewer:'加藤 リーダー',tel1:'080-3333-0003',tel2:'',email:'ryuichi@example.com',pref:'埼玉県',city:'さいたま市',addr:'3-3-3',station:'大宮駅',walk:'徒歩10分',career:'',company:'',employ:'',industry:'',jobType:'',jobDesc:'',resign:'',memo:'',interviewResult:'未接触',afterStatus:'',offerStatus:'',offerNotice:'',joinDate:'',leaveDate:'',fee:0,resumeUrl:'',married:'',marriedNote:'',children:'',childrenNote:'',health:'',reason:'',startDate:'',workStatus:'',workNote:'',workHours:'',workHoursNote:'',holiday:'',holidayNote:'',call:'',dayoff:'',skills:{excelBasic:false,excelMid:false,excelAdv:false,word:false,ppt:false,email:false,teams:false,crm:false}},
+      {id:4,name:'渡辺 彩',applyDate:`${y}-${p(m)}-20`,interviewDate:`${y}-${p(m)}-28`,source:'リクナビNEXT',agent:'',interviewer:'小林 部長',tel1:'070-4444-0004',tel2:'',email:'aya@example.com',pref:'千葉県',city:'千葉市',addr:'4-4-4',station:'千葉駅',walk:'徒歩15分',career:'事務経験3年',company:'株式会社GHI',employ:'契約社員',industry:'製造',jobType:'一般事務',jobDesc:'データ入力・庶務',resign:'契約満了',memo:'',interviewResult:'実施',afterStatus:'不採用',offerStatus:'',offerNotice:'',joinDate:'',leaveDate:'',fee:0,resumeUrl:'',married:'未婚',marriedNote:'',children:'なし',childrenNote:'',health:'',reason:'安定した職場希望',startDate:'',workStatus:'離職中',workNote:'',workHours:'9:00〜18:00',workHoursNote:'残業不可',holiday:'不可',holidayNote:'',call:'不可',dayoff:'水曜',skills:{excelBasic:true,excelMid:false,excelAdv:false,word:true,ppt:false,email:true,teams:false,crm:false}},
+      {id:5,name:'山本 真一',applyDate:`${y}-${p(m+1)}-05`,interviewDate:'',source:'エージェント',agent:'リクルートエージェント',interviewer:'',tel1:'090-5555-0005',tel2:'',email:'shinichi@example.com',pref:'東京都',city:'新宿区',addr:'5-5-5',station:'新宿駅',walk:'徒歩3分',career:'',company:'',employ:'',industry:'',jobType:'',jobDesc:'',resign:'',memo:'',interviewResult:'応募辞退',afterStatus:'',offerStatus:'',offerNotice:'',joinDate:'',leaveDate:'',fee:0,resumeUrl:'',married:'',marriedNote:'',children:'',childrenNote:'',health:'',reason:'',startDate:'',workStatus:'',workNote:'',workHours:'',workHoursNote:'',holiday:'',holidayNote:'',call:'',dayoff:'',skills:{excelBasic:false,excelMid:false,excelAdv:false,word:false,ppt:false,email:false,teams:false,crm:false}},
+    ]
+  };
 }
 
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+/* ---- NAV ---- */
+const pageTitles={dashboard:'ダッシュボード',booking:'予約',candidates:'応募者管理',agents:'エージェント',calendar:'カレンダー'};
+function nav(page,el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.getElementById('view-'+page).classList.add('on');
+  document.getElementById('page-title').textContent=pageTitles[page];
+  const addBtn=document.getElementById('add-btn');
+  addBtn.style.display=['booking','candidates','agents'].includes(page)?'':'none';
+  if(page==='booking')renderBooking();
+  if(page==='candidates')renderCandidates();
+  if(page==='agents')renderAgents();
+  if(page==='dashboard')renderDashboard();
+  if(page==='calendar')renderCalendar();
+}
+function openAdd(){
+  const page=document.querySelector('.nav-item.active').textContent.trim();
+  if(page==='予約')openBkModal();
+  if(page==='応募者管理')openCdModal();
+  if(page==='エージェント')openAgModal();
 }
 
-function sampleData() {
-  const y = new Date().getFullYear(), m = new Date().getMonth();
-  const p = n => String(n).padStart(2,'0');
-  return [
-    {id:1,name:'田中 花子',position:'フロントエンドエンジニア',round:'1次面接',status:'confirmed',date:`${y}-${p(m+1)}-10`,time:'10:00',duration:60,interviewer:'佐藤 部長',location:'会議室A',memo:''},
-    {id:2,name:'鈴木 健太',position:'プロダクトマネージャー',round:'最終面接',status:'pending',date:`${y}-${p(m+1)}-15`,time:'14:00',duration:60,interviewer:'山本 CTO',location:'Zoom',memo:'ポートフォリオ確認'},
-    {id:3,name:'伊藤 美咲',position:'デザイナー',round:'2次面接',status:'completed',date:`${y}-${p(m+1)}-05`,time:'11:00',duration:60,interviewer:'中村 マネージャー',location:'会議室B',memo:''},
-    {id:4,name:'高橋 龍一',position:'バックエンドエンジニア',round:'カジュアル面談',status:'cancelled',date:`${y}-${p(m+1)}-08`,time:'16:00',duration:30,interviewer:'加藤 リーダー',location:'Google Meet',memo:'候補者都合'},
-    {id:5,name:'渡辺 彩',position:'データサイエンティスト',round:'1次面接',status:'confirmed',date:`${y}-${p(m+1)}-20`,time:'13:00',duration:60,interviewer:'小林 部長',location:'会議室C',memo:''},
-  ];
-}
+/* ---- MODAL ---- */
+function closeModal(id){document.getElementById(id).style.display='none';}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',function(e){if(e.target===this)this.style.display='none';}));
 
-const statusLabel = {pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
-const statusClass = {pending:'badge-pending',confirmed:'badge-confirmed',completed:'badge-completed',cancelled:'badge-cancelled'};
-const evClass = {pending:'ev-pending',confirmed:'ev-confirmed',completed:'ev-completed',cancelled:'ev-cancelled'};
+/* ====== DASHBOARD ====== */
+function renderDashboard(){
+  const cd=DB.candidates;
+  const total=cd.length;
+  const done=cd.filter(c=>c.interviewResult==='実施').length;
+  const noContact=cd.filter(c=>c.interviewResult==='未接触').length;
+  const decline=cd.filter(c=>c.interviewResult==='応募辞退').length;
+  const offer=cd.filter(c=>c.afterStatus==='採用').length;
+  const accept=cd.filter(c=>c.offerStatus==='内定承諾').length;
+  const pct=(n,d)=>d?Math.round(n/d*100)+'%':'—';
+  const fee=cd.reduce((s,c)=>s+(parseInt(c.fee)||0),0);
 
-function initials(name) {
-  const parts = name.trim().split(/\s+/);
-  return parts.length >= 2 ? parts[0][0] + parts[1][0] : name.slice(0,2);
-}
-
-function renderStats() {
-  const total = bookings.length;
-  const confirmed = bookings.filter(b=>b.status==='confirmed').length;
-  const pending = bookings.filter(b=>b.status==='pending').length;
-  const today = new Date().toISOString().split('T')[0];
-  const todayCount = bookings.filter(b=>b.date===today).length;
-  document.getElementById('stats-grid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">総予約数</div><div class="stat-value">${total}</div><div class="stat-sub">全候補者</div></div>
-    <div class="stat-card"><div class="stat-label">確定済み</div><div class="stat-value" style="color:var(--green)">${confirmed}</div><div class="stat-sub">面接確定</div></div>
-    <div class="stat-card"><div class="stat-label">調整中</div><div class="stat-value" style="color:var(--amber)">${pending}</div><div class="stat-sub">返答待ち</div></div>
-    <div class="stat-card"><div class="stat-label">本日の面接</div><div class="stat-value">${todayCount}</div><div class="stat-sub">今日の予定</div></div>
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat"><div class="stat-label">月間応募数</div><div class="stat-val">${total}</div><div class="stat-sub">全応募者</div></div>
+    <div class="stat"><div class="stat-label">面接実施</div><div class="stat-val" style="color:var(--blue)">${done}<span class="stat-pct" style="background:var(--blue-bg);color:var(--blue-tx)">${pct(done,total)}</span></div><div class="stat-sub">応募数比</div></div>
+    <div class="stat"><div class="stat-label">未接触</div><div class="stat-val" style="color:var(--amber)">${noContact}<span class="stat-pct" style="background:var(--amber-bg);color:var(--amber-tx)">${pct(noContact,total)}</span></div><div class="stat-sub">応募数比</div></div>
+    <div class="stat"><div class="stat-label">辞退</div><div class="stat-val" style="color:var(--red)">${decline}<span class="stat-pct" style="background:var(--red-bg);color:var(--red-tx)">${pct(decline,total)}</span></div><div class="stat-sub">応募数比</div></div>
+    <div class="stat"><div class="stat-label">内定数</div><div class="stat-val" style="color:var(--teal)">${offer}<span class="stat-pct" style="background:var(--teal-bg);color:var(--teal-tx)">${pct(offer,done)}</span></div><div class="stat-sub">面接実施比</div></div>
+    <div class="stat"><div class="stat-label">承諾数</div><div class="stat-val" style="color:#4527A0">${accept}<span class="stat-pct" style="background:#EDE7F6;color:#4527A0">${pct(accept,offer)}</span></div><div class="stat-sub">内定数比</div></div>
+    <div class="stat"><div class="stat-label">紹介料合計</div><div class="stat-val" style="font-size:18px">¥${fee.toLocaleString()}</div><div class="stat-sub">承諾者合計</div></div>
   `;
-}
 
-function renderList() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const fs = document.getElementById('filter-status').value;
-  const fr = document.getElementById('filter-round').value;
-  const filtered = bookings.filter(b =>
-    (!q || b.name.toLowerCase().includes(q) || b.position.toLowerCase().includes(q)) &&
-    (!fs || b.status===fs) && (!fr || b.round===fr)
-  ).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-
-  const tbody = document.getElementById('list-body');
-  document.getElementById('list-empty').style.display = filtered.length ? 'none' : 'block';
-  document.getElementById('table-card').style.display = filtered.length ? '' : 'none';
-  tbody.innerHTML = '';
-
-  filtered.forEach(b => {
-    const dt = b.date ? new Date(b.date+'T'+b.time) : null;
-    const days = ['日','月','火','水','木','金','土'];
-    const dtStr = dt ? `${dt.getMonth()+1}/${dt.getDate()}（${days[dt.getDay()]}） ${b.time}` : '—';
-    const gcal = buildGcalUrl(b);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><div class="name-cell">
-        <div class="avatar">${initials(b.name)}</div>
-        <div><div class="name-text">${b.name}</div><div class="name-pos">${b.position}</div></div>
-      </div></td>
-      <td>${b.round}</td>
-      <td>${dtStr}</td>
-      <td>${b.interviewer||'—'}</td>
-      <td>${b.location||'—'}</td>
-      <td><span class="badge ${statusClass[b.status]}">${statusLabel[b.status]}</span></td>
-      <td><div class="row-actions">
-        <button class="btn btn-sm" onclick="openModal(${b.id})">編集</button>
-        ${gcal ? `<a href="${gcal}" class="btn btn-sm btn-gcal" onclick="window.open('${gcal}','_blank');return false;" title="Googleカレンダーに追加">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        </a>` : ''}
-      </div></td>
-    `;
-    tbody.appendChild(tr);
+  // Funnel
+  const steps=[
+    {label:'応募',n:total,cls:'fb-apply'},
+    {label:'面接実施',n:done,cls:'fb-done'},
+    {label:'未接触',n:noContact,cls:'fb-no-contact'},
+    {label:'辞退',n:decline,cls:'fb-decline'},
+    {label:'内定',n:offer,cls:'fb-offer'},
+    {label:'承諾',n:accept,cls:'fb-accept'},
+  ];
+  let fhtml='<div style="display:flex;align-items:stretch;gap:0">';
+  steps.forEach((s,i)=>{
+    if(i>0)fhtml+=`<div style="width:18px;display:flex;align-items:center;justify-content:center;color:var(--tx3);font-size:12px;flex-shrink:0">▶</div>`;
+    const p=total?Math.round(s.n/total*100):0;
+    fhtml+=`<div class="funnel-block ${s.cls}" style="flex:1;border-radius:${i===0?'8px 0 0 8px':i===steps.length-1?'0 8px 8px 0':'0'}">
+      <div class="funnel-num">${s.n}</div>
+      <div class="funnel-lbl">${s.label}</div>
+      <div class="funnel-pct">${total?p+'%':'—'}</div>
+    </div>`;
   });
+  fhtml+='</div>';
+  document.getElementById('funnel').innerHTML=fhtml;
+
+  // Source chart
+  const sources={};
+  cd.forEach(c=>{if(c.source)sources[c.source]=(sources[c.source]||0)+1;});
+  const maxS=Math.max(...Object.values(sources),1);
+  const colors=['#4CAF50','#2196F3','#FF9800','#9C27B0','#F44336','#00BCD4','#795548','#607D8B'];
+  document.getElementById('chart-source').innerHTML=Object.entries(sources).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v],i)=>
+    `<div class="bar-row"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/maxS*100)}%;background:${colors[i%colors.length]}"><span class="bar-val">${v}人</span></div></div></div>`
+  ).join('')||'<div style="color:var(--tx3);font-size:12px">データなし</div>';
+
+  // Agent chart
+  const agents={};
+  cd.forEach(c=>{if(c.agent)agents[c.agent]=(agents[c.agent]||0)+1;});
+  const maxA=Math.max(...Object.values(agents),1);
+  document.getElementById('chart-agent').innerHTML=Object.entries(agents).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v],i)=>
+    `<div class="bar-row"><div class="bar-label">${k.length>8?k.slice(0,7)+'…':k}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/maxA*100)}%;background:${colors[i%colors.length]}"><span class="bar-val">${v}人</span></div></div></div>`
+  ).join('')||'<div style="color:var(--tx3);font-size:12px">データなし</div>';
 }
 
-function renderCalendar() {
-  const now = new Date();
-  if(!calYear){ calYear=now.getFullYear(); calMonth=now.getMonth(); }
-  document.getElementById('cal-title').textContent = `${calYear}年 ${calMonth+1}月`;
-  document.getElementById('cal-dows').innerHTML = ['日','月','火','水','木','金','土'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
-  const first = new Date(calYear,calMonth,1);
-  const last = new Date(calYear,calMonth+1,0);
-  const p = n=>String(n).padStart(2,'0');
-  const mbookings = bookings.filter(b=>{if(!b.date)return false;const d=new Date(b.date);return d.getFullYear()===calYear&&d.getMonth()===calMonth;});
+/* ====== BOOKING ====== */
+const bkStatusLabel={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
+const bkStatusCls={pending:'b-nodone',confirmed:'b-done',completed:'b-hire',cancelled:'b-nohire'};
+function renderBooking(){
+  const q=document.getElementById('bk-search').value.toLowerCase();
+  const fs=document.getElementById('bk-status').value;
+  const fr=document.getElementById('bk-round').value;
+  const list=DB.bookings.filter(b=>(!q||b.name.toLowerCase().includes(q)||b.position.toLowerCase().includes(q))&&(!fs||b.status===fs)&&(!fr||b.round===fr)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const days=['日','月','火','水','木','金','土'];
+  document.getElementById('bk-empty').style.display=list.length?'none':'block';
+  document.querySelector('#view-booking .tcard').style.display=list.length?'':'none';
+  document.getElementById('bk-body').innerHTML=list.map(b=>{
+    const dt=b.date?new Date(b.date+'T'+b.time):null;
+    const ds=dt?`${dt.getMonth()+1}/${dt.getDate()}（${days[dt.getDay()]}） ${b.time}`:'—';
+    const gcal=buildGcal(b);
+    return `<tr><td><div class="nm"><div class="av">${ini(b.name)}</div><div><div class="nm-name">${b.name}</div><div class="nm-sub">${b.position||'—'}</div></div></div></td>
+    <td>${b.round}</td><td>${ds}</td><td>${b.interviewer||'—'}</td><td>${b.location||'—'}</td>
+    <td><span class="badge ${bkStatusCls[b.status]}">${bkStatusLabel[b.status]}</span></td>
+    <td><div style="display:flex;gap:4px">
+      <button class="btn btn-sm" onclick="openBkModal(${b.id})">編集</button>
+      ${gcal?`<a href="${gcal}" class="btn btn-sm" style="border-color:#BFDBFE;color:var(--blue)" onclick="window.open('${gcal}','_blank');return false" title="Googleカレンダー"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></a>`:''}
+    </div></td></tr>`;
+  }).join('');
+}
+function openBkModal(id=null,preDate=null){
+  const m=document.getElementById('bk-modal');
+  m.style.display='flex';
+  document.getElementById('bk-del').style.display='none';
+  document.getElementById('bk-gcal').style.display='none';
+  document.getElementById('bk-id').value=id||'';
+  document.getElementById('bk-modal-title').textContent=id?'予約を編集':'新規予約';
+  if(id){
+    const b=DB.bookings.find(x=>x.id===id);if(!b)return;
+    set('bk-name',b.name);set('bk-position',b.position);set('bk-round',b.round);set('bk-date',b.date);
+    set('bk-time',b.time);set('bk-dur',b.duration);set('bk-interviewer',b.interviewer);
+    set('bk-location',b.location);set('bk-status2',b.status);set('bk-memo',b.memo);
+    document.getElementById('bk-del').style.display='block';
+    const gu=buildGcal(b);
+    if(gu){document.getElementById('bk-gcal').href=gu;document.getElementById('bk-gcal').style.display='inline-flex';}
+  }else{
+    ['bk-name','bk-position','bk-interviewer','bk-location','bk-memo'].forEach(x=>set(x,''));
+    set('bk-round','1次面接');set('bk-status2','pending');set('bk-date',preDate||'');set('bk-time','10:00');set('bk-dur','60');
+  }
+}
+function saveBooking(){
+  const name=g('bk-name'),date=g('bk-date');
+  if(!name||!date){alert('氏名と日付は必須です');return;}
+  const id=document.getElementById('bk-id').value;
+  const data={name,date,position:g('bk-position'),round:g('bk-round'),status:g('bk-status2'),time:g('bk-time'),duration:parseInt(g('bk-dur')),interviewer:g('bk-interviewer'),location:g('bk-location'),memo:g('bk-memo')};
+  if(id){const i=DB.bookings.findIndex(b=>b.id==id);DB.bookings[i]={...DB.bookings[i],...data};}
+  else{data.id=Date.now();DB.bookings.push(data);}
+  saveDB();closeModal('bk-modal');renderBooking();renderDashboard();
+  const bk=id?DB.bookings.find(b=>b.id==id):data;
+  const gu=buildGcal(bk);
+  if(gu&&!id)setTimeout(()=>{if(confirm('保存しました。Googleカレンダーに追加しますか？'))window.open(gu,'_blank');},100);
+}
+function delBooking(){
+  const id=document.getElementById('bk-id').value;
+  if(!confirm('削除しますか？'))return;
+  DB.bookings=DB.bookings.filter(b=>b.id!=id);
+  saveDB();closeModal('bk-modal');renderBooking();
+}
+function buildGcal(b){
+  if(!b.date||!b.time)return null;
+  const[yr,mo,dy]=b.date.split('-').map(Number);
+  const[h,mi]=b.time.split(':').map(Number);
+  const dur=b.duration||60;
+  const s=new Date(yr,mo-1,dy,h,mi),e=new Date(s.getTime()+dur*60000);
+  const fmt=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`【面接】${b.name}（${b.round}）`)}&dates=${fmt(s)}/${fmt(e)}&details=${encodeURIComponent(`ポジション：${b.position||''}\n面接官：${b.interviewer||''}\nメモ：${b.memo||''}`)}&location=${encodeURIComponent(b.location||'')}`;
+}
+
+/* ====== CANDIDATES ====== */
+const irCls={実施:'b-done',応募辞退:'b-decline',未接触:'b-nocontact'};
+const asCls={営業相談中:'b-consult',採用:'b-hire',不採用:'b-nohire'};
+const ofCls={承諾待ち:'b-wait',内定辞退:'b-offdecline',内定承諾:'b-accept'};
+function renderCandidates(){
+  const q=document.getElementById('cd-search').value.toLowerCase();
+  const fi=document.getElementById('cd-interview').value;
+  const fs=document.getElementById('cd-status').value;
+  const fo=document.getElementById('cd-offer').value;
+  const list=DB.candidates.filter(c=>(!q||c.name.toLowerCase().includes(q)||c.source.toLowerCase().includes(q))&&(!fi||c.interviewResult===fi)&&(!fs||c.afterStatus===fs)&&(!fo||c.offerStatus===fo)).sort((a,b)=>b.applyDate.localeCompare(a.applyDate));
+  document.getElementById('cd-empty').style.display=list.length?'none':'block';
+  document.querySelector('#view-candidates .tcard').style.display=list.length?'':'none';
+  document.getElementById('cd-body').innerHTML=list.map(c=>`<tr>
+    <td><div class="nm"><div class="av">${ini(c.name)}</div><div><div class="nm-name">${c.name}</div><div class="nm-sub">${c.source||'—'}</div></div></div></td>
+    <td>${c.applyDate||'—'}</td>
+    <td>${c.source||'—'}</td>
+    <td>${c.interviewResult?`<span class="badge ${irCls[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td>
+    <td>${c.afterStatus?`<span class="badge ${asCls[c.afterStatus]||''}">${c.afterStatus}</span>`:'—'}</td>
+    <td>${c.offerStatus?`<span class="badge ${ofCls[c.offerStatus]||''}">${c.offerStatus}</span>`:'—'}</td>
+    <td>${c.joinDate||'—'}</td>
+    <td><button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button></td>
+  </tr>`).join('');
+}
+function openCdModal(id=null){
+  const m=document.getElementById('cd-modal');
+  m.style.display='flex';
+  document.getElementById('cd-del').style.display='none';
+  document.getElementById('cd-id').value=id||'';
+  document.getElementById('cd-modal-title').textContent=id?'応募者詳細':'応募者登録';
+  const fields=['name','applyDate','interviewDate','source','agent','interviewer','tel1','tel2','email','pref','city','addr','station','walk','career','company','employ','industry','jobType','jobDesc','resign','memo','interviewResult','afterStatus','offerStatus','offerNotice','joinDate','leaveDate','fee','resumeUrl','married','marriedNote','children','childrenNote','health','reason','startDate','workStatus','workNote','workHours','workHoursNote','holiday','holidayNote','call','dayoff'];
+  if(id){
+    const c=DB.candidates.find(x=>x.id===id);if(!c)return;
+    const fm={name:'cd-name',applyDate:'cd-apply-date',interviewDate:'cd-interview-date',source:'cd-source',agent:'cd-agent',interviewer:'cd-interviewer',tel1:'cd-tel1',tel2:'cd-tel2',email:'cd-email',pref:'cd-pref',city:'cd-city',addr:'cd-addr',station:'cd-station',walk:'cd-walk',career:'cd-career',company:'cd-company',employ:'cd-employ',industry:'cd-industry',jobType:'cd-job-type',jobDesc:'cd-job-desc',resign:'cd-resign',memo:'cd-memo',interviewResult:'cd-interview-result',afterStatus:'cd-after-status',offerStatus:'cd-offer-status',offerNotice:'cd-offer-notice',joinDate:'cd-join-date',leaveDate:'cd-leave-date',fee:'cd-fee',resumeUrl:'cd-resume-url',married:'cd-married',marriedNote:'cd-married-note',children:'cd-children',childrenNote:'cd-children-note',health:'cd-health',reason:'cd-reason',startDate:'cd-start-date',workStatus:'cd-work-status',workNote:'cd-work-note',workHours:'cd-work-hours',workHoursNote:'cd-work-hours-note',holiday:'cd-holiday',holidayNote:'cd-holiday-note',call:'cd-call',dayoff:'cd-dayoff'};
+    Object.entries(fm).forEach(([k,id2])=>set(id2,c[k]||''));
+    const sk=c.skills||{};
+    document.getElementById('sk-excel-basic').checked=!!sk.excelBasic;
+    document.getElementById('sk-excel-mid').checked=!!sk.excelMid;
+    document.getElementById('sk-excel-adv').checked=!!sk.excelAdv;
+    document.getElementById('sk-word').checked=!!sk.word;
+    document.getElementById('sk-ppt').checked=!!sk.ppt;
+    document.getElementById('sk-email').checked=!!sk.email;
+    document.getElementById('sk-teams').checked=!!sk.teams;
+    document.getElementById('sk-crm').checked=!!sk.crm;
+    document.getElementById('cd-del').style.display='block';
+  }else{
+    const allIds=['cd-name','cd-apply-date','cd-interview-date','cd-source','cd-agent','cd-interviewer','cd-tel1','cd-tel2','cd-email','cd-pref','cd-city','cd-addr','cd-station','cd-walk','cd-career','cd-company','cd-employ','cd-industry','cd-job-type','cd-job-desc','cd-resign','cd-memo','cd-interview-result','cd-after-status','cd-offer-status','cd-offer-notice','cd-join-date','cd-leave-date','cd-fee','cd-resume-url','cd-married','cd-married-note','cd-children','cd-children-note','cd-health','cd-reason','cd-start-date','cd-work-status','cd-work-note','cd-work-hours','cd-work-hours-note','cd-holiday','cd-holiday-note','cd-call','cd-dayoff'];
+    allIds.forEach(x=>set(x,''));
+    ['sk-excel-basic','sk-excel-mid','sk-excel-adv','sk-word','sk-ppt','sk-email','sk-teams','sk-crm'].forEach(x=>document.getElementById(x).checked=false);
+    // Set today's date for apply date
+    document.getElementById('cd-apply-date').value=new Date().toISOString().split('T')[0];
+  }
+}
+function saveCandidate(){
+  const name=g('cd-name');if(!name){alert('氏名は必須です');return;}
+  const id=document.getElementById('cd-id').value;
+  const data={
+    name,applyDate:g('cd-apply-date'),interviewDate:g('cd-interview-date'),source:g('cd-source'),agent:g('cd-agent'),interviewer:g('cd-interviewer'),
+    tel1:g('cd-tel1'),tel2:g('cd-tel2'),email:g('cd-email'),pref:g('cd-pref'),city:g('cd-city'),addr:g('cd-addr'),station:g('cd-station'),walk:g('cd-walk'),career:g('cd-career'),
+    company:g('cd-company'),employ:g('cd-employ'),industry:g('cd-industry'),jobType:g('cd-job-type'),jobDesc:g('cd-job-desc'),resign:g('cd-resign'),memo:g('cd-memo'),
+    interviewResult:g('cd-interview-result'),afterStatus:g('cd-after-status'),offerStatus:g('cd-offer-status'),offerNotice:g('cd-offer-notice'),
+    joinDate:g('cd-join-date'),leaveDate:g('cd-leave-date'),fee:g('cd-fee')||0,resumeUrl:g('cd-resume-url'),
+    married:g('cd-married'),marriedNote:g('cd-married-note'),children:g('cd-children'),childrenNote:g('cd-children-note'),health:g('cd-health'),
+    reason:g('cd-reason'),startDate:g('cd-start-date'),workStatus:g('cd-work-status'),workNote:g('cd-work-note'),
+    workHours:g('cd-work-hours'),workHoursNote:g('cd-work-hours-note'),holiday:g('cd-holiday'),holidayNote:g('cd-holiday-note'),call:g('cd-call'),dayoff:g('cd-dayoff'),
+    skills:{excelBasic:document.getElementById('sk-excel-basic').checked,excelMid:document.getElementById('sk-excel-mid').checked,excelAdv:document.getElementById('sk-excel-adv').checked,word:document.getElementById('sk-word').checked,ppt:document.getElementById('sk-ppt').checked,email:document.getElementById('sk-email').checked,teams:document.getElementById('sk-teams').checked,crm:document.getElementById('sk-crm').checked}
+  };
+  if(id){const i=DB.candidates.findIndex(c=>c.id==id);DB.candidates[i]={...DB.candidates[i],...data};}
+  else{data.id=Date.now();DB.candidates.push(data);}
+  saveDB();closeModal('cd-modal');renderCandidates();renderDashboard();
+}
+function delCandidate(){
+  const id=document.getElementById('cd-id').value;
+  if(!confirm('削除しますか？'))return;
+  DB.candidates=DB.candidates.filter(c=>c.id!=id);
+  saveDB();closeModal('cd-modal');renderCandidates();renderDashboard();
+}
+
+/* ====== AGENTS ====== */
+function renderAgents(){
+  const q=document.getElementById('ag-search').value.toLowerCase();
+  const list=DB.agents.filter(a=>!q||a.name.toLowerCase().includes(q));
+  document.getElementById('ag-empty').style.display=list.length?'none':'block';
+  const cd=DB.candidates;
+  document.getElementById('ag-grid').innerHTML=list.map(a=>{
+    const intro=cd.filter(c=>c.agent===a.name).length;
+    const inter=cd.filter(c=>c.agent===a.name&&c.interviewResult==='実施').length;
+    const offer=cd.filter(c=>c.agent===a.name&&c.afterStatus==='採用').length;
+    const accept=cd.filter(c=>c.agent===a.name&&c.offerStatus==='内定承諾').length;
+    return`<div class="agent-card">
+      <div class="agent-head">
+        <div><div class="agent-name">${a.name}</div>${a.contact?`<div style="font-size:11px;color:var(--tx3);margin-top:1px">${a.contact}</div>`:''}</div>
+        <button class="btn btn-sm btn-ghost" onclick="openAgModal(${a.id})">編集</button>
+      </div>
+      ${a.email||a.tel?`<div style="font-size:12px;color:var(--tx3);margin-bottom:8px">${a.email?`📧 ${a.email}`:''}${a.email&&a.tel?' ｜ ':''}${a.tel?`📞 ${a.tel}`:''}</div>`:''}
+      <div class="agent-stats">
+        <div class="ast"><div class="ast-v" style="color:var(--c1d)">${intro}</div><div class="ast-l">紹介数</div></div>
+        <div class="ast"><div class="ast-v" style="color:var(--blue)">${inter}</div><div class="ast-l">面談数</div></div>
+        <div class="ast"><div class="ast-v" style="color:var(--teal)">${offer}</div><div class="ast-l">内定数</div></div>
+        <div class="ast"><div class="ast-v" style="color:#4527A0">${accept}</div><div class="ast-l">承諾数</div></div>
+      </div>
+      ${intro>0?`<div style="font-size:11px;color:var(--tx3);margin-top:8px;text-align:right">内定率 ${inter?Math.round(offer/inter*100):0}% ／ 承諾率 ${offer?Math.round(accept/offer*100):0}%</div>`:''}
+    </div>`;
+  }).join('');
+}
+function openAgModal(id=null){
+  document.getElementById('ag-modal').style.display='flex';
+  document.getElementById('ag-del').style.display='none';
+  document.getElementById('ag-id').value=id||'';
+  document.getElementById('ag-modal-title').textContent=id?'エージェント編集':'エージェント登録';
+  if(id){
+    const a=DB.agents.find(x=>x.id===id);if(!a)return;
+    set('ag-name',a.name);set('ag-contact',a.contact||'');set('ag-email',a.email||'');set('ag-tel',a.tel||'');set('ag-note',a.note||'');
+    document.getElementById('ag-del').style.display='block';
+  }else['ag-name','ag-contact','ag-email','ag-tel','ag-note'].forEach(x=>set(x,''));
+}
+function saveAgent(){
+  const name=g('ag-name');if(!name){alert('会社名は必須です');return;}
+  const id=document.getElementById('ag-id').value;
+  const data={name,contact:g('ag-contact'),email:g('ag-email'),tel:g('ag-tel'),note:g('ag-note')};
+  if(id){const i=DB.agents.findIndex(a=>a.id==id);DB.agents[i]={...DB.agents[i],...data};}
+  else{data.id=Date.now();DB.agents.push(data);}
+  saveDB();closeModal('ag-modal');renderAgents();
+}
+function delAgent(){
+  const id=document.getElementById('ag-id').value;
+  if(!confirm('削除しますか？'))return;
+  DB.agents=DB.agents.filter(a=>a.id!=id);
+  saveDB();closeModal('ag-modal');renderAgents();
+}
+
+/* ====== CALENDAR ====== */
+function renderCalendar(){
+  const now=new Date();
+  if(!calY){calY=now.getFullYear();calM=now.getMonth();}
+  document.getElementById('cal-title').textContent=`${calY}年 ${calM+1}月`;
+  document.getElementById('cal-dows').innerHTML=['日','月','火','水','木','金','土'].map(d=>`<div style="padding:7px 4px;text-align:center;font-size:11px;font-weight:600;color:var(--tx3);border-bottom:1px solid var(--bd);text-transform:uppercase">${d}</div>`).join('');
+  const first=new Date(calY,calM,1),last=new Date(calY,calM+1,0);
+  const p=n=>String(n).padStart(2,'0');
+  const mBk=DB.bookings.filter(b=>{if(!b.date)return false;const d=new Date(b.date);return d.getFullYear()===calY&&d.getMonth()===calM;});
+  const bkEvc={confirmed:'#C8E6C9',pending:'#FFF9C4',cancelled:'#FFCDD2',completed:'#BBDEFB'};
+  const bkEvt={confirmed:'#1B5E20',pending:'#F57F17',cancelled:'#B71C1C',completed:'#0D47A1'};
   let cells=[];
-  const pl=new Date(calYear,calMonth,0).getDate();
-  for(let i=0;i<first.getDay();i++) cells.push({day:pl-first.getDay()+i+1,cur:false});
-  for(let i=1;i<=last.getDate();i++) cells.push({day:i,cur:true});
-  while(cells.length%7) cells.push({day:cells.length-last.getDate()-first.getDay()+1,cur:false});
-  const daysEl=document.getElementById('cal-days');
-  daysEl.innerHTML='';
+  const pl=new Date(calY,calM,0).getDate();
+  for(let i=0;i<first.getDay();i++)cells.push({day:pl-first.getDay()+i+1,cur:false});
+  for(let i=1;i<=last.getDate();i++)cells.push({day:i,cur:true});
+  while(cells.length%7)cells.push({day:cells.length-last.getDate()-first.getDay()+1,cur:false});
+  const dEl=document.getElementById('cal-days');dEl.innerHTML='';
   cells.forEach(c=>{
     const div=document.createElement('div');
-    div.className='cal-day'+(c.cur?'':' other');
-    const isToday=c.cur&&c.day===now.getDate()&&calMonth===now.getMonth()&&calYear===now.getFullYear();
-    if(isToday) div.classList.add('today');
-    const ds=c.cur?`${calYear}-${p(calMonth+1)}-${p(c.day)}`:null;
-    const evs=ds?mbookings.filter(b=>b.date===ds):[];
-    div.innerHTML=`<div class="d-num">${c.day}</div>`+evs.map(b=>`<div class="cal-ev ${evClass[b.status]}" onclick="openModal(${b.id});event.stopPropagation()">${b.time} ${b.name}</div>`).join('');
-    if(c.cur) div.addEventListener('click',()=>openModal(null,ds));
-    daysEl.appendChild(div);
+    div.style.cssText='min-height:76px;padding:5px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);cursor:pointer;transition:background .1s';
+    div.onmouseenter=()=>div.style.background='var(--c1ll)';
+    div.onmouseleave=()=>div.style.background='';
+    if(!c.cur)div.style.opacity='.4';
+    const isToday=c.cur&&c.day===now.getDate()&&calM===now.getMonth()&&calY===now.getFullYear();
+    const ds=c.cur?`${calY}-${p(calM+1)}-${p(c.day)}`:null;
+    const evs=ds?mBk.filter(b=>b.date===ds):[];
+    const dnStyle=isToday?'width:20px;height:20px;background:var(--c1);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;':'';
+    div.innerHTML=`<div style="font-size:12px;font-weight:600;margin-bottom:2px${isToday?';display:inline-flex;':''}" ${isToday?`style="${dnStyle}"`:''}>${c.day}</div>`+evs.map(b=>`<div style="font-size:10px;padding:1px 4px;border-radius:3px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;background:${bkEvc[b.status]};color:${bkEvt[b.status]};cursor:pointer" onclick="openBkModal(${b.id});event.stopPropagation()">${b.time} ${b.name}</div>`).join('');
+    if(c.cur)div.addEventListener('click',()=>openBkModal(null,ds));
+    dEl.appendChild(div);
   });
 }
-
-function changeMonth(d){
-  if(d===0){const n=new Date();calYear=n.getFullYear();calMonth=n.getMonth();}
-  else{calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}}
+function calMov(d){
+  if(d===0){const n=new Date();calY=n.getFullYear();calM=n.getMonth();}
+  else{calM+=d;if(calM>11){calM=0;calY++;}else if(calM<0){calM=11;calY--;}}
   renderCalendar();
 }
 
-function switchView(view, el) {
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+view).classList.add('active');
-  const titles = {list:'候補者一覧',calendar:'カレンダー'};
-  document.getElementById('topbar-title').textContent = titles[view];
-  if(view==='calendar') renderCalendar();
-}
+/* ---- UTILS ---- */
+function g(id){const el=document.getElementById(id);return el?el.value:'';}
+function set(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
+function ini(name){const p=name.trim().split(/\s+/);return p.length>=2?p[0][0]+p[1][0]:name.slice(0,2);}
 
-function buildGcalUrl(b){
-  if(!b.date||!b.time) return null;
-  const [y,m,d]=b.date.split('-').map(Number);
-  const [h,mi]=b.time.split(':').map(Number);
-  const dur=b.duration||60;
-  const s=new Date(y,m-1,d,h,mi);
-  const e=new Date(s.getTime()+dur*60000);
-  const fmt=dt=>dt.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
-  const title=encodeURIComponent(`【面接】${b.name}（${b.round}）`);
-  const details=encodeURIComponent([`ポジション：${b.position}`,`面接官：${b.interviewer||'未設定'}`,b.memo?`メモ：${b.memo}`:''].filter(Boolean).join('\n'));
-  const loc=encodeURIComponent(b.location||'');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(s)}/${fmt(e)}&details=${details}&location=${loc}`;
-}
-
-function handleGcalOpen(e){
-  const url=document.getElementById('gcal-btn').href;
-  if(url&&url!=='#') window.open(url,'_blank');
-  e.preventDefault(); return false;
-}
-
-function openModal(id=null,preDate=null){
-  document.getElementById('modal-overlay').style.display='flex';
-  document.getElementById('btn-delete').style.display='none';
-  document.getElementById('gcal-btn').style.display='none';
-  document.getElementById('gcal-hint').style.display='none';
-  document.getElementById('edit-id').value=id||'';
-  document.getElementById('modal-title').textContent=id?'予約を編集':'新規予約';
-  if(id){
-    const b=bookings.find(x=>x.id===id); if(!b) return;
-    document.getElementById('f-name').value=b.name;
-    document.getElementById('f-position').value=b.position;
-    document.getElementById('f-round').value=b.round;
-    document.getElementById('f-status').value=b.status;
-    document.getElementById('f-date').value=b.date;
-    document.getElementById('f-time').value=b.time;
-    document.getElementById('f-duration').value=b.duration||60;
-    document.getElementById('f-interviewer').value=b.interviewer||'';
-    document.getElementById('f-location').value=b.location||'';
-    document.getElementById('f-memo').value=b.memo||'';
-    document.getElementById('btn-delete').style.display='block';
-    const url=buildGcalUrl(b);
-    if(url){document.getElementById('gcal-btn').href=url;document.getElementById('gcal-btn').style.display='inline-flex';}
-  } else {
-    ['f-name','f-position','f-interviewer','f-location','f-memo'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-round').value='1次面接';
-    document.getElementById('f-status').value='pending';
-    document.getElementById('f-date').value=preDate||'';
-    document.getElementById('f-time').value='10:00';
-    document.getElementById('f-duration').value='60';
-    document.getElementById('gcal-hint').style.display='flex';
-  }
-}
-
-function closeModal(){
-  document.getElementById('modal-overlay').style.display='none';
-}
-
-function saveBooking(){
-  const name=document.getElementById('f-name').value.trim();
-  const date=document.getElementById('f-date').value;
-  if(!name||!date){alert('氏名と日付は必須です');return;}
-  const id=document.getElementById('edit-id').value;
-  const data={
-    name,date,
-    position:document.getElementById('f-position').value.trim(),
-    round:document.getElementById('f-round').value,
-    status:document.getElementById('f-status').value,
-    time:document.getElementById('f-time').value,
-    duration:parseInt(document.getElementById('f-duration').value),
-    interviewer:document.getElementById('f-interviewer').value.trim(),
-    location:document.getElementById('f-location').value.trim(),
-    memo:document.getElementById('f-memo').value.trim(),
-  };
-  if(id){
-    const idx=bookings.findIndex(b=>b.id==id);
-    bookings[idx]={...bookings[idx],...data};
-  } else {
-    data.id=Date.now();
-    bookings.push(data);
-  }
-  save(); renderStats(); renderList();
-  if(document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
-  const gcalUrl=buildGcalUrl(data.id?bookings.find(b=>b.id==data.id):data);
-  closeModal();
-  if(gcalUrl&&!id){
-    setTimeout(()=>{if(confirm('予約を保存しました。\nGoogleカレンダーに追加しますか？'))window.open(gcalUrl,'_blank');},100);
-  }
-}
-
-function deleteBooking(){
-  const id=document.getElementById('edit-id').value;
-  if(!confirm('この予約を削除しますか？'))return;
-  bookings=bookings.filter(b=>b.id!=id);
-  save(); renderStats(); renderList();
-  if(document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
-  closeModal();
-}
-
-document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-load();
+/* ---- INIT ---- */
+loadDB();
+renderDashboard();
+document.getElementById('add-btn').style.display='none';
 </script>
 </body>
 </html>
