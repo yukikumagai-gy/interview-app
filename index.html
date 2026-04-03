@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面接予約管理システム</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F7F6F3;
+      --surface: #FFFFFF;
+      --surface2: #F0EFE9;
+      --border: #E2E0D8;
+      --border2: #CCC9BE;
+      --text: #1A1916;
+      --text2: #6B6860;
+      --text3: #9E9C96;
+      --accent: #2563EB;
+      --accent-bg: #EFF4FF;
+      --accent-text: #1D4ED8;
+      --green: #059669;
+      --green-bg: #ECFDF5;
+      --green-text: #065F46;
+      --amber: #D97706;
+      --amber-bg: #FFFBEB;
+      --amber-text: #92400E;
+      --red: #DC2626;
+      --red-bg: #FEF2F2;
+      --red-text: #991B1B;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 220px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 10;
+    }
+    .sidebar-logo {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--text);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { color: white; }
+    .logo-text { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; }
+    .logo-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .sidebar-nav { padding: 12px 10px; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: var(--text); color: white; }
+    .nav-item svg { flex-shrink: 0; opacity: 0.7; }
+    .nav-item.active svg { opacity: 1; }
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .main { margin-left: 220px; flex: 1; }
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 9;
+    }
+    .topbar-title { font-size: 15px; font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .content { padding: 24px 28px; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .stat-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-value { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
+    .stat-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      text-decoration: none;
+    }
+    .btn:hover { background: var(--surface2); border-color: var(--border2); }
+    .btn-primary {
+      background: var(--text);
+      border-color: var(--text);
+      color: white;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-danger { color: var(--red); border-color: #FECACA; }
+    .btn-danger:hover { background: var(--red-bg); }
+    .btn-gcal { color: var(--accent-text); border-color: #BFDBFE; }
+    .btn-gcal:hover { background: var(--accent-bg); }
+
+    /* Filters */
+    .toolbar {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative; flex: 1; min-width: 200px;
+    }
+    .search-icon {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); pointer-events: none;
+    }
+    .search-wrap input {
+      width: 100%; padding: 7px 12px 7px 34px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      font-size: 13px;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .search-wrap input:focus { outline: none; border-color: var(--border2); }
+    select.filter {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      font-size: 13px;
+      color: var(--text);
+      font-family: inherit;
+      cursor: pointer;
+    }
+    select.filter:focus { outline: none; }
+
+    /* Table */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--surface2); }
+
+    .avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      flex-shrink: 0;
+    }
+    .name-cell { display: flex; align-items: center; gap: 10px; }
+    .name-text { font-weight: 500; }
+    .name-pos { font-size: 11px; color: var(--text3); }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-confirmed { background: var(--green-bg); color: var(--green-text); }
+    .badge-pending { background: var(--amber-bg); color: var(--amber-text); }
+    .badge-cancelled { background: var(--red-bg); color: var(--red-text); }
+    .badge-completed { background: var(--accent-bg); color: var(--accent-text); }
+
+    .row-actions { display: flex; gap: 6px; }
+
+    /* Calendar */
+    .cal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .cal-month { font-size: 15px; font-weight: 600; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .cal-dow {
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-day {
+      min-height: 80px;
+      padding: 6px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .cal-day:nth-child(7n) { border-right: none; }
+    .cal-day:hover { background: var(--surface2); }
+    .cal-day.other { opacity: 0.4; }
+    .cal-day.today .d-num {
+      background: var(--text);
+      color: white;
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+    .d-num { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+    .cal-ev {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-bottom: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+    .ev-confirmed { background: var(--green-bg); color: var(--green-text); }
+    .ev-pending { background: var(--amber-bg); color: var(--amber-text); }
+    .ev-cancelled { background: var(--red-bg); color: var(--red-text); }
+    .ev-completed { background: var(--accent-bg); color: var(--accent-text); }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal {
+      background: var(--surface);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: 15px; font-weight: 600; }
+    .modal-close {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text3);
+      font-size: 18px;
+    }
+    .modal-close:hover { background: var(--surface2); color: var(--text); }
+    .modal-body { padding: 16px 20px; }
+    .modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group { margin-bottom: 12px; }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 5px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      transition: border 0.15s;
+    }
+    .form-control:focus { outline: none; border-color: var(--border2); background: var(--surface); }
+    textarea.form-control { resize: vertical; }
+
+    .gcal-hint {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      background: var(--accent-bg);
+      border: 1px solid #BFDBFE;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--accent-text);
+      margin-bottom: 12px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: var(--text3);
+      font-size: 13px;
+    }
+    .empty-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.4; }
+
+    /* Views */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <div class="logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <div>
+          <div class="logo-text">InterviewOS</div>
+          <div class="logo-sub">採用面接管理</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="switchView('list', this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        一覧
+      </div>
+      <div class="nav-item" onclick="switchView('calendar', this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        カレンダー
+      </div>
+    </nav>
+    <div class="sidebar-footer">InterviewOS v1.0</div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">候補者一覧</div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" onclick="openModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          新規予約
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <!-- List view -->
+      <div class="view active" id="view-list">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="search" placeholder="氏名・ポジションで検索..." oninput="renderList()">
+          </div>
+          <select class="filter" id="filter-status" onchange="renderList()">
+            <option value="">すべてのステータス</option>
+            <option value="pending">調整中</option>
+            <option value="confirmed">確定</option>
+            <option value="completed">完了</option>
+            <option value="cancelled">キャンセル</option>
+          </select>
+          <select class="filter" id="filter-round" onchange="renderList()">
+            <option value="">すべての選考</option>
+            <option value="1次面接">1次面接</option>
+            <option value="2次面接">2次面接</option>
+            <option value="最終面接">最終面接</option>
+            <option value="カジュアル面談">カジュアル面談</option>
+          </select>
+        </div>
+        <div class="table-card" id="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>候補者</th>
+                <th>選考</th>
+                <th>日時</th>
+                <th>面接官</th>
+                <th>場所</th>
+                <th>ステータス</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="list-body"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="list-empty" style="display:none">
+          <div class="empty-icon">🔍</div>
+          該当する予約が見つかりません
+        </div>
+      </div>
+
+      <!-- Calendar view -->
+      <div class="view" id="view-calendar">
+        <div class="cal-card">
+          <div class="cal-header">
+            <div class="cal-month" id="cal-title"></div>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-sm" onclick="changeMonth(-1)">←</button>
+              <button class="btn btn-sm" onclick="changeMonth(0)">今月</button>
+              <button class="btn btn-sm" onclick="changeMonth(1)">→</button>
+            </div>
+          </div>
+          <div class="cal-grid" id="cal-dows"></div>
+          <div class="cal-grid" id="cal-days"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">新規予約</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">氏名 *</label>
+          <input class="form-control" type="text" id="f-name" placeholder="山田 太郎">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ポジション *</label>
+          <input class="form-control" type="text" id="f-position" placeholder="エンジニア">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">選考ラウンド</label>
+          <select class="form-control" id="f-round">
+            <option>カジュアル面談</option>
+            <option>1次面接</option>
+            <option>2次面接</option>
+            <option>最終面接</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ステータス</label>
+          <select class="form-control" id="f-status">
+            <option value="pending">調整中</option>
+            <option value="confirmed">確定</option>
+            <option value="completed">完了</option>
+            <option value="cancelled">キャンセル</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">日付 *</label>
+          <input class="form-control" type="date" id="f-date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">時刻</label>
+          <input class="form-control" type="time" id="f-time" value="10:00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">所要時間（分）</label>
+          <select class="form-control" id="f-duration">
+            <option value="30">30分</option>
+            <option value="60" selected>60分</option>
+            <option value="90">90分</option>
+            <option value="120">120分</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">場所 / URL</label>
+          <input class="form-control" type="text" id="f-location" placeholder="会議室A / Zoom">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">面接官</label>
+        <input class="form-control" type="text" id="f-interviewer" placeholder="鈴木 部長">
+      </div>
+      <div class="form-group">
+        <label class="form-label">メモ</label>
+        <textarea class="form-control" id="f-memo" rows="2" placeholder="備考があれば..."></textarea>
+      </div>
+      <div class="gcal-hint" id="gcal-hint" style="display:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        保存後にGoogleカレンダーへ登録できます
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="btn-delete" style="display:none;margin-right:auto" onclick="deleteBooking()">削除</button>
+      <a id="gcal-btn" href="#" target="_blank" class="btn btn-gcal btn-sm" style="display:none;margin-right:auto" onclick="handleGcalOpen(event)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Googleカレンダーに追加
+      </a>
+      <button class="btn" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveBooking()">保存する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'interview_bookings_v1';
+let bookings = [];
+let calYear, calMonth;
+
+function load() {
+  try { bookings = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { bookings = []; }
+  if (!bookings.length) bookings = sampleData();
+  renderStats();
+  renderList();
+}
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+}
+
+function sampleData() {
+  const y = new Date().getFullYear(), m = new Date().getMonth();
+  const p = n => String(n).padStart(2,'0');
+  return [
+    {id:1,name:'田中 花子',position:'フロントエンドエンジニア',round:'1次面接',status:'confirmed',date:`${y}-${p(m+1)}-10`,time:'10:00',duration:60,interviewer:'佐藤 部長',location:'会議室A',memo:''},
+    {id:2,name:'鈴木 健太',position:'プロダクトマネージャー',round:'最終面接',status:'pending',date:`${y}-${p(m+1)}-15`,time:'14:00',duration:60,interviewer:'山本 CTO',location:'Zoom',memo:'ポートフォリオ確認'},
+    {id:3,name:'伊藤 美咲',position:'デザイナー',round:'2次面接',status:'completed',date:`${y}-${p(m+1)}-05`,time:'11:00',duration:60,interviewer:'中村 マネージャー',location:'会議室B',memo:''},
+    {id:4,name:'高橋 龍一',position:'バックエンドエンジニア',round:'カジュアル面談',status:'cancelled',date:`${y}-${p(m+1)}-08`,time:'16:00',duration:30,interviewer:'加藤 リーダー',location:'Google Meet',memo:'候補者都合'},
+    {id:5,name:'渡辺 彩',position:'データサイエンティスト',round:'1次面接',status:'confirmed',date:`${y}-${p(m+1)}-20`,time:'13:00',duration:60,interviewer:'小林 部長',location:'会議室C',memo:''},
+  ];
+}
+
+const statusLabel = {pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
+const statusClass = {pending:'badge-pending',confirmed:'badge-confirmed',completed:'badge-completed',cancelled:'badge-cancelled'};
+const evClass = {pending:'ev-pending',confirmed:'ev-confirmed',completed:'ev-completed',cancelled:'ev-cancelled'};
+
+function initials(name) {
+  const parts = name.trim().split(/\s+/);
+  return parts.length >= 2 ? parts[0][0] + parts[1][0] : name.slice(0,2);
+}
+
+function renderStats() {
+  const total = bookings.length;
+  const confirmed = bookings.filter(b=>b.status==='confirmed').length;
+  const pending = bookings.filter(b=>b.status==='pending').length;
+  const today = new Date().toISOString().split('T')[0];
+  const todayCount = bookings.filter(b=>b.date===today).length;
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">総予約数</div><div class="stat-value">${total}</div><div class="stat-sub">全候補者</div></div>
+    <div class="stat-card"><div class="stat-label">確定済み</div><div class="stat-value" style="color:var(--green)">${confirmed}</div><div class="stat-sub">面接確定</div></div>
+    <div class="stat-card"><div class="stat-label">調整中</div><div class="stat-value" style="color:var(--amber)">${pending}</div><div class="stat-sub">返答待ち</div></div>
+    <div class="stat-card"><div class="stat-label">本日の面接</div><div class="stat-value">${todayCount}</div><div class="stat-sub">今日の予定</div></div>
+  `;
+}
+
+function renderList() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const fs = document.getElementById('filter-status').value;
+  const fr = document.getElementById('filter-round').value;
+  const filtered = bookings.filter(b =>
+    (!q || b.name.toLowerCase().includes(q) || b.position.toLowerCase().includes(q)) &&
+    (!fs || b.status===fs) && (!fr || b.round===fr)
+  ).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+
+  const tbody = document.getElementById('list-body');
+  document.getElementById('list-empty').style.display = filtered.length ? 'none' : 'block';
+  document.getElementById('table-card').style.display = filtered.length ? '' : 'none';
+  tbody.innerHTML = '';
+
+  filtered.forEach(b => {
+    const dt = b.date ? new Date(b.date+'T'+b.time) : null;
+    const days = ['日','月','火','水','木','金','土'];
+    const dtStr = dt ? `${dt.getMonth()+1}/${dt.getDate()}（${days[dt.getDay()]}） ${b.time}` : '—';
+    const gcal = buildGcalUrl(b);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="name-cell">
+        <div class="avatar">${initials(b.name)}</div>
+        <div><div class="name-text">${b.name}</div><div class="name-pos">${b.position}</div></div>
+      </div></td>
+      <td>${b.round}</td>
+      <td>${dtStr}</td>
+      <td>${b.interviewer||'—'}</td>
+      <td>${b.location||'—'}</td>
+      <td><span class="badge ${statusClass[b.status]}">${statusLabel[b.status]}</span></td>
+      <td><div class="row-actions">
+        <button class="btn btn-sm" onclick="openModal(${b.id})">編集</button>
+        ${gcal ? `<a href="${gcal}" class="btn btn-sm btn-gcal" onclick="window.open('${gcal}','_blank');return false;" title="Googleカレンダーに追加">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </a>` : ''}
+      </div></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderCalendar() {
+  const now = new Date();
+  if(!calYear){ calYear=now.getFullYear(); calMonth=now.getMonth(); }
+  document.getElementById('cal-title').textContent = `${calYear}年 ${calMonth+1}月`;
+  document.getElementById('cal-dows').innerHTML = ['日','月','火','水','木','金','土'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  const first = new Date(calYear,calMonth,1);
+  const last = new Date(calYear,calMonth+1,0);
+  const p = n=>String(n).padStart(2,'0');
+  const mbookings = bookings.filter(b=>{if(!b.date)return false;const d=new Date(b.date);return d.getFullYear()===calYear&&d.getMonth()===calMonth;});
+  let cells=[];
+  const pl=new Date(calYear,calMonth,0).getDate();
+  for(let i=0;i<first.getDay();i++) cells.push({day:pl-first.getDay()+i+1,cur:false});
+  for(let i=1;i<=last.getDate();i++) cells.push({day:i,cur:true});
+  while(cells.length%7) cells.push({day:cells.length-last.getDate()-first.getDay()+1,cur:false});
+  const daysEl=document.getElementById('cal-days');
+  daysEl.innerHTML='';
+  cells.forEach(c=>{
+    const div=document.createElement('div');
+    div.className='cal-day'+(c.cur?'':' other');
+    const isToday=c.cur&&c.day===now.getDate()&&calMonth===now.getMonth()&&calYear===now.getFullYear();
+    if(isToday) div.classList.add('today');
+    const ds=c.cur?`${calYear}-${p(calMonth+1)}-${p(c.day)}`:null;
+    const evs=ds?mbookings.filter(b=>b.date===ds):[];
+    div.innerHTML=`<div class="d-num">${c.day}</div>`+evs.map(b=>`<div class="cal-ev ${evClass[b.status]}" onclick="openModal(${b.id});event.stopPropagation()">${b.time} ${b.name}</div>`).join('');
+    if(c.cur) div.addEventListener('click',()=>openModal(null,ds));
+    daysEl.appendChild(div);
+  });
+}
+
+function changeMonth(d){
+  if(d===0){const n=new Date();calYear=n.getFullYear();calMonth=n.getMonth();}
+  else{calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}}
+  renderCalendar();
+}
+
+function switchView(view, el) {
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  const titles = {list:'候補者一覧',calendar:'カレンダー'};
+  document.getElementById('topbar-title').textContent = titles[view];
+  if(view==='calendar') renderCalendar();
+}
+
+function buildGcalUrl(b){
+  if(!b.date||!b.time) return null;
+  const [y,m,d]=b.date.split('-').map(Number);
+  const [h,mi]=b.time.split(':').map(Number);
+  const dur=b.duration||60;
+  const s=new Date(y,m-1,d,h,mi);
+  const e=new Date(s.getTime()+dur*60000);
+  const fmt=dt=>dt.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const title=encodeURIComponent(`【面接】${b.name}（${b.round}）`);
+  const details=encodeURIComponent([`ポジション：${b.position}`,`面接官：${b.interviewer||'未設定'}`,b.memo?`メモ：${b.memo}`:''].filter(Boolean).join('\n'));
+  const loc=encodeURIComponent(b.location||'');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(s)}/${fmt(e)}&details=${details}&location=${loc}`;
+}
+
+function handleGcalOpen(e){
+  const url=document.getElementById('gcal-btn').href;
+  if(url&&url!=='#') window.open(url,'_blank');
+  e.preventDefault(); return false;
+}
+
+function openModal(id=null,preDate=null){
+  document.getElementById('modal-overlay').style.display='flex';
+  document.getElementById('btn-delete').style.display='none';
+  document.getElementById('gcal-btn').style.display='none';
+  document.getElementById('gcal-hint').style.display='none';
+  document.getElementById('edit-id').value=id||'';
+  document.getElementById('modal-title').textContent=id?'予約を編集':'新規予約';
+  if(id){
+    const b=bookings.find(x=>x.id===id); if(!b) return;
+    document.getElementById('f-name').value=b.name;
+    document.getElementById('f-position').value=b.position;
+    document.getElementById('f-round').value=b.round;
+    document.getElementById('f-status').value=b.status;
+    document.getElementById('f-date').value=b.date;
+    document.getElementById('f-time').value=b.time;
+    document.getElementById('f-duration').value=b.duration||60;
+    document.getElementById('f-interviewer').value=b.interviewer||'';
+    document.getElementById('f-location').value=b.location||'';
+    document.getElementById('f-memo').value=b.memo||'';
+    document.getElementById('btn-delete').style.display='block';
+    const url=buildGcalUrl(b);
+    if(url){document.getElementById('gcal-btn').href=url;document.getElementById('gcal-btn').style.display='inline-flex';}
+  } else {
+    ['f-name','f-position','f-interviewer','f-location','f-memo'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-round').value='1次面接';
+    document.getElementById('f-status').value='pending';
+    document.getElementById('f-date').value=preDate||'';
+    document.getElementById('f-time').value='10:00';
+    document.getElementById('f-duration').value='60';
+    document.getElementById('gcal-hint').style.display='flex';
+  }
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').style.display='none';
+}
+
+function saveBooking(){
+  const name=document.getElementById('f-name').value.trim();
+  const date=document.getElementById('f-date').value;
+  if(!name||!date){alert('氏名と日付は必須です');return;}
+  const id=document.getElementById('edit-id').value;
+  const data={
+    name,date,
+    position:document.getElementById('f-position').value.trim(),
+    round:document.getElementById('f-round').value,
+    status:document.getElementById('f-status').value,
+    time:document.getElementById('f-time').value,
+    duration:parseInt(document.getElementById('f-duration').value),
+    interviewer:document.getElementById('f-interviewer').value.trim(),
+    location:document.getElementById('f-location').value.trim(),
+    memo:document.getElementById('f-memo').value.trim(),
+  };
+  if(id){
+    const idx=bookings.findIndex(b=>b.id==id);
+    bookings[idx]={...bookings[idx],...data};
+  } else {
+    data.id=Date.now();
+    bookings.push(data);
+  }
+  save(); renderStats(); renderList();
+  if(document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
+  const gcalUrl=buildGcalUrl(data.id?bookings.find(b=>b.id==data.id):data);
+  closeModal();
+  if(gcalUrl&&!id){
+    setTimeout(()=>{if(confirm('予約を保存しました。\nGoogleカレンダーに追加しますか？'))window.open(gcalUrl,'_blank');},100);
+  }
+}
+
+function deleteBooking(){
+  const id=document.getElementById('edit-id').value;
+  if(!confirm('この予約を削除しますか？'))return;
+  bookings=bookings.filter(b=>b.id!=id);
+  save(); renderStats(); renderList();
+  if(document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
+  closeModal();
+}
+
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+load();
+</script>
+</body>
+</html>
