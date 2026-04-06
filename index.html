@@ -71,6 +71,7 @@ body{font-family:'DM Sans','Noto Sans JP',sans-serif;background:var(--bg);color:
 .fb-decline{background:#FFEBEE;color:#B71C1C}
 .fb-offer{background:#E0F2F1;color:#004D40}
 .fb-accept{background:#F3E5F5;color:#4A148C}
+.fb-wait{background:#FFF3E0;color:#E65100}
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .chart-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
 .chart-title{font-size:13px;font-weight:600;margin-bottom:14px}
@@ -187,6 +188,140 @@ tr:hover td{background:#FAFCFA}
 </style>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div style="text-align:center;margin-bottom:6px">
+      <div class="login-logo" style="justify-content:center">
+        <div class="login-logo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="login-title">RecruitOS</div>
+      </div>
+      <div class="login-sub">採用管理システム</div>
+    </div>
+    <div class="login-tabs" style="margin-top:20px">
+      <div class="login-tab active" id="tab-admin" onclick="switchLoginTab('admin')">管理者ログイン</div>
+      <div class="login-tab" id="tab-agent" onclick="switchLoginTab('agent')">エージェント</div>
+    </div>
+    <!-- Admin login -->
+    <div id="login-admin">
+      <div class="login-fg"><label>パスワード</label><input type="password" id="admin-pw" placeholder="管理者パスワードを入力" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+      <button class="login-btn" onclick="doAdminLogin()">ログイン</button>
+      <div class="login-hint">初期パスワード：admin123（設定ページで変更できます）</div>
+    </div>
+    <!-- Agent login -->
+    <div id="login-agent" style="display:none">
+      <div class="login-fg"><label>エージェント会社</label>
+        <select id="agent-login-name">
+          <option value="">会社を選択してください</option>
+          <option>ネオキャリア</option><option>ミギナナメウエ</option><option>For A-career</option>
+          <option>キミノミライ</option><option>UPSET</option><option>マイナビジョブ20s</option>
+          <option>MAP</option><option>MOFMOF</option><option>セルフプロモート</option>
+          <option>NEW GATE</option><option>Zキャリア</option><option>昼job</option>
+          <option>ビズリンクキャリア</option><option>FBent</option><option>学情</option>
+          <option>JHR</option><option>UZUZ</option><option>ホールハート</option>
+          <option>JOB-up</option><option>キャリアビート</option><option>ホワイトキャリア</option>
+          <option>マエノメリ</option><option>ヒューガン</option><option>HARE</option>
+          <option>ネオアクト</option><option>東日本人財開発株式会社</option>
+        </select>
+      </div>
+      <div class="login-fg"><label>パスワード</label><input type="password" id="agent-pw" placeholder="エージェント共通パスワード" onkeydown="if(event.key==='Enter')doAgentLogin()"></div>
+      <button class="login-btn" onclick="doAgentLogin()">ログイン</button>
+    </div>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- AGENT PORTAL -->
+<div id="agent-portal" style="display:none;min-height:100vh;background:#F4F6F4">
+  <div class="agent-header">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:30px;height:30px;background:#4CAF50;border-radius:8px;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+      <div>
+        <div style="font-size:13px;font-weight:600">RecruitOS</div>
+        <div style="font-size:11px;color:#7A9B7A">エージェントポータル</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="agent-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span id="portal-agent-name">エージェント名</span></div>
+      <button onclick="agentLogout()" style="padding:5px 12px;border:1px solid #DCE5DC;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit">ログアウト</button>
+    </div>
+  </div>
+  <div style="padding:22px 24px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div>
+        <div style="font-size:16px;font-weight:600">求職者登録</div>
+        <div style="font-size:12px;color:#7A9B7A;margin-top:2px">貴社からご紹介いただいた求職者を登録してください</div>
+      </div>
+      <button class="btn btn-primary" onclick="openAgentCdModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>求職者を登録
+      </button>
+    </div>
+    <!-- Agent candidates table -->
+    <div style="background:#fff;border:1px solid #DCE5DC;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:#7A9B7A;text-transform:uppercase;letter-spacing:.4px;background:#F0F4F0;border-bottom:1px solid #DCE5DC">氏名</th>
+          <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:#7A9B7A;text-transform:uppercase;letter-spacing:.4px;background:#F0F4F0;border-bottom:1px solid #DCE5DC">応募日</th>
+          <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:#7A9B7A;text-transform:uppercase;letter-spacing:.4px;background:#F0F4F0;border-bottom:1px solid #DCE5DC">面接日</th>
+          <th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:#7A9B7A;text-transform:uppercase;letter-spacing:.4px;background:#F0F4F0;border-bottom:1px solid #DCE5DC">ステータス</th>
+          <th style="padding:9px 14px;background:#F0F4F0;border-bottom:1px solid #DCE5DC"></th>
+        </tr></thead>
+        <tbody id="agent-cd-list"></tbody>
+      </table>
+    </div>
+    <div id="agent-cd-empty" style="text-align:center;padding:36px;color:#7A9B7A;font-size:13px;display:none">まだ求職者が登録されていません</div>
+  </div>
+</div>
+
+<!-- AGENT CANDIDATE MODAL (limited fields) -->
+<div class="modal-bg" id="agent-cd-modal">
+<div class="modal" style="max-width:560px">
+  <div class="modal-head">
+    <div class="modal-title" id="agent-cd-modal-title">求職者登録</div>
+    <button class="modal-close" onclick="closeModal('agent-cd-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+    <input type="hidden" id="agent-cd-id">
+    <div style="background:#E8F5E9;border-radius:8px;padding:10px 14px;font-size:12px;color:#1B5E20;margin-bottom:16px">
+      <strong>ご注意：</strong>登録した情報は採用担当者と共有されます。氏名・連絡先・応募日・面接日・履歴書のみ入力してください。
+    </div>
+    <div style="font-size:11px;font-weight:600;color:#388E3C;text-transform:uppercase;letter-spacing:.5px;padding-bottom:7px;border-bottom:1.5px solid #E8F5E9;margin-bottom:13px">基本情報</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div class="fg"><label>氏名 *</label><input id="ag-cd-name" class="form-control" placeholder="山田 太郎"></div>
+      <div class="fg"><label>メールアドレス</label><input id="ag-cd-email" class="form-control" type="email" placeholder="example@email.com"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div class="fg"><label>電話番号①</label><input id="ag-cd-tel1" class="form-control" type="tel" placeholder="090-0000-0000"></div>
+      <div class="fg"><label>電話番号②</label><input id="ag-cd-tel2" class="form-control" type="tel" placeholder="03-0000-0000"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div class="fg"><label>応募日</label><input id="ag-cd-apply" class="form-control" type="date"></div>
+      <div class="fg"><label>面接日</label><input id="ag-cd-interview" class="form-control" type="date"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div class="fg"><label>都道府県</label><input id="ag-cd-pref" class="form-control" placeholder="東京都"></div>
+      <div class="fg"><label>最寄り駅</label><input id="ag-cd-station" class="form-control" placeholder="渋谷駅"></div>
+    </div>
+    <div style="font-size:11px;font-weight:600;color:#388E3C;text-transform:uppercase;letter-spacing:.5px;padding-bottom:7px;border-bottom:1.5px solid #E8F5E9;margin-bottom:13px;margin-top:18px">職務経歴（概要）</div>
+    <div class="fg" style="margin-bottom:12px"><label>職務経歴概要</label><textarea id="ag-cd-career" class="form-control" rows="3" placeholder="直近の職歴・スキルの概要を入力"></textarea></div>
+    <div style="font-size:11px;font-weight:600;color:#388E3C;text-transform:uppercase;letter-spacing:.5px;padding-bottom:7px;border-bottom:1.5px solid #E8F5E9;margin-bottom:13px;margin-top:18px">履歴書・職務経歴書</div>
+    <div style="border:2px dashed #C5D4C5;border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:#FAFCFA" onclick="document.getElementById('ag-resume-input').click()">
+      <input type="file" id="ag-resume-input" accept=".pdf,.jpg,.jpeg,.png,.docx" style="display:none" onchange="agFileSelect(event)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A9B7A" stroke-width="1.5" style="margin-bottom:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <div style="font-size:13px;color:#4A6045;font-weight:500">クリックまたはドラッグ＆ドロップ</div>
+      <div style="font-size:11px;color:#7A9B7A;margin-top:3px">PDF・Word・JPG/PNG対応</div>
+    </div>
+    <div id="ag-file-preview" style="margin-top:8px"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-danger" id="ag-cd-del-btn" style="display:none;margin-right:auto" onclick="delAgentCandidate()">削除</button>
+    <button class="btn" onclick="closeModal('agent-cd-modal')">キャンセル</button>
+    <button class="btn btn-primary" onclick="saveAgentCandidate()">登録する</button>
+  </div>
+</div>
+</div>
+
 <div class="wrap">
 <aside class="side">
   <div class="side-logo">
@@ -222,6 +357,9 @@ tr:hover td{background:#FAFCFA}
     </div>
     <div class="view" id="view-booking">
       <div class="toolbar">
+        <button class="btn" id="bk-today-btn" onclick="toggleTodayFilter()" style="white-space:nowrap">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>本日のみ表示
+        </button>
         <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="bk-search" placeholder="氏名・ポジションで検索..." oninput="renderBooking()"></div>
         <select class="flt" id="bk-status" onchange="renderBooking()"><option value="">すべてのステータス</option><option value="pending">調整中</option><option value="confirmed">確定</option><option value="completed">完了</option><option value="cancelled">キャンセル</option></select>
         <select class="flt" id="bk-round" onchange="renderBooking()"><option value="">すべての選考</option><option value="1次面接">1次面接</option><option value="2次面接">2次面接</option><option value="最終面接">最終面接</option><option value="カジュアル面談">カジュアル面談</option></select>
@@ -275,6 +413,16 @@ tr:hover td{background:#FAFCFA}
             2. サインアップ → 「API Keys」→「Create Key」<br>
             3. 発行されたキー（sk-ant-...）をここに貼り付けて保存
           </div>
+        </div>
+        <div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:24px;box-shadow:var(--sh);margin-bottom:16px">
+          <div style="font-size:15px;font-weight:600;margin-bottom:6px">パスワード変更</div>
+          <div style="font-size:13px;color:var(--tx2);margin-bottom:16px">管理者・エージェント共通パスワードを変更できます。</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div class="fg"><label>管理者パスワード</label><input type="password" id="set-admin-pw" placeholder="新しいパスワード" class="form-control"></div>
+            <div class="fg"><label>エージェント共通パスワード</label><input type="password" id="set-agent-pw" placeholder="新しいパスワード" class="form-control"></div>
+          </div>
+          <button class="btn btn-primary" onclick="savePasswords()">パスワードを更新</button>
+          <div style="font-size:11px;color:var(--tx3);margin-top:8px">初期値：管理者 = admin123 ／ エージェント = agent2024</div>
         </div>
         <div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:24px;box-shadow:var(--sh)">
           <div style="font-size:15px;font-weight:600;margin-bottom:6px">データ管理</div>
@@ -370,7 +518,30 @@ tr:hover td{background:#FAFCFA}
     <div class="tab-pane" id="tab-1">
       <div class="sec-title">基本情報</div>
       <div class="frow"><div class="fg"><label>氏名 *</label><input id="cd-name" placeholder="山田 花子"></div><div class="fg"><label>応募日</label><input type="date" id="cd-apply-date"></div><div class="fg"><label>面接日</label><input type="date" id="cd-interview-date"></div></div>
-      <div class="frow"><div class="fg"><label>流入経路</label><select id="cd-source"><option value="">選択</option><option>Indeed</option><option>リクナビNEXT</option><option>マイナビ転職</option><option>doda</option><option>ハローワーク</option><option>エージェント</option><option>リファラル</option><option>自社HP</option><option>その他</option></select></div><div class="fg"><label>エージェント名</label><input id="cd-agent" placeholder="例：パーソル"></div><div class="fg"><label>面接担当者</label><input id="cd-interviewer" placeholder="鈴木 部長"></div></div>
+      <div class="frow"><div class="fg"><label>流入経路</label><select id="cd-source"><option value="">選択</option>
+          <option>Indeed</option><option>リクナビNEXT</option><option>マイナビ転職</option>
+          <option>doda</option><option>ハローワーク</option><option>自社HP</option><option>リファラル</option>
+          <option>ネオキャリア</option><option>ミギナナメウエ</option><option>For A-career</option>
+          <option>キミノミライ</option><option>UPSET</option><option>マイナビジョブ20s</option>
+          <option>MAP</option><option>MOFMOF</option><option>セルフプロモート</option>
+          <option>NEW GATE</option><option>Zキャリア</option><option>昼job</option>
+          <option>ビズリンクキャリア</option><option>FBent</option><option>学情</option>
+          <option>JHR</option><option>UZUZ</option><option>ホールハート</option>
+          <option>JOB-up</option><option>キャリアビート</option><option>ホワイトキャリア</option>
+          <option>マエノメリ</option><option>ヒューガン</option><option>HARE</option>
+          <option>ネオアクト</option><option>東日本人財開発株式会社</option><option>その他</option></select></div><div class="fg"><label>エージェント名</label>
+        <select id="cd-agent">
+          <option value="">選択（エージェント経由の場合）</option>
+          <option>ネオキャリア</option><option>ミギナナメウエ</option><option>For A-career</option>
+          <option>キミノミライ</option><option>UPSET</option><option>マイナビジョブ20s</option>
+          <option>MAP</option><option>MOFMOF</option><option>セルフプロモート</option>
+          <option>NEW GATE</option><option>Zキャリア</option><option>昼job</option>
+          <option>ビズリンクキャリア</option><option>FBent</option><option>学情</option>
+          <option>JHR</option><option>UZUZ</option><option>ホールハート</option>
+          <option>JOB-up</option><option>キャリアビート</option><option>ホワイトキャリア</option>
+          <option>マエノメリ</option><option>ヒューガン</option><option>HARE</option>
+          <option>ネオアクト</option><option>東日本人財開発株式会社</option>
+        </select></div><div class="fg"><label>面接担当者</label><input id="cd-interviewer" placeholder="鈴木 部長"></div></div>
       <div class="frow"><div class="fg"><label>電話番号①</label><input id="cd-tel1" type="tel" placeholder="090-0000-0000"></div><div class="fg"><label>電話番号②</label><input id="cd-tel2" type="tel" placeholder="03-0000-0000"></div><div class="fg"><label>メールアドレス</label><input id="cd-email" type="email" placeholder="example@email.com"></div></div>
       <div class="frow"><div class="fg"><label>都道府県</label><input id="cd-pref" placeholder="東京都"></div><div class="fg"><label>市区町村</label><input id="cd-city" placeholder="渋谷区"></div><div class="fg"><label>以降の住所</label><input id="cd-addr" placeholder="1-1-1"></div></div>
       <div class="frow2"><div class="fg"><label>最寄り駅</label><input id="cd-station" placeholder="渋谷駅"></div><div class="fg"><label>最寄り駅→自宅</label><input id="cd-walk" placeholder="徒歩10分"></div></div>
@@ -442,7 +613,19 @@ tr:hover td{background:#FAFCFA}
   <div class="modal-head"><div class="modal-title" id="ag-modal-title">エージェント登録</div><button class="modal-close" onclick="closeModal('ag-modal')">✕</button></div>
   <div class="modal-body">
     <input type="hidden" id="ag-id">
-    <div class="frow1"><div class="fg"><label>会社名 *</label><input id="ag-name" placeholder="株式会社◯◯"></div></div>
+    <div class="frow1"><div class="fg"><label>会社名 *</label>
+        <select id="ag-name">
+          <option value="">会社を選択</option>
+          <option>ネオキャリア</option><option>ミギナナメウエ</option><option>For A-career</option>
+          <option>キミノミライ</option><option>UPSET</option><option>マイナビジョブ20s</option>
+          <option>MAP</option><option>MOFMOF</option><option>セルフプロモート</option>
+          <option>NEW GATE</option><option>Zキャリア</option><option>昼job</option>
+          <option>ビズリンクキャリア</option><option>FBent</option><option>学情</option>
+          <option>JHR</option><option>UZUZ</option><option>ホールハート</option>
+          <option>JOB-up</option><option>キャリアビート</option><option>ホワイトキャリア</option>
+          <option>マエノメリ</option><option>ヒューガン</option><option>HARE</option>
+          <option>ネオアクト</option><option>東日本人財開発株式会社</option>
+        </select></div></div>
     <div class="frow2"><div class="fg"><label>担当者名</label><input id="ag-contact" placeholder="担当者名"></div><div class="fg"><label>メールアドレス</label><input id="ag-email" type="email" placeholder="agent@example.com"></div></div>
     <div class="frow2"><div class="fg"><label>電話番号</label><input id="ag-tel" type="tel" placeholder="03-0000-0000"></div><div class="fg"><label>メモ</label><input id="ag-note" placeholder="備考"></div></div>
   </div>
@@ -625,7 +808,8 @@ const bkSL={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:
 const bkSC={pending:'b-nodone',confirmed:'b-done',completed:'b-hire',cancelled:'b-nohire'};
 function renderBooking(){
   const q=document.getElementById('bk-search').value.toLowerCase(),fs=document.getElementById('bk-status').value,fr=document.getElementById('bk-round').value;
-  const list=DB.bookings.filter(b=>(!q||b.name.toLowerCase().includes(q)||b.position.toLowerCase().includes(q))&&(!fs||b.status===fs)&&(!fr||b.round===fr)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  const todayStr=new Date().toISOString().split('T')[0];
+  const list=DB.bookings.filter(b=>(!q||b.name.toLowerCase().includes(q)||b.position.toLowerCase().includes(q))&&(!fs||b.status===fs)&&(!fr||b.round===fr)&&(!todayFilterOn||b.date===todayStr)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   const days=['日','月','火','水','木','金','土'];
   document.getElementById('bk-empty').style.display=list.length?'none':'block';
   document.querySelector('#view-booking .tcard').style.display=list.length?'':'none';
@@ -760,6 +944,197 @@ function g(id){const el=document.getElementById(id);return el?el.value:'';}
 function set(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
 function ini(name){const p=name.trim().split(/\s+/);return p.length>=2?p[0][0]+p[1][0]:name.slice(0,2);}
 
+
+/* ===== AUTH ===== */
+let currentRole = null; // 'admin' | 'agent'
+let currentAgent = null;
+let todayFilterOn = false;
+
+const DEFAULT_ADMIN_PW = 'admin123';
+const DEFAULT_AGENT_PW = 'agent2024';
+
+function getAdminPw(){ return localStorage.getItem('admin_pw') || DEFAULT_ADMIN_PW; }
+function getAgentPw(){ return localStorage.getItem('agent_pw') || DEFAULT_AGENT_PW; }
+
+function switchLoginTab(tab){
+  document.getElementById('tab-admin').classList.toggle('active', tab==='admin');
+  document.getElementById('tab-agent').classList.toggle('active', tab==='agent');
+  document.getElementById('login-admin').style.display = tab==='admin' ? '' : 'none';
+  document.getElementById('login-agent').style.display = tab==='agent' ? '' : 'none';
+  document.getElementById('login-err').textContent = '';
+}
+
+function doAdminLogin(){
+  const pw = document.getElementById('admin-pw').value;
+  if(pw === getAdminPw()){
+    currentRole = 'admin';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('agent-portal').style.display = 'none';
+    document.querySelector('.wrap').style.display = 'flex';
+    renderDashboard();
+  } else {
+    document.getElementById('login-err').textContent = 'パスワードが違います';
+    document.getElementById('admin-pw').value = '';
+  }
+}
+
+function doAgentLogin(){
+  const agName = document.getElementById('agent-login-name').value;
+  const pw = document.getElementById('agent-pw').value;
+  if(!agName){ document.getElementById('login-err').textContent = '会社名を選択してください'; return; }
+  if(pw === getAgentPw()){
+    currentRole = 'agent';
+    currentAgent = agName;
+    document.getElementById('login-screen').style.display = 'none';
+    document.querySelector('.wrap').style.display = 'none';
+    const portal = document.getElementById('agent-portal');
+    portal.style.display = 'block';
+    document.getElementById('portal-agent-name').textContent = agName;
+    renderAgentPortal();
+  } else {
+    document.getElementById('login-err').textContent = 'パスワードが違います';
+    document.getElementById('agent-pw').value = '';
+  }
+}
+
+function agentLogout(){
+  currentRole = null; currentAgent = null;
+  document.getElementById('agent-portal').style.display = 'none';
+  document.querySelector('.wrap').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('agent-pw').value = '';
+  document.getElementById('admin-pw').value = '';
+  switchLoginTab('admin');
+}
+
+/* ===== AGENT PORTAL ===== */
+let agentUploadedFile = null;
+
+function renderAgentPortal(){
+  const list = DB.candidates.filter(c => c.agent === currentAgent);
+  const tbody = document.getElementById('agent-cd-list');
+  const empty = document.getElementById('agent-cd-empty');
+  empty.style.display = list.length ? 'none' : 'block';
+  tbody.innerHTML = list.map(c => {
+    const ir = c.interviewResult || '';
+    const irCls = {実施:'b-done', 応募辞退:'b-decline', 未接触:'b-nocontact'}[ir] || '';
+    return `<tr>
+      <td style="padding:11px 14px;border-bottom:1px solid #DCE5DC;font-size:13px;font-weight:500">${c.name}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid #DCE5DC;font-size:13px">${c.applyDate||'—'}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid #DCE5DC;font-size:13px">${c.interviewDate||'—'}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid #DCE5DC;font-size:13px">${ir ? `<span class="badge ${irCls}">${ir}</span>` : '—'}</td>
+      <td style="padding:11px 14px;border-bottom:1px solid #DCE5DC"><button class="btn btn-sm" onclick="openAgentCdModal(${c.id})">編集</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openAgentCdModal(id=null){
+  document.getElementById('agent-cd-modal').style.display = 'flex';
+  document.getElementById('ag-cd-del-btn').style.display = 'none';
+  document.getElementById('agent-cd-modal-title').textContent = id ? '求職者情報を編集' : '求職者を登録';
+  document.getElementById('agent-cd-id').value = id || '';
+  agentUploadedFile = null;
+  document.getElementById('ag-file-preview').innerHTML = '';
+  document.getElementById('ag-resume-input').value = '';
+  if(id){
+    const c = DB.candidates.find(x=>x.id===id);
+    if(!c) return;
+    set('ag-cd-name', c.name); set('ag-cd-email', c.email);
+    set('ag-cd-tel1', c.tel1); set('ag-cd-tel2', c.tel2);
+    set('ag-cd-apply', c.applyDate); set('ag-cd-interview', c.interviewDate);
+    set('ag-cd-pref', c.pref); set('ag-cd-station', c.station);
+    set('ag-cd-career', c.career);
+    document.getElementById('ag-cd-del-btn').style.display = 'block';
+    if(c.files && c.files.length){
+      document.getElementById('ag-file-preview').innerHTML = c.files.map(f=>
+        `<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#E8F5E9;border:1px solid #C8E6C9;border-radius:20px;font-size:12px;color:#1B5E20;margin:3px">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${f.name}</div>`
+      ).join('');
+    }
+  } else {
+    ['ag-cd-name','ag-cd-email','ag-cd-tel1','ag-cd-tel2','ag-cd-pref','ag-cd-station','ag-cd-career'].forEach(x=>set(x,''));
+    set('ag-cd-apply', new Date().toISOString().split('T')[0]);
+    set('ag-cd-interview', '');
+  }
+}
+
+function agFileSelect(e){
+  const f = e.target.files[0]; if(!f) return;
+  agentUploadedFile = f;
+  document.getElementById('ag-file-preview').innerHTML =
+    `<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#E8F5E9;border:1px solid #C8E6C9;border-radius:6px;font-size:12px;color:#1B5E20;margin-top:6px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      ${f.name} (${(f.size/1024).toFixed(0)}KB)
+    </div>`;
+}
+
+function saveAgentCandidate(){
+  const name = g('ag-cd-name');
+  if(!name){ alert('氏名は必須です'); return; }
+  const id = document.getElementById('agent-cd-id').value;
+  const data = {
+    name, email:g('ag-cd-email'), tel1:g('ag-cd-tel1'), tel2:g('ag-cd-tel2'),
+    applyDate:g('ag-cd-apply'), interviewDate:g('ag-cd-interview'),
+    pref:g('ag-cd-pref'), station:g('ag-cd-station'), career:g('ag-cd-career'),
+    agent: currentAgent, source: currentAgent,
+  };
+  if(id){
+    const idx = DB.candidates.findIndex(c=>c.id==id);
+    DB.candidates[idx] = {...DB.candidates[idx], ...data};
+    if(agentUploadedFile){
+      if(!DB.candidates[idx].files) DB.candidates[idx].files=[];
+      DB.candidates[idx].files.push({name:agentUploadedFile.name,type:'resume',size:agentUploadedFile.size});
+    }
+  } else {
+    data.id = Date.now();
+    data.files = agentUploadedFile ? [{name:agentUploadedFile.name,type:'resume',size:agentUploadedFile.size}] : [];
+    // set defaults for admin-only fields
+    data.interviewResult=''; data.afterStatus=''; data.offerStatus=''; data.offerNotice='';
+    data.married=''; data.children=''; data.health=''; data.memo='';
+    data.skills={excelBasic:false,excelMid:false,excelAdv:false,word:false,ppt:false,email:false,teams:false,crm:false};
+    data.workHistory=[];
+    DB.candidates.push(data);
+  }
+  saveDB();
+  closeModal('agent-cd-modal');
+  renderAgentPortal();
+}
+
+function delAgentCandidate(){
+  const id = document.getElementById('agent-cd-id').value;
+  if(!confirm('この求職者を削除しますか？')) return;
+  DB.candidates = DB.candidates.filter(c=>c.id!=id);
+  saveDB();
+  closeModal('agent-cd-modal');
+  renderAgentPortal();
+}
+
+/* ===== TODAY FILTER ===== */
+function toggleTodayFilter(){
+  todayFilterOn = !todayFilterOn;
+  const btn = document.getElementById('bk-today-btn');
+  if(todayFilterOn){
+    btn.style.background='var(--c1)';
+    btn.style.borderColor='var(--c1)';
+    btn.style.color='#fff';
+  } else {
+    btn.style.background='';
+    btn.style.borderColor='';
+    btn.style.color='';
+  }
+  renderBooking();
+}
+
+/* ===== SETTINGS: password change ===== */
+function savePasswords(){
+  const ap = document.getElementById('set-admin-pw').value.trim();
+  const agp = document.getElementById('set-agent-pw').value.trim();
+  if(ap){ localStorage.setItem('admin_pw', ap); document.getElementById('set-admin-pw').value=''; }
+  if(agp){ localStorage.setItem('agent_pw', agp); document.getElementById('set-agent-pw').value=''; }
+  if(ap||agp) alert('パスワードを更新しました。');
+  else alert('変更するパスワードを入力してください。');
+}
+
 function saveApiKey(){
   const k=document.getElementById('settings-apikey').value.trim();
   if(!k){alert('APIキーを入力してください');return;}
@@ -776,7 +1151,14 @@ function exportData(){
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 
-loadDB();renderDashboard();document.getElementById('add-btn').style.display='none';
+loadDB();
+// Show login screen on load; hide main app
+document.getElementById('login-screen').style.display='flex';
+document.querySelector('.wrap').style.display='none';
+document.getElementById('agent-portal').style.display='none';
+// Set default dates
+const todayVal=new Date().toISOString().split('T')[0];
+['ag-cd-apply'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=todayVal;});
 </script>
 </body>
 </html>
