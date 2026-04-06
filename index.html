@@ -1163,7 +1163,6 @@ function saveAgent(){const name=g('ag-name');if(!name){alert('会社名は必須
 function delAgent(){const id=document.getElementById('ag-id').value;if(!confirm('削除しますか？'))return;DB.agents=DB.agents.filter(a=>a.id!=id);saveDB();closeModal('ag-modal');renderAgents();}
 
 /* ========== CALENDAR ========== */
-let calY,calM;
 function renderCalendar(){
   const person=document.getElementById('cal-person').value;
   document.getElementById('cal-internal').style.display=person==='internal'?'block':'none';
