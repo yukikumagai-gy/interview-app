@@ -517,7 +517,20 @@ tr:hover td{background:#FAFCFA}
     <!-- TAB 1 -->
     <div class="tab-pane" id="tab-1">
       <div class="sec-title">基本情報</div>
-      <div class="frow"><div class="fg"><label>氏名 *</label><input id="cd-name" placeholder="山田 花子"></div><div class="fg"><label>応募日</label><input type="date" id="cd-apply-date"></div><div class="fg"><label>面接日</label><input type="date" id="cd-interview-date"></div></div>
+      <div style="display:flex;align-items:flex-start;gap:20px;margin-bottom:14px">
+        <div style="flex-shrink:0;text-align:center">
+          <div id="cd-photo-preview" style="width:90px;height:110px;border:1.5px dashed var(--bd2);border-radius:8px;background:var(--surf2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative" onclick="document.getElementById('cd-photo-input').click()">
+            <img id="cd-photo-img" src="" style="width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0">
+            <svg id="cd-photo-placeholder" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div style="font-size:10px;color:var(--tx3);margin-top:4px" id="cd-photo-label">顔写真</div>
+          </div>
+          <input type="file" id="cd-photo-input" accept="image/*" style="display:none" onchange="cdPhotoSelect(event)">
+          <button id="cd-photo-del" onclick="cdPhotoClear()" style="display:none;margin-top:4px;font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;font-family:inherit">削除</button>
+        </div>
+        <div style="flex:1">
+          <div class="frow" style="margin-bottom:10px"><div class="fg"><label>氏名 *</label><input id="cd-name" placeholder="山田 花子"></div><div class="fg"><label>応募日</label><input type="date" id="cd-apply-date"></div><div class="fg"><label>面接日</label><input type="date" id="cd-interview-date"></div></div>
+        </div>
+      </div>
       <div class="frow"><div class="fg"><label>流入経路</label><select id="cd-source"><option value="">選択</option>
           <option>Indeed</option><option>リクナビNEXT</option><option>マイナビ転職</option>
           <option>doda</option><option>ハローワーク</option><option>自社HP</option><option>リファラル</option>
@@ -529,19 +542,9 @@ tr:hover td{background:#FAFCFA}
           <option>JHR</option><option>UZUZ</option><option>ホールハート</option>
           <option>JOB-up</option><option>キャリアビート</option><option>ホワイトキャリア</option>
           <option>マエノメリ</option><option>ヒューガン</option><option>HARE</option>
-          <option>ネオアクト</option><option>東日本人財開発株式会社</option><option>その他</option></select></div><div class="fg"><label>エージェント名</label>
-        <select id="cd-agent">
-          <option value="">選択（エージェント経由の場合）</option>
-          <option>ネオキャリア</option><option>ミギナナメウエ</option><option>For A-career</option>
-          <option>キミノミライ</option><option>UPSET</option><option>マイナビジョブ20s</option>
-          <option>MAP</option><option>MOFMOF</option><option>セルフプロモート</option>
-          <option>NEW GATE</option><option>Zキャリア</option><option>昼job</option>
-          <option>ビズリンクキャリア</option><option>FBent</option><option>学情</option>
-          <option>JHR</option><option>UZUZ</option><option>ホールハート</option>
-          <option>JOB-up</option><option>キャリアビート</option><option>ホワイトキャリア</option>
-          <option>マエノメリ</option><option>ヒューガン</option><option>HARE</option>
-          <option>ネオアクト</option><option>東日本人財開発株式会社</option>
-        </select></div><div class="fg"><label>面接担当者</label><input id="cd-interviewer" placeholder="鈴木 部長"></div></div>
+          <option>ネオアクト</option><option>東日本人財開発株式会社</option><option>その他</option></select></div>
+        <div class="fg"><label>面接担当者</label><select id="cd-interviewer"><option value="">選択</option><option>熊谷</option><option>山元</option><option>高橋</option><option>荒谷</option></select></div>
+        </div>
       <div class="frow"><div class="fg"><label>電話番号①</label><input id="cd-tel1" type="tel" placeholder="090-0000-0000"></div><div class="fg"><label>電話番号②</label><input id="cd-tel2" type="tel" placeholder="03-0000-0000"></div><div class="fg"><label>メールアドレス</label><input id="cd-email" type="email" placeholder="example@email.com"></div></div>
       <div class="frow"><div class="fg"><label>都道府県</label><input id="cd-pref" placeholder="東京都"></div><div class="fg"><label>市区町村</label><input id="cd-city" placeholder="渋谷区"></div><div class="fg"><label>以降の住所</label><input id="cd-addr" placeholder="1-1-1"></div></div>
       <div class="frow2"><div class="fg"><label>最寄り駅</label><input id="cd-station" placeholder="渋谷駅"></div><div class="fg"><label>最寄り駅→自宅</label><input id="cd-walk" placeholder="徒歩10分"></div></div>
@@ -853,7 +856,8 @@ function renderCandidates(){
   document.querySelector('#view-candidates .tcard').style.display=list.length?'':'none';
   document.getElementById('cd-body').innerHTML=list.map(c=>{
     const fc=(c.files||[]).length;
-    return`<tr><td><div class="nm"><div class="av">${ini(c.name)}</div><div><div class="nm-name">${c.name}</div><div class="nm-sub">${c.source||'—'}</div></div></div></td><td>${c.applyDate||'—'}</td><td>${c.source||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${c.afterStatus?`<span class="badge ${asC[c.afterStatus]||''}">${c.afterStatus}</span>`:'—'}</td><td>${c.offerStatus?`<span class="badge ${ofC[c.offerStatus]||''}">${c.offerStatus}</span>`:'—'}</td><td>${c.joinDate||'—'}</td><td>${fc>0?`<span class="badge b-done">${fc}件</span>`:'<span style="color:var(--tx3);font-size:11px">なし</span>'}</td><td><button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button></td></tr>`;
+    const pt=c.photo?`<img src="${c.photo}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid var(--bd);flex-shrink:0">`:`<div class="av">${ini(c.name)}</div>`;
+    return`<tr><td><div class="nm">${pt}<div><div class="nm-name">${c.name}</div><div class="nm-sub">${c.source||'—'}</div></div></div></td><td>${c.applyDate||'—'}</td><td>${c.source||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${c.afterStatus?`<span class="badge ${asC[c.afterStatus]||''}">${c.afterStatus}</span>`:'—'}</td><td>${c.offerStatus?`<span class="badge ${ofC[c.offerStatus]||''}">${c.offerStatus}</span>`:'—'}</td><td>${c.joinDate||'—'}</td><td>${fc>0?`<span class="badge b-done">${fc}件</span>`:'<span style="color:var(--tx3);font-size:11px">なし</span>'}</td><td><button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button></td></tr>`;
   }).join('');
 }
 function openCdModal(id=null){
@@ -866,12 +870,12 @@ function openCdModal(id=null){
   ['resume','career'].forEach(t=>{document.getElementById(t+'-preview').innerHTML='';document.getElementById(t+'-input').value='';});
   document.getElementById('ai-ok').style.display='none';document.getElementById('ai-loading').classList.remove('show');document.getElementById('ai-btn').style.display='flex';
   whl=[];
-  const all=['cd-name','cd-apply-date','cd-interview-date','cd-source','cd-agent','cd-interviewer','cd-tel1','cd-tel2','cd-email','cd-pref','cd-city','cd-addr','cd-station','cd-walk','cd-career','cd-married','cd-married-note','cd-children','cd-children-note','cd-health','cd-memo','cd-interview-result','cd-after-status','cd-offer-status','cd-offer-notice','cd-join-date','cd-leave-date','cd-fee','cd-resume-url','cd-reason','cd-start-date','cd-work-status','cd-work-note','cd-work-hours','cd-work-hours-note','cd-holiday','cd-holiday-note','cd-call','cd-dayoff'];
+  const all=['cd-name','cd-apply-date','cd-interview-date','cd-source','cd-interviewer','cd-tel1','cd-tel2','cd-email','cd-pref','cd-city','cd-addr','cd-station','cd-walk','cd-career','cd-married','cd-married-note','cd-children','cd-children-note','cd-health','cd-memo','cd-interview-result','cd-after-status','cd-offer-status','cd-offer-notice','cd-join-date','cd-leave-date','cd-fee','cd-resume-url','cd-reason','cd-start-date','cd-work-status','cd-work-note','cd-work-hours','cd-work-hours-note','cd-holiday','cd-holiday-note','cd-call','cd-dayoff'];
   all.forEach(x=>set(x,''));
   ['excelBasic','excelMid','excelAdv','word','ppt','email','teams','crm'].forEach(k=>{const el=document.getElementById('sk-'+k);if(el)el.checked=false;});
   if(id){
     const c=DB.candidates.find(x=>x.id===id);if(!c)return;
-    const fm={name:'cd-name',applyDate:'cd-apply-date',interviewDate:'cd-interview-date',source:'cd-source',agent:'cd-agent',interviewer:'cd-interviewer',tel1:'cd-tel1',tel2:'cd-tel2',email:'cd-email',pref:'cd-pref',city:'cd-city',addr:'cd-addr',station:'cd-station',walk:'cd-walk',career:'cd-career',married:'cd-married',marriedNote:'cd-married-note',children:'cd-children',childrenNote:'cd-children-note',health:'cd-health',memo:'cd-memo',interviewResult:'cd-interview-result',afterStatus:'cd-after-status',offerStatus:'cd-offer-status',offerNotice:'cd-offer-notice',joinDate:'cd-join-date',leaveDate:'cd-leave-date',fee:'cd-fee',resumeUrl:'cd-resume-url',reason:'cd-reason',startDate:'cd-start-date',workStatus:'cd-work-status',workNote:'cd-work-note',workHours:'cd-work-hours',workHoursNote:'cd-work-hours-note',holiday:'cd-holiday',holidayNote:'cd-holiday-note',call:'cd-call',dayoff:'cd-dayoff'};
+    const fm={name:'cd-name',applyDate:'cd-apply-date',interviewDate:'cd-interview-date',source:'cd-source',agent:'cd-source',interviewer:'cd-interviewer',tel1:'cd-tel1',tel2:'cd-tel2',email:'cd-email',pref:'cd-pref',city:'cd-city',addr:'cd-addr',station:'cd-station',walk:'cd-walk',career:'cd-career',married:'cd-married',marriedNote:'cd-married-note',children:'cd-children',childrenNote:'cd-children-note',health:'cd-health',memo:'cd-memo',interviewResult:'cd-interview-result',afterStatus:'cd-after-status',offerStatus:'cd-offer-status',offerNotice:'cd-offer-notice',joinDate:'cd-join-date',leaveDate:'cd-leave-date',fee:'cd-fee',resumeUrl:'cd-resume-url',reason:'cd-reason',startDate:'cd-start-date',workStatus:'cd-work-status',workNote:'cd-work-note',workHours:'cd-work-hours',workHoursNote:'cd-work-hours-note',holiday:'cd-holiday',holidayNote:'cd-holiday-note',call:'cd-call',dayoff:'cd-dayoff'};
     Object.entries(fm).forEach(([k,id2])=>set(id2,c[k]||''));
     const sk=c.skills||{};
     ['excelBasic','excelMid','excelAdv','word','ppt','email','teams','crm'].forEach(k=>{const el=document.getElementById('sk-'+k);if(el)el.checked=!!sk[k];});
@@ -880,6 +884,7 @@ function openCdModal(id=null){
     document.getElementById('saved-files-wrap').style.display=files.length?'block':'none';
     document.getElementById('saved-files').innerHTML=files.map((f,i)=>`<div class="resume-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${f.name}<button onclick="rmFile(${id},${i})" title="削除">✕</button></div>`).join('');
     document.getElementById('cd-del').style.display='block';
+    cdPhotoLoad(c.photo||'');
   }else{
     set('cd-apply-date',new Date().toISOString().split('T')[0]);
     document.getElementById('saved-files-wrap').style.display='none';
@@ -890,7 +895,8 @@ function rmFile(cid,fi){const c=DB.candidates.find(x=>x.id===cid);if(!c||!c.file
 function saveCandidate(){
   const name=g('cd-name');if(!name){alert('氏名は必須です');return;}
   const id=document.getElementById('cd-id').value;
-  const data={name,applyDate:g('cd-apply-date'),interviewDate:g('cd-interview-date'),source:g('cd-source'),agent:g('cd-agent'),interviewer:g('cd-interviewer'),tel1:g('cd-tel1'),tel2:g('cd-tel2'),email:g('cd-email'),pref:g('cd-pref'),city:g('cd-city'),addr:g('cd-addr'),station:g('cd-station'),walk:g('cd-walk'),career:g('cd-career'),married:g('cd-married'),marriedNote:g('cd-married-note'),children:g('cd-children'),childrenNote:g('cd-children-note'),health:g('cd-health'),memo:g('cd-memo'),interviewResult:g('cd-interview-result'),afterStatus:g('cd-after-status'),offerStatus:g('cd-offer-status'),offerNotice:g('cd-offer-notice'),joinDate:g('cd-join-date'),leaveDate:g('cd-leave-date'),fee:g('cd-fee')||0,resumeUrl:g('cd-resume-url'),reason:g('cd-reason'),startDate:g('cd-start-date'),workStatus:g('cd-work-status'),workNote:g('cd-work-note'),workHours:g('cd-work-hours'),workHoursNote:g('cd-work-hours-note'),holiday:g('cd-holiday'),holidayNote:g('cd-holiday-note'),call:g('cd-call'),dayoff:g('cd-dayoff'),workHistory:JSON.parse(JSON.stringify(whl)),skills:{excelBasic:document.getElementById('sk-excelBasic').checked,excelMid:document.getElementById('sk-excelMid').checked,excelAdv:document.getElementById('sk-excelAdv').checked,word:document.getElementById('sk-word').checked,ppt:document.getElementById('sk-ppt').checked,email:document.getElementById('sk-email').checked,teams:document.getElementById('sk-teams').checked,crm:document.getElementById('sk-crm').checked}};
+  const photoUrl=document.getElementById('cd-photo-img').src&&document.getElementById('cd-photo-img').style.display!=='none'?document.getElementById('cd-photo-img').src:'';
+  const data={name,photo:photoUrl,applyDate:g('cd-apply-date'),interviewDate:g('cd-interview-date'),source:g('cd-source'),agent:g('cd-source'),interviewer:g('cd-interviewer'),tel1:g('cd-tel1'),tel2:g('cd-tel2'),email:g('cd-email'),pref:g('cd-pref'),city:g('cd-city'),addr:g('cd-addr'),station:g('cd-station'),walk:g('cd-walk'),career:g('cd-career'),married:g('cd-married'),marriedNote:g('cd-married-note'),children:g('cd-children'),childrenNote:g('cd-children-note'),health:g('cd-health'),memo:g('cd-memo'),interviewResult:g('cd-interview-result'),afterStatus:g('cd-after-status'),offerStatus:g('cd-offer-status'),offerNotice:g('cd-offer-notice'),joinDate:g('cd-join-date'),leaveDate:g('cd-leave-date'),fee:g('cd-fee')||0,resumeUrl:g('cd-resume-url'),reason:g('cd-reason'),startDate:g('cd-start-date'),workStatus:g('cd-work-status'),workNote:g('cd-work-note'),workHours:g('cd-work-hours'),workHoursNote:g('cd-work-hours-note'),holiday:g('cd-holiday'),holidayNote:g('cd-holiday-note'),call:g('cd-call'),dayoff:g('cd-dayoff'),workHistory:JSON.parse(JSON.stringify(whl)),skills:{excelBasic:document.getElementById('sk-excelBasic').checked,excelMid:document.getElementById('sk-excelMid').checked,excelAdv:document.getElementById('sk-excelAdv').checked,word:document.getElementById('sk-word').checked,ppt:document.getElementById('sk-ppt').checked,email:document.getElementById('sk-email').checked,teams:document.getElementById('sk-teams').checked,crm:document.getElementById('sk-crm').checked}};
   const newFiles=[];
   if(uploadedFiles.resume)newFiles.push({name:uploadedFiles.resume.name,type:'resume',size:uploadedFiles.resume.size});
   if(uploadedFiles.career)newFiles.push({name:uploadedFiles.career.name,type:'career',size:uploadedFiles.career.size});
@@ -1133,6 +1139,48 @@ function savePasswords(){
   if(agp){ localStorage.setItem('agent_pw', agp); document.getElementById('set-agent-pw').value=''; }
   if(ap||agp) alert('パスワードを更新しました。');
   else alert('変更するパスワードを入力してください。');
+}
+
+
+/* ===== PHOTO ===== */
+function cdPhotoSelect(e){
+  const f=e.target.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('cd-photo-img');
+    const ph=document.getElementById('cd-photo-placeholder');
+    const lbl=document.getElementById('cd-photo-label');
+    const del=document.getElementById('cd-photo-del');
+    img.src=ev.target.result; img.style.display='block';
+    ph.style.display='none'; lbl.style.display='none'; del.style.display='block';
+  };
+  reader.readAsDataURL(f);
+}
+function cdPhotoClear(){
+  document.getElementById('cd-photo-img').src='';
+  document.getElementById('cd-photo-img').style.display='none';
+  document.getElementById('cd-photo-placeholder').style.display='';
+  document.getElementById('cd-photo-label').style.display='';
+  document.getElementById('cd-photo-del').style.display='none';
+  document.getElementById('cd-photo-input').value='';
+}
+function cdPhotoLoad(dataUrl){
+  if(!dataUrl){cdPhotoClear();return;}
+  const img=document.getElementById('cd-photo-img');
+  const ph=document.getElementById('cd-photo-placeholder');
+  const lbl=document.getElementById('cd-photo-label');
+  const del=document.getElementById('cd-photo-del');
+  img.src=dataUrl; img.style.display='block';
+  ph.style.display='none'; lbl.style.display='none'; del.style.display='block';
+}
+
+/* ===== ADMIN LOGOUT ===== */
+function adminLogout(){
+  if(!confirm('ログアウトしますか？')) return;
+  currentRole=null;
+  document.getElementById('login-screen').style.display='flex';
+  document.querySelector('.wrap').style.display='none';
+  document.getElementById('admin-pw').value='';
 }
 
 function saveApiKey(){
