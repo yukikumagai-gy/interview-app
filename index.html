@@ -329,7 +329,7 @@ tr:hover td{background:#FAFCFA}
       <button class="btn btn-primary" onclick="openAgentCdModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>求職者を登録</button>
     </div>
     <div class="tcard"><table>
-      <thead><tr><th>顔写真</th><th>氏名</th><th>氏名カナ</th><th>応募日</th><th>面接日</th><th>ステータス</th><th>予約ステータス</th><th></th></tr></thead>
+      <thead><tr><th>顔写真</th><th>氏名</th><th>氏名カナ</th><th>応募日</th><th>面接日</th><th>ステータス</th><th>予約ステータス</th><th>書類選考</th><th></th></tr></thead>
       <tbody id="agent-cd-list"></tbody>
     </table></div>
     <div id="agent-cd-empty" class="empty" style="display:none">まだ求職者が登録されていません</div>
@@ -408,14 +408,18 @@ tr:hover td{background:#FAFCFA}
     <div><div class="logo-name">株式会社GOOYA_HRS</div><div class="logo-sub">採用管理システム</div></div>
   </div>
   <nav class="side-nav">
-    <div class="nav-sec">メニュー</div>
+    <div class="nav-sec">採用管理</div>
     <div class="nav-item active" onclick="nav('dashboard',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>ダッシュボード</div>
-    <div class="nav-item" onclick="nav('booking',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>予約</div>
-    <div class="nav-item" onclick="nav('candidates',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>応募者管理</div>
+    <div class="nav-item" onclick="nav('new-applicants',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>新規応募者</div>
+    <div class="nav-item" onclick="nav('in-progress',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>対応中</div>
+    <div class="nav-item" onclick="nav('pending-acceptance',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>承諾待ち</div>
+    <div class="nav-item" onclick="nav('candidates',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>応募者一覧</div>
     <div class="nav-item" onclick="nav('joined',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>内定承諾スタッフ</div>
     <div class="nav-item" onclick="nav('agents',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>エージェント</div>
-    <div class="nav-item" onclick="nav('calendar',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>カレンダー</div>
+    <div class="nav-sec" style="margin-top:8px">営業</div>
     <div class="nav-item" onclick="nav('sales',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>営業進捗</div>
+    <div class="nav-sec" style="margin-top:8px">その他</div>
+    <div class="nav-item" onclick="nav('calendar',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>カレンダー</div>
     <div class="nav-item" onclick="nav('settings',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>設定</div>
   </nav>
   <div class="side-foot">GOOYA_HRS v6.0</div>
@@ -441,6 +445,16 @@ tr:hover td{background:#FAFCFA}
       <div class="funnel-wrap"><div class="funnel-hd"><div class="funnel-title">採用ファネル</div></div><div id="funnel" style="display:flex;align-items:stretch;overflow-x:auto"></div></div>
       <div class="interviewer-grid" id="interviewer-cards" style="margin-bottom:18px"></div>
       <div class="chart-card" style="margin-bottom:18px"><div class="chart-title">流入経路別 実績</div><div id="chart-source"></div></div>
+
+      <!-- 本日の面談 -->
+      <div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--surf2);display:flex;align-items:center;gap:8px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--c1d)" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <div style="font-size:13px;font-weight:600">本日の面談</div>
+          <span id="todays-interview-count" style="font-size:11px;background:var(--c1l);color:var(--c1d);padding:1px 7px;border-radius:10px;font-weight:600"></span>
+        </div>
+        <div id="todays-interviews" style="padding:12px"></div>
+      </div>
     </div>
 
     <!-- BOOKING -->
@@ -482,9 +496,40 @@ tr:hover td{background:#FAFCFA}
     <div class="view" id="view-joined">
       <div class="toolbar">
         <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="jn-search" placeholder="氏名で検索..." oninput="renderJoined()"></div>
+        <select class="flt" id="jn-month-filter" onchange="renderJoined()">
+          <option value="">入社月（すべて）</option>
+        </select>
       </div>
       <div id="joined-list"></div>
       <div class="empty" id="jn-empty" style="display:none">内定承諾者がいません</div>
+    </div>
+
+    
+    <!-- NEW APPLICANTS (書類選考) -->
+    <div class="view" id="view-new-applicants">
+      <div style="background:var(--blue-bg);border:1px solid #BBDEFB;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--blue-tx)">
+        エージェントから登録された求職者が表示されます。書類選考通過・NGを選択してください。選択後は自動で応募者一覧に登録されます。
+      </div>
+      <div id="new-applicants-list"></div>
+      <div class="empty" id="new-applicants-empty" style="display:none">新規応募者がいません</div>
+    </div>
+
+    <!-- IN PROGRESS (対応中) -->
+    <div class="view" id="view-in-progress">
+      <div style="background:var(--amber-bg);border:1px solid #FFE0B2;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--amber-tx)">
+        書類選考通過後、面接日程が確定していない求職者が表示されます。日程確定後は自動的に非表示になります。
+      </div>
+      <div id="in-progress-list"></div>
+      <div class="empty" id="in-progress-empty" style="display:none">対応中の求職者がいません</div>
+    </div>
+
+    <!-- PENDING ACCEPTANCE (承諾待ち) -->
+    <div class="view" id="view-pending-acceptance">
+      <div style="background:var(--amber-bg);border:1px solid #FFE0B2;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--amber-tx)">
+        承諾待ちの求職者が表示されます。内定承諾・内定辞退を選択すると自動的に非表示になります。
+      </div>
+      <div id="pending-list"></div>
+      <div class="empty" id="pending-empty" style="display:none">承諾待ちの求職者がいません</div>
     </div>
 
     <!-- AGENTS -->
@@ -875,7 +920,7 @@ function sampleDB(){
       {id:2,name:'鈴木 健太',position:'PM',round:'最終面接',status:'pending',date:`${y}-${p(m+1)}-15`,time:'14:00',duration:60,interviewer:'山元',location:'Zoom',memo:'',workStatus:'離職中',workHours:'フレックス',holiday:'可能'},
     ],
     candidates:[
-      {id:1,name:'田中 花子',kana:'タナカ ハナコ',dob:'1995-04-15',applyDate:`${y}-${p(m+1)}-01`,interviewDate:`${y}-${p(m+1)}-10`,source:'ネオキャリア',interviewer:'熊谷',tel1:'090-1111-0001',tel2:'',email:'hanako@example.com',pref:'東京都',city:'渋谷区',addr:'1-1-1',station:'渋谷駅',walk:'徒歩5分',career:'IT系営業3年',married:'既婚',marriedNote:'',children:'1人',childrenNote:'3歳',health:'',memo:'',interviewResult:'実施',afterStatus:'採用',offerStatus:'内定承諾',offerNotice:'送信済み',joinDate:`${y}-${p(m+2)}-01`,leaveDate:'',fee:500000,resumeUrl:'',reason:'キャリアアップ',startDate:`${y}-${p(m+2)}-01`,workStatus:'在職中',workNote:'',workHours:'9:00〜18:00',workHoursNote:'',holiday:'できれば休み希望',holidayNote:'',call:'不可',dayoff:'',photo:'',skills:{excelBasic:true,excelMid:true,excelAdv:false,word:true,ppt:true,email:true,teams:false,crm:false},workHistory:[{company:'株式会社ABC',employ:'正社員',start:'2020-04',end:'2024-03',industry:'IT',jobType:'営業',jobDesc:'法人営業・新規開拓',resign:'キャリアアップ'}],files:[],checklist:{}},
+      {id:1,name:'田中 花子',kana:'タナカ ハナコ',dob:'1995-04-15',applyDate:`${y}-${p(m+1)}-01`,interviewDate:`${y}-${p(m+1)}-10`,source:'ネオキャリア',interviewer:'熊谷',tel1:'090-1111-0001',tel2:'',email:'hanako@example.com',pref:'東京都',city:'渋谷区',addr:'1-1-1',station:'渋谷駅',walk:'徒歩5分',career:'IT系営業3年',married:'既婚',marriedNote:'',children:'1人',childrenNote:'3歳',health:'',memo:'',interviewResult:'実施',afterStatus:'採用',offerStatus:'内定承諾',offerNotice:'送信済み',joinDate:`${y}-${p(m+2)}-01`,leaveDate:'',fee:500000,resumeUrl:'',reason:'キャリアアップ',startDate:`${y}-${p(m+2)}-01`,workStatus:'在職中',workNote:'',workHours:'9:00〜18:00',workHoursNote:'',holiday:'できれば休み希望',holidayNote:'',call:'不可',dayoff:'',photo:'',skills:{excelBasic:true,excelMid:true,excelAdv:false,word:true,ppt:true,email:true,teams:false,crm:false},screeningResult:'pass',workHistory:[{company:'株式会社ABC',employ:'正社員',start:'2020-04',end:'2024-03',industry:'IT',jobType:'営業',jobDesc:'法人営業・新規開拓',resign:'キャリアアップ'}],files:[],checklist:{}},
       {id:2,name:'鈴木 健太',kana:'スズキ ケンタ',dob:'1990-08-22',applyDate:`${y}-${p(m+1)}-03`,interviewDate:`${y}-${p(m+1)}-15`,source:'UZUZ',interviewer:'山元',tel1:'090-2222-0002',tel2:'',email:'kenta@example.com',pref:'神奈川県',city:'横浜市',addr:'2-2-2',station:'横浜駅',walk:'バス15分',career:'PM経験5年',married:'未婚',marriedNote:'',children:'なし',childrenNote:'',health:'',memo:'優秀',interviewResult:'実施',afterStatus:'営業相談中',offerStatus:'承諾待ち',offerNotice:'未送信',joinDate:'',leaveDate:'',fee:0,resumeUrl:'',reason:'挑戦',startDate:'',workStatus:'離職中',workNote:'',workHours:'フレックス',workHoursNote:'',holiday:'可能',holidayNote:'',call:'応相談',dayoff:'',photo:'',skills:{excelBasic:true,excelMid:false,excelAdv:false,word:true,ppt:true,email:true,teams:true,crm:true},workHistory:[],files:[],checklist:{}},
     ]
   };
@@ -922,14 +967,14 @@ function adminLogout(){if(!confirm('ログアウトしますか？'))return;curr
 function agentLogout(){currentRole=null;currentAgent=null;document.getElementById('agent-portal').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('agent-pw').value='';backToRoleSelect();}
 
 /* ========== NAV ========== */
-const pageTitles={dashboard:'ダッシュボード',booking:'予約',candidates:'応募者管理',joined:'内定承諾スタッフ',agents:'エージェント',calendar:'カレンダー',sales:'営業進捗',settings:'設定'};
+const pageTitles={dashboard:'ダッシュボード','new-applicants':'新規応募者','in-progress':'対応中','pending-acceptance':'承諾待ち',candidates:'応募者一覧',joined:'内定承諾スタッフ',agents:'エージェント',calendar:'カレンダー',sales:'営業進捗',settings:'設定'};
 function nav(page,el){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   document.getElementById('view-'+page).classList.add('on');
   document.getElementById('page-title').textContent=pageTitles[page];
-  document.getElementById('add-btn').style.display='none';
+  document.getElementById('add-btn').style.display=page==='candidates'?'':'none';
   if(page==='dashboard'){buildMonthDropdown();renderDashboard();}
   if(page==='booking'){renderBooking();syncTodayBtn();}
   if(page==='candidates')renderCandidates();
@@ -1092,6 +1137,33 @@ function renderDashboard(){
       </div>`;
   }
 
+  // 本日の面談
+  const todayStr=new Date().toISOString().split('T')[0];
+  const todayInterviews=DB.candidates.filter(c=>c.interviewDate===todayStr);
+  const tic=document.getElementById('todays-interview-count');
+  if(tic)tic.textContent=todayInterviews.length+'名';
+  const tiv=document.getElementById('todays-interviews');
+  if(tiv){
+    if(todayInterviews.length===0){
+      tiv.innerHTML='<div style="color:var(--tx3);font-size:13px;text-align:center;padding:16px">本日の面談はありません</div>';
+    } else {
+      tiv.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">${todayInterviews.map(c=>{
+        const pt=c.photo?`<img src="${c.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--bd);flex-shrink:0">`:`<div style="width:36px;height:36px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
+        const bk=DB.bookings.find(b=>b.name===c.name&&b.date===todayStr);
+        const statusCls={pending:'b-nodone',confirmed:'b-done',completed:'b-hire',cancelled:'b-nohire'};
+        const statusLbl={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
+        return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openCdModal(${c.id})">
+          ${pt}
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.name}</div>
+            <div style="font-size:11px;color:var(--tx3)">${c.source||'—'}${bk?` | ${bk.time}`:''}</div>
+          </div>
+          ${bk?`<span class="badge ${statusCls[bk.status]||''}" style="font-size:10px">${statusLbl[bk.status]||''}</span>`:''}
+        </div>`;
+      }).join('')}</div>`;
+    }
+  }
+
   // Interviewer breakdown
   const allCd=DB.candidates;
   document.getElementById('interviewer-cards').innerHTML=INTERVIEWERS.map(iv=>{
@@ -1230,7 +1302,7 @@ function renderCandidates(){
   document.getElementById('cd-body').innerHTML=list.map(c=>{
     const fc=(c.files||[]).length;
     const pt=c.photo?`<img src="${c.photo}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av">${ini(c.name)}</div>`;
-    return`<tr><td><div class="nm">${pt}<div><div class="nm-name">${c.name}</div><div class="nm-sub">${c.kana||''}</div></div></div></td><td>${fc>0?`<span class="badge b-done">${fc}件</span>`:'<span style="color:var(--tx3);font-size:11px">なし</span>'}</td><td>${c.applyDate||'—'}</td><td>${c.source||'—'}</td><td>${c.tel1||'—'}</td><td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.email||'—'}</td><td>${c.station||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${c.afterStatus?`<span class="badge ${asC[c.afterStatus]||''}">${c.afterStatus}</span>`:'—'}</td><td>${c.offerStatus?`<span class="badge ${ofC[c.offerStatus]||''}">${c.offerStatus}</span>`:'—'}</td><td>${c.joinDate||'—'}</td><td><button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button></td></tr>`;
+    return`<tr><td><div class="nm">${pt}<div><div class="nm-name">${c.name}</div><div class="nm-sub">${c.kana||''}</div></div></div></td><td>${fc>0?`<span class="badge b-done">${fc}件</span>`:'<span style="color:var(--tx3);font-size:11px">なし</span>'}</td><td>${c.applyDate||'—'}</td><td>${c.source||'—'}</td><td>${c.tel1||'—'}</td><td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.email||'—'}</td><td>${c.station||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${c.afterStatus?`<span class="badge ${asC[c.afterStatus]||''}">${c.afterStatus}</span>`:'—'}</td><td>${c.offerStatus?`<span class="badge ${ofC[c.offerStatus]||''}">${c.offerStatus}</span>`:'—'}</td><td>${c.joinDate||'—'}</td><td style="white-space:nowrap"><button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button><button class="btn btn-sm btn-danger" style="margin-left:4px" onclick="deleteCandidateById(${c.id})">削除</button></td></tr>`;
   }).join('');
 }
 
@@ -1397,33 +1469,71 @@ function toB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.o
 /* ========== JOINED STAFF ========== */
 function renderJoined(){
   const q=document.getElementById('jn-search').value.toLowerCase();
-  const list=DB.candidates.filter(c=>c.offerStatus==='内定承諾'&&(!q||c.name.toLowerCase().includes(q)));
+  const mf=document.getElementById('jn-month-filter').value;
+
+  // Build month filter options
+  const joinMonths=new Set();
+  DB.candidates.filter(c=>c.offerStatus==='内定承諾'&&c.joinDate).forEach(c=>joinMonths.add(c.joinDate.slice(0,7)));
+  const mfEl=document.getElementById('jn-month-filter');
+  const prevMf=mfEl.value;
+  const sortedMon=[...joinMonths].sort();
+  mfEl.innerHTML='<option value="">入社月（すべて）</option>'+sortedMon.map(m=>{const[y,mo]=m.split('-');return`<option value="${m}">${y}年${parseInt(mo)}月</option>`;}).join('');
+  if(prevMf&&sortedMon.includes(prevMf))mfEl.value=prevMf;
+
+  let list=DB.candidates.filter(c=>c.offerStatus==='内定承諾'&&(!q||c.name.toLowerCase().includes(q)));
+  if(mf)list=list.filter(c=>c.joinDate&&c.joinDate.startsWith(mf));
+
+  // Sort by joinDate
+  list=[...list].sort((a,b)=>(a.joinDate||'9999').localeCompare(b.joinDate||'9999'));
+
   document.getElementById('jn-empty').style.display=list.length?'none':'block';
-  document.getElementById('joined-list').innerHTML=list.map(c=>{
-    const checklist=c.checklist||{};
-    const done=CHECKLIST_ITEMS.filter((_,i)=>checklist[i]).length;
-    const pt=c.photo?`<img src="${c.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
-    return`<div class="staff-card">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        ${pt}
-        <div style="flex:1">
-          <div style="font-size:15px;font-weight:600">${c.name}<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:6px">${c.kana||''}</span></div>
-          <div style="font-size:12px;color:var(--tx3);margin-top:1px">入社日：${c.joinDate||'未定'} ／ 担当：${c.interviewer||'—'} ／ 流入：${c.source||'—'}</div>
-        </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div style="font-size:11px;color:var(--tx3)">入社手続き</div>
-          <div style="font-size:18px;font-weight:600;color:${done===CHECKLIST_ITEMS.length?'var(--c1d)':'var(--amber)'}">${done}/${CHECKLIST_ITEMS.length}</div>
-        </div>
+
+  // Group by joinDate month
+  const groups={};
+  list.forEach(c=>{
+    const key=c.joinDate?c.joinDate.slice(0,7):'未定';
+    if(!groups[key])groups[key]=[];
+    groups[key].push(c);
+  });
+
+  const PROGRESS_ITEMS=['入社連絡','LINEの登録','担当者連絡（挨拶）'];
+  const today=new Date().toISOString().split('T')[0];
+
+  document.getElementById('joined-list').innerHTML=Object.entries(groups).sort((a,b)=>a[0].localeCompare(b[0])).map(([month,members])=>{
+    const[y,mo]=month.split('-');
+    const monthLabel=month==='未定'?'入社日未定':`${y}年${parseInt(mo||0)}月 入社`;
+    return`<div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:700;color:var(--c1d);text-transform:uppercase;letter-spacing:.5px;padding:6px 12px;background:var(--c1l);border-radius:var(--rs);margin-bottom:10px;display:inline-block">${monthLabel}（${members.length}名）</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+        ${members.map(c=>{
+          const checklist=c.checklist||{};
+          const done=PROGRESS_ITEMS.filter((_,i)=>checklist[i]).length;
+          const pt=c.photo?`<img src="${c.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
+          const isToday=c.joinDate===today;
+          return`<div class="staff-card" style="${isToday?'border-color:var(--c1);box-shadow:0 0 0 2px var(--c1l)':''}">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+              ${pt}
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:600">${c.name}<span style="font-size:11px;font-weight:400;color:var(--tx3);margin-left:5px">${c.kana||''}</span></div>
+                <div style="font-size:11px;color:var(--tx3);margin-top:1px">入社：${c.joinDate||'未定'} ／ 担当：${c.interviewer||'—'}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                <div style="font-size:18px;font-weight:600;color:${done===PROGRESS_ITEMS.length?'var(--c1d)':'var(--amber)'}">${done}/${PROGRESS_ITEMS.length}</div>
+                <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px;padding:3px 8px">詳細</button>
+              </div>
+            </div>
+            <details style="background:var(--surf2);border-radius:8px;overflow:hidden">
+              <summary style="padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);list-style:none;display:flex;align-items:center;justify-content:space-between">
+                <span>進捗リスト（${done}/${PROGRESS_ITEMS.length} 完了）</span>
+                <span style="color:var(--tx3);font-size:10px">▼</span>
+              </summary>
+              <div style="padding:4px 12px 10px">
+                <ul class="checklist">${PROGRESS_ITEMS.map((item,i)=>`<li><input type="checkbox" id="ck-${c.id}-${i}" ${checklist[i]?'checked':''} onchange="toggleCheck(${c.id},${i},this.checked)"><label for="ck-${c.id}-${i}" class="${checklist[i]?'done':''}">${item}</label></li>`).join('')}</ul>
+              </div>
+            </details>
+          </div>`;
+        }).join('')}
       </div>
-      <details style="background:var(--surf2);border-radius:8px;overflow:hidden">
-        <summary style="padding:10px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);list-style:none;display:flex;align-items:center;justify-content:space-between">
-          <span>入社手続きチェックリスト（${done}/${CHECKLIST_ITEMS.length} 完了）</span>
-          <span style="color:var(--tx3);font-size:11px">▼ クリックで展開</span>
-        </summary>
-        <div style="padding:4px 12px 10px">
-          <ul class="checklist">${CHECKLIST_ITEMS.map((item,i)=>`<li><input type="checkbox" id="ck-${c.id}-${i}" ${checklist[i]?'checked':''} onchange="toggleCheck(${c.id},${i},this.checked)"><label for="ck-${c.id}-${i}" class="${checklist[i]?'done':''}">${item}</label></li>`).join('')}</ul>
-        </div>
-      </details>
     </div>`;
   }).join('');
 }
@@ -1568,7 +1678,7 @@ function renderAgentPortal(){
     const bkStatusOpts=['pending','confirmed','completed','cancelled'];
     const bkStatusLbl={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
     const bkSel=bk?`<select style="padding:4px 8px;border:1px solid var(--bd);border-radius:5px;font-size:12px;font-family:inherit" onchange="agentUpdateBookingStatus(${bk.id},this.value)">${bkStatusOpts.map(s=>`<option value="${s}" ${bk.status===s?'selected':''}>${bkStatusLbl[s]}</option>`).join('')}</select>`:'<span style="color:var(--tx3);font-size:12px">予約なし</span>';
-    return`<tr><td>${c.photo?`<img src="${c.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av">${ini(c.name)}</div>`}</td><td>${c.name}</td><td style="color:var(--tx3);font-size:12px">${c.kana||'—'}</td><td>${c.applyDate||'—'}</td><td>${c.interviewDate||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC2[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${bkSel}</td><td><button class="btn btn-sm" onclick="openAgentCdModal(${c.id})">編集</button></td></tr>`;
+    return`<tr><td>${c.photo?`<img src="${c.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av">${ini(c.name)}</div>`}</td><td>${c.name}</td><td style="color:var(--tx3);font-size:12px">${c.kana||'—'}</td><td>${c.applyDate||'—'}</td><td>${c.interviewDate||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC2[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${bkSel}</td><td>${c.screeningResult==='pass'?'<span class="badge b-hire" style="font-size:10px">書類通過</span>':c.screeningResult==='ng'?'<span class="badge b-nohire" style="font-size:10px">書類NG</span>':'<span style="color:var(--tx3);font-size:11px">選考前</span>'}</td><td><button class="btn btn-sm" onclick="openAgentCdModal(${c.id})">編集</button></td></tr>`;
   }).join('');
 }
 function openAgentCdModal(id=null){
@@ -2062,6 +2172,116 @@ function saveTargets(){
   DB.salesTargets=targets;
   saveDB();closeModal('target-modal');renderSales();
   alert('目標を保存しました。');
+}
+
+
+
+/* ========== NEW APPLICANTS ========== */
+function renderNewApplicants(){
+  // エージェントから登録されたが、まだ書類選考判定がない候補者
+  const list=DB.candidates.filter(c=>!c.screeningResult&&(c.source||c.agent));
+  document.getElementById('new-applicants-empty').style.display=list.length?'none':'block';
+  document.getElementById('new-applicants-list').innerHTML=list.map(c=>{
+    const pt=c.photo?`<img src="${c.photo}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:48px;height:48px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
+    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px;display:flex;align-items:center;gap:14px">
+      ${pt}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:600">${c.name}<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:6px">${c.kana||''}</span></div>
+        <div style="font-size:12px;color:var(--tx3);margin-top:2px">流入：${c.source||'—'} ／ 応募日：${c.applyDate||'—'} ／ 担当：${c.interviewer||'—'}</div>
+        ${c.career?`<div style="font-size:12px;color:var(--tx2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.career}</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px">詳細確認</button>
+        <button class="btn btn-sm btn-primary" onclick="setScreeningResult(${c.id},'pass')" style="font-size:11px;background:var(--c1);border-color:var(--c1);color:#fff">書類選考通過</button>
+        <button class="btn btn-sm btn-danger" onclick="setScreeningResult(${c.id},'ng')" style="font-size:11px">書類選考NG</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setScreeningResult(cid, result){
+  const c=DB.candidates.find(x=>x.id===cid);
+  if(!c)return;
+  const label=result==='pass'?'書類選考通過':'書類選考NG';
+  if(!confirm(`「${c.name}」を「${label}」にしますか？`))return;
+  c.screeningResult=result;
+  if(result==='pass'){
+    c.interviewResult=c.interviewResult||'未接触'; // 対応中へ
+  }
+  saveDB();
+  renderNewApplicants();
+  renderInProgress();
+  renderCandidates();
+}
+
+/* ========== IN PROGRESS ========== */
+function renderInProgress(){
+  // 書類選考通過 & 面接日未確定
+  const list=DB.candidates.filter(c=>c.screeningResult==='pass'&&!c.interviewDate);
+  document.getElementById('in-progress-empty').style.display=list.length?'none':'block';
+  document.getElementById('in-progress-list').innerHTML=list.map(c=>{
+    const pt=c.photo?`<img src="${c.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--bd);flex-shrink:0">`:`<div style="width:40px;height:40px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
+    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);margin-bottom:8px;display:flex;align-items:center;gap:12px">
+      ${pt}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600">${c.name}<span style="font-size:11px;font-weight:400;color:var(--tx3);margin-left:5px">${c.kana||''}</span></div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:2px">流入：${c.source||'—'} ／ 応募日：${c.applyDate||'—'} ／ 担当：${c.interviewer||'—'}</div>
+        <div style="font-size:11px;margin-top:4px">
+          <span style="background:var(--c1l);color:var(--c1d);padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600">書類選考通過</span>
+          <span style="color:var(--amber-tx);font-size:11px;margin-left:6px">日程調整中</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px">編集</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ========== PENDING ACCEPTANCE ========== */
+function renderPendingAcceptance(){
+  const list=DB.candidates.filter(c=>c.offerStatus==='承諾待ち');
+  document.getElementById('pending-empty').style.display=list.length?'none':'block';
+  document.getElementById('pending-list').innerHTML=list.map(c=>{
+    const pt=c.photo?`<img src="${c.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
+    return`<div style="background:var(--surf);border:1.5px solid var(--amber);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        ${pt}
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600">${c.name}<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:6px">${c.kana||''}</span></div>
+          <div style="font-size:12px;color:var(--tx3);margin-top:2px">流入：${c.source||'—'} ／ 担当：${c.interviewer||'—'} ／ 内定通知：${c.offerNotice||'—'}</div>
+        </div>
+        <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px;flex-shrink:0">詳細</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="updateOfferStatus(${c.id},'内定承諾')" style="font-size:12px;background:var(--c1);border-color:var(--c1)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>内定承諾
+        </button>
+        <button class="btn btn-danger" onclick="updateOfferStatus(${c.id},'内定辞退')" style="font-size:12px">
+          内定辞退
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateOfferStatus(cid, newStatus){
+  const c=DB.candidates.find(x=>x.id===cid);
+  if(!c)return;
+  if(!confirm(`「${c.name}」を「${newStatus}」にしますか？`))return;
+  c.offerStatus=newStatus;
+  saveDB();
+  renderPendingAcceptance();
+  renderCandidates();
+  renderDashboard();
+}
+
+/* ========== DELETE CANDIDATE ========== */
+function deleteCandidateById(cid){
+  const c=DB.candidates.find(x=>x.id===cid);
+  if(!c||!confirm(`「${c.name}」を削除しますか？この操作は元に戻せません。`))return;
+  DB.candidates=DB.candidates.filter(x=>x.id!==cid);
+  saveDB();renderCandidates();renderDashboard();
 }
 
 
