@@ -1011,8 +1011,19 @@ function backToRoleSelect(){
 }
 function doAdminLogin(){
   const pw=document.getElementById('admin-pw').value;
-  if(pw===getAdminPw()){currentRole='admin';showApp();}
-  else{document.getElementById('login-err').textContent='パスワードが違います';document.getElementById('admin-pw').value='';}
+  if(!pw){document.getElementById('login-err').textContent='パスワードを入力してください';return;}
+  if(pw===getAdminPw()){
+    currentRole='admin';
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('main-app').style.display='flex';
+    document.getElementById('agent-portal').style.display='none';
+    document.getElementById('chat-fab').style.display='block';
+    buildMonthDropdown();
+    renderDashboard();
+  }else{
+    document.getElementById('login-err').textContent='パスワードが違います';
+    document.getElementById('admin-pw').value='';
+  }
 }
 function doAgentLogin(){
   const name=document.getElementById('agent-login-name').value,pw=document.getElementById('agent-pw').value;
