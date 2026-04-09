@@ -324,6 +324,11 @@ tr:hover td{background:#FAFCFA}
     </div>
   </div>
   <div style="padding:20px 22px">
+      <!-- Progress bar -->
+      <div id="agent-progress-bar" style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;margin-bottom:18px;box-shadow:var(--sh)">
+        <div style="font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:10px">ご紹介の進捗状況</div>
+        <div id="agent-progress-steps" style="display:flex;align-items:stretch;gap:0;overflow-x:auto"></div>
+      </div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div><div style="font-size:16px;font-weight:600">求職者登録</div><div style="font-size:12px;color:var(--tx3);margin-top:1px">貴社からご紹介いただいた求職者を登録してください</div></div>
       <button class="btn btn-primary" onclick="openAgentCdModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>求職者を登録</button>
@@ -356,7 +361,41 @@ tr:hover td{background:#FAFCFA}
       </div>
       <div style="flex:1">
         <div class="frow2" style="margin-bottom:10px"><div class="fg"><label>氏名 *</label><input id="ag-cd-name" placeholder="山田 太郎"></div><div class="fg"><label>氏名カナ</label><input id="ag-cd-kana" placeholder="ヤマダ タロウ"></div></div>
-        <div class="frow" style="margin-bottom:10px"><div class="fg"><label>応募日</label><input type="date" id="ag-cd-apply"></div><div class="fg"><label>面接日</label><input type="date" id="ag-cd-interview"></div><div class="fg"><label>面接時間</label><input type="time" id="ag-cd-itime" value="10:00"></div></div>
+        <div class="frow2" style="margin-bottom:10px"><div class="fg"><label>応募日</label><input type="date" id="ag-cd-apply"></div></div>
+        <div style="background:var(--surf2);border-radius:8px;padding:12px;margin-bottom:10px">
+          <div style="font-size:12px;color:var(--tx2);margin-bottom:10px;font-weight:500">候補者様の面接可能日を3つ記載ください</div>
+          <div style="font-size:11px;color:var(--tx3);margin-bottom:8px">■ 候補日</div>
+          <div class="fg" style="margin-bottom:8px">
+            <label>候補日①</label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <input type="date" id="ag-cand-date1" style="flex:1">
+              <input type="time" id="ag-cand-from1" value="09:00" style="width:90px">
+              <span style="font-size:12px;color:var(--tx3)">〜</span>
+              <input type="time" id="ag-cand-to1" value="18:00" style="width:90px">
+              <span style="font-size:11px;color:var(--tx3);white-space:nowrap">の間で対応可能</span>
+            </div>
+          </div>
+          <div class="fg" style="margin-bottom:8px">
+            <label>候補日②</label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <input type="date" id="ag-cand-date2" style="flex:1">
+              <input type="time" id="ag-cand-from2" value="09:00" style="width:90px">
+              <span style="font-size:12px;color:var(--tx3)">〜</span>
+              <input type="time" id="ag-cand-to2" value="18:00" style="width:90px">
+              <span style="font-size:11px;color:var(--tx3);white-space:nowrap">の間で対応可能</span>
+            </div>
+          </div>
+          <div class="fg">
+            <label>候補日③</label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <input type="date" id="ag-cand-date3" style="flex:1">
+              <input type="time" id="ag-cand-from3" value="09:00" style="width:90px">
+              <span style="font-size:12px;color:var(--tx3)">〜</span>
+              <input type="time" id="ag-cand-to3" value="18:00" style="width:90px">
+              <span style="font-size:11px;color:var(--tx3);white-space:nowrap">の間で対応可能</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="frow"><div class="fg"><label>電話番号①</label><input id="ag-cd-tel1" type="tel" placeholder="090-0000-0000"></div><div class="fg"><label>電話番号②</label><input id="ag-cd-tel2" type="tel" placeholder="03-0000-0000"></div><div class="fg"><label>メールアドレス</label><input id="ag-cd-email" type="email" placeholder="email@example.com"></div></div>
@@ -365,8 +404,12 @@ tr:hover td{background:#FAFCFA}
     <div class="sec-title">職務経歴概要</div>
     <div class="frow1"><div class="fg"><label>概要</label><textarea id="ag-cd-career" rows="3" placeholder="直近の職歴・スキルの概要を入力"></textarea></div></div>
     <div class="sec-title">紹介情報</div>
-    <div class="frow2"><div class="fg"><label>紹介料（円）</label><input type="number" id="ag-cd-fee" placeholder="0"></div><div class="fg"><label>備考</label><input id="ag-cd-note" placeholder="備考・メモ"></div></div>
+    <div class="frow2"><div class="fg"><label>紹介料（数字のみ・円）</label><input type="number" id="ag-cd-fee" placeholder="500000" min="0" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div><div class="fg"><label>備考</label><input id="ag-cd-note" placeholder="備考・メモ"></div></div>
+    <div class="frow1"><div class="fg"><label style="color:var(--tx3)">書類選考ステータス（管理者が設定）</label><div id="ag-doc-review-status" style="padding:8px 10px;background:var(--surf2);border-radius:var(--rs);font-size:13px;color:var(--tx2)">未選考</div></div></div>
     <div class="sec-title">書類添付</div>
+    <div style="background:var(--c1ll);border:1px solid var(--c1l);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--c1d);margin-bottom:10px">
+      履歴書・職務経歴書を添付すると、管理者側でAI自動入力が使えます。添付後は管理者側の詳細画面で「AIで自動入力」を押してください。
+    </div>
     <div class="frow"><div style="grid-column:1/2">
       <div style="font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:4px">📄 履歴書</div>
       <div class="upload-zone" style="padding:12px" onclick="document.getElementById('ag-resume-input').click()">
@@ -441,10 +484,20 @@ tr:hover td{background:#FAFCFA}
         <div style="font-size:13px;font-weight:600;color:var(--tx2)">表示期間：</div>
         <select id="dash-month" class="flt" onchange="renderDashboard()" style="font-size:13px;font-weight:500"></select>
       </div>
-      <div class="stats" id="dash-stats"></div>
+      <div id="dash-stats"></div>
       <div class="funnel-wrap"><div class="funnel-hd"><div class="funnel-title">採用ファネル</div></div><div id="funnel" style="display:flex;align-items:stretch;overflow-x:auto"></div></div>
       <div class="interviewer-grid" id="interviewer-cards" style="margin-bottom:18px"></div>
       <div class="chart-card" style="margin-bottom:18px"><div class="chart-title">流入経路別 実績</div><div id="chart-source"></div></div>
+
+      <!-- 本日の面談 -->
+      <div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--surf2);display:flex;align-items:center;gap:8px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--c1d)" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <div style="font-size:13px;font-weight:600">本日の面談</div>
+          <div id="todays-interview-count" style="font-size:12px;color:var(--tx3)"></div>
+        </div>
+        <div id="todays-interviews" style="padding:12px"></div>
+      </div>
 
       <!-- 本日の面談 -->
       <div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px">
@@ -497,39 +550,11 @@ tr:hover td{background:#FAFCFA}
       <div class="toolbar">
         <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="jn-search" placeholder="氏名で検索..." oninput="renderJoined()"></div>
         <select class="flt" id="jn-month-filter" onchange="renderJoined()">
-          <option value="">入社月（すべて）</option>
+          <option value="">全入社月</option>
         </select>
       </div>
       <div id="joined-list"></div>
       <div class="empty" id="jn-empty" style="display:none">内定承諾者がいません</div>
-    </div>
-
-    
-    <!-- NEW APPLICANTS (書類選考) -->
-    <div class="view" id="view-new-applicants">
-      <div style="background:var(--blue-bg);border:1px solid #BBDEFB;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--blue-tx)">
-        エージェントから登録された求職者が表示されます。書類選考通過・NGを選択してください。選択後は自動で応募者一覧に登録されます。
-      </div>
-      <div id="new-applicants-list"></div>
-      <div class="empty" id="new-applicants-empty" style="display:none">新規応募者がいません</div>
-    </div>
-
-    <!-- IN PROGRESS (対応中) -->
-    <div class="view" id="view-in-progress">
-      <div style="background:var(--amber-bg);border:1px solid #FFE0B2;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--amber-tx)">
-        書類選考通過後、面接日程が確定していない求職者が表示されます。日程確定後は自動的に非表示になります。
-      </div>
-      <div id="in-progress-list"></div>
-      <div class="empty" id="in-progress-empty" style="display:none">対応中の求職者がいません</div>
-    </div>
-
-    <!-- PENDING ACCEPTANCE (承諾待ち) -->
-    <div class="view" id="view-pending-acceptance">
-      <div style="background:var(--amber-bg);border:1px solid #FFE0B2;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--amber-tx)">
-        承諾待ちの求職者が表示されます。内定承諾・内定辞退を選択すると自動的に非表示になります。
-      </div>
-      <div id="pending-list"></div>
-      <div class="empty" id="pending-empty" style="display:none">承諾待ちの求職者がいません</div>
     </div>
 
     <!-- AGENTS -->
@@ -978,7 +1003,10 @@ function nav(page,el){
   if(page==='dashboard'){buildMonthDropdown();renderDashboard();}
   if(page==='booking'){renderBooking();syncTodayBtn();}
   if(page==='candidates')renderCandidates();
-  if(page==='joined')renderJoined();
+  if(page==='joined'){renderJoined();}
+  if(page==='new-applicants')renderNewApplicants();
+  if(page==='in-progress')renderInProgress();
+  if(page==='pending-acceptance')renderPendingAcceptance();
   if(page==='agents')renderAgents();
   if(page==='calendar')renderCalendar();
   if(page==='sales'){initSalesDB();buildSalesMonthDropdown();renderSales();} 
@@ -1006,69 +1034,93 @@ function buildMonthDropdown(){
 
 /* ========== DASHBOARD ========== */
 function renderDashboard(){
+  buildMonthDropdown();
   const selMonth=document.getElementById('dash-month').value||new Date().toISOString().slice(0,7);
-  // 月内応募者（その月に応募した人）
-  const cd=DB.candidates.filter(c=>c.applyDate&&c.applyDate.startsWith(selMonth));
-  // 全体（その月に面接日がある人 = 面接実施の全体）
-  const cdAll=DB.candidates.filter(c=>c.interviewDate&&c.interviewDate.startsWith(selMonth));
-  const total=cd.length;
-  const p=(n,d)=>d?Math.round(n/d*100)+'%':'—';
-  const pn=(n,d)=>d?`${n}名（${Math.round(n/d*100)}％）`:`${n}名`;
+  const today=new Date().toISOString().split('T')[0];
 
-  // 月内応募者ベース
+  // All candidates
+  const allCd=DB.candidates;
+  // Monthly (by applyDate)
+  const cd=allCd.filter(c=>c.applyDate&&c.applyDate.startsWith(selMonth));
+  // Today (by applyDate)
+  const cdToday=allCd.filter(c=>c.applyDate===today);
+  // All interviews in selected month
+  const cdAllInterview=allCd.filter(c=>c.interviewDate&&c.interviewDate.startsWith(selMonth));
+
+  const total=cd.length, p=(n,d)=>d?Math.round(n/d*100)+'%':'—';
+
+  // Monthly stats
   const doneIn=cd.filter(c=>c.interviewResult==='実施').length;
   const noC=cd.filter(c=>c.interviewResult==='未接触').length;
   const dec=cd.filter(c=>c.interviewResult==='応募辞退').length;
   const offerIn=cd.filter(c=>c.afterStatus==='採用').length;
   const waitIn=cd.filter(c=>c.offerStatus==='承諾待ち').length;
   const acceptIn=cd.filter(c=>c.offerStatus==='内定承諾').length;
+  const afterDecline=cd.filter(c=>c.offerStatus==='内定辞退').length;
 
-  // 全体（その月に面接日がある全員）ベース
-  const doneAll=cdAll.filter(c=>c.interviewResult==='実施').length;
-  const offerAll=cdAll.filter(c=>c.afterStatus==='採用').length;
-  const waitAll=cdAll.filter(c=>c.offerStatus==='承諾待ち').length;
-  const acceptAll=cdAll.filter(c=>c.offerStatus==='内定承諾').length;
+  // All interview month stats
+  const doneAll=cdAllInterview.filter(c=>c.interviewResult==='実施').length;
+  const offerAll=cdAllInterview.filter(c=>c.afterStatus==='採用').length;
+  const waitAll=cdAllInterview.filter(c=>c.offerStatus==='承諾待ち').length;
+  const acceptAll=cdAllInterview.filter(c=>c.offerStatus==='内定承諾').length;
+
+  // Today stats
+  const todayTotal=cdToday.length;
+  const todayDone=cdToday.filter(c=>c.interviewResult==='実施').length;
+  const todayNoC=cdToday.filter(c=>c.interviewResult==='未接触').length;
+  const todayDec=cdToday.filter(c=>c.interviewResult==='応募辞退').length;
 
   const fee=cd.reduce((s,c)=>s+(parseInt(c.fee)||0),0);
 
-  // 全体/月内を2行で表示するカード生成関数
-  function dualStat(label,allN,allD,inN,inD,color=''){
-    const allPct=allD?Math.round(allN/allD*100):0;
-    const inPct=inD?Math.round(inN/inD*100):0;
-    return `<div class="stat" style="min-width:200px">
+  // Helper: 3-column stat card
+  function triStat(label, todayN, monthN, allN, color=''){
+    return`<div class="stat" style="min-width:0">
       <div class="stat-label">${label}</div>
-      <div style="margin-top:4px">
-        <div style="font-size:11px;color:var(--tx3);margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">全体</div>
-        <div style="font-size:18px;font-weight:600;letter-spacing:-.3px;${color?'color:'+color:''}">${allN}名<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:4px">${allD?'（'+allPct+'％）':'—'}</span></div>
-        <div style="font-size:11px;color:var(--tx3);margin-bottom:2px;margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">月内</div>
-        <div style="font-size:18px;font-weight:600;letter-spacing:-.3px;${color?'color:'+color:''}">${inN}名<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:4px">${inD?'（'+inPct+'％）':'—'}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:6px">
+        <div style="text-align:center">
+          <div style="font-size:9px;color:var(--tx3);font-weight:600;text-transform:uppercase;margin-bottom:2px">本日</div>
+          <div style="font-size:18px;font-weight:700;${color?'color:'+color:''}">${todayN}</div>
+        </div>
+        <div style="text-align:center;border-left:1px solid var(--bd);border-right:1px solid var(--bd)">
+          <div style="font-size:9px;color:var(--tx3);font-weight:600;text-transform:uppercase;margin-bottom:2px">月内</div>
+          <div style="font-size:18px;font-weight:700;${color?'color:'+color:''}">${monthN}</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:9px;color:var(--tx3);font-weight:600;text-transform:uppercase;margin-bottom:2px">全体</div>
+          <div style="font-size:18px;font-weight:700;${color?'color:'+color:''}">${allN}</div>
+        </div>
       </div>
     </div>`;
   }
 
-  const statsHtml = [
-    // 応募数（月内のみ・シンプル表示）
-    `<div class="stat"><div class="stat-label">月間応募数</div><div class="stat-val">${total}</div><div class="stat-sub">全応募者</div></div>`,
-    // 面接実施（全体/月内）
-    dualStat('面接実施', doneAll, cdAll.length, doneIn, total, 'var(--blue)'),
-    // 未接触（月内のみ）
-    `<div class="stat"><div class="stat-label">未接触</div><div class="stat-val" style="color:var(--amber)">${noC}<span class="stat-pct" style="background:var(--amber-bg);color:var(--amber-tx)">${p(noC,total)}</span></div><div class="stat-sub">月内応募数比</div></div>`,
-    // 辞退（月内のみ）
-    `<div class="stat"><div class="stat-label">辞退</div><div class="stat-val" style="color:var(--red)">${dec}<span class="stat-pct" style="background:var(--red-bg);color:var(--red-tx)">${p(dec,total)}</span></div><div class="stat-sub">月内応募数比</div></div>`,
-    // 内定数（全体/月内）
+  // Helper: dual stat (全体/月内)
+  function dualStat(label, allN, allD, inN, inD, color=''){
+    const allPct=allD?Math.round(allN/allD*100):0;
+    const inPct=inD?Math.round(inN/inD*100):0;
+    return`<div class="stat" style="min-width:0">
+      <div class="stat-label">${label}</div>
+      <div style="margin-top:4px">
+        <div style="font-size:10px;color:var(--tx3);margin-bottom:1px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">全体</div>
+        <div style="font-size:18px;font-weight:600;${color?'color:'+color:''}">${allN}<span style="font-size:11px;font-weight:400;color:var(--tx3);margin-left:4px">${allD?'（'+allPct+'%）':'—'}</span></div>
+        <div style="font-size:10px;color:var(--tx3);margin-bottom:1px;margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">月内</div>
+        <div style="font-size:18px;font-weight:600;${color?'color:'+color:''}">${inN}<span style="font-size:11px;font-weight:400;color:var(--tx3);margin-left:4px">${inD?'（'+inPct+'%）':'—'}</span></div>
+      </div>
+    </div>`;
+  }
+
+  const statsHtml=[
+    triStat('応募数', todayTotal, total, allCd.length),
+    triStat('未接触', todayNoC, noC, allCd.filter(c=>c.interviewResult==='未接触').length, 'var(--amber)'),
+    triStat('辞退', todayDec, dec, allCd.filter(c=>c.interviewResult==='応募辞退').length, 'var(--red)'),
+    dualStat('面接実施', doneAll, cdAllInterview.length, doneIn, total, 'var(--blue)'),
     dualStat('内定数', offerAll, doneAll, offerIn, doneIn, 'var(--teal)'),
-    // 承諾待ち（全体/月内）
     dualStat('承諾待ち', waitAll, offerAll, waitIn, offerIn, 'var(--amber)'),
-    // 承諾数（全体/月内）
     dualStat('承諾数', acceptAll, offerAll, acceptIn, offerIn, '#4527A0'),
-    // 紹介料合計
-    `<div class="stat"><div class="stat-label">紹介料合計</div><div class="stat-val" style="font-size:18px">¥${fee.toLocaleString()}</div><div class="stat-sub">月内承諾者合計</div></div>`,
+    `<div class="stat"><div class="stat-label">紹介料合計</div><div class="stat-val" style="font-size:18px">¥${fee.toLocaleString()}</div><div class="stat-sub">月内承諾者</div></div>`,
   ].join('');
+  document.getElementById('dash-stats').innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:18px">${statsHtml}</div>`;
 
-  document.getElementById('dash-stats').innerHTML = statsHtml;
-
-  // ファネルは月内応募者ベース
-  const afterDecline=cd.filter(c=>c.offerStatus==='内定辞退').length;
+  // Funnel
   const steps=[
     {l:'応募',n:total,cls:'fb-apply'},{l:'面接実施',n:doneIn,cls:'fb-done'},
     {l:'未接触',n:noC,cls:'fb-no-contact'},{l:'辞退',n:dec,cls:'fb-decline'},
@@ -1076,14 +1128,34 @@ function renderDashboard(){
     {l:'承諾',n:acceptIn,cls:'fb-accept'},{l:'承諾後辞退',n:afterDecline,cls:'fb-after-decline'},
   ];
   document.getElementById('funnel').innerHTML=steps.map((s,i)=>
-    (i>0?`<div style="display:flex;align-items:center;color:var(--tx3);font-size:11px;padding:0 2px">▶</div>`:'')
+    (i>0?'<div style="display:flex;align-items:center;color:var(--tx3);font-size:11px;padding:0 2px">▶</div>':'')
     +`<div class="funnel-block ${s.cls}" style="border-radius:${i===0?'8px 0 0 8px':i===steps.length-1?'0 8px 8px 0':'0'}"><div class="funnel-num">${s.n}</div><div class="funnel-lbl">${s.l}</div><div class="funnel-pct">${total?Math.round(s.n/total*100)+'%':'—'}</div></div>`
   ).join('');
 
-  // 流入経路別 詳細テーブル（全応募者ベース）
-  const allForSource=DB.candidates; // 全期間
+  // Interviewer cards
+  const INTERVIEWERS_DASH=['熊谷','山元','高橋','荒谷'];
+  document.getElementById('interviewer-cards').innerHTML=INTERVIEWERS_DASH.map(iv=>{
+    const ivc=allCd.filter(c=>c.interviewer===iv);
+    const ivtotal=ivc.length;
+    const ivPre=ivc.filter(c=>!c.interviewResult||c.interviewResult==='未接触').length;
+    const ivDone=ivc.filter(c=>c.interviewResult==='実施').length;
+    const ivOffer=ivc.filter(c=>c.afterStatus==='採用').length;
+    const ivAccept=ivc.filter(c=>c.offerStatus==='内定承諾').length;
+    const pct=(n,d)=>d>0?`（${Math.round(n/d*100)}%）`:'';
+    const ps='font-size:11px;color:var(--tx3);margin-left:3px;font-weight:400';
+    return`<div class="interviewer-card">
+      <div class="iv-name">👤 ${iv}</div>
+      <div class="iv-row"><span class="iv-label">担当応募者</span><span class="iv-val">${ivtotal}名</span></div>
+      <div class="iv-row"><span class="iv-label">対応前</span><span class="iv-val" style="color:var(--amber)">${ivPre}名<span style="${ps}">${pct(ivPre,ivtotal)}</span></span></div>
+      <div class="iv-row"><span class="iv-label">面接実施</span><span class="iv-val">${ivDone}名<span style="${ps}">${pct(ivDone,ivtotal)}</span></span></div>
+      <div class="iv-row"><span class="iv-label">内定</span><span class="iv-val" style="color:var(--teal)">${ivOffer}名<span style="${ps}">${pct(ivOffer,ivDone)}</span></span></div>
+      <div class="iv-row"><span class="iv-label">承諾</span><span class="iv-val" style="color:#4527A0">${ivAccept}名<span style="${ps}">${pct(ivAccept,ivOffer)}</span></span></div>
+    </div>`;
+  }).join('');
+
+  // Source table
   const srcData={};
-  allForSource.forEach(c=>{
+  allCd.forEach(c=>{
     const src=c.source||'不明';
     if(!srcData[src])srcData[src]={apply:0,done:0,offer:0,wait:0,accept:0,afterDecline:0};
     srcData[src].apply++;
@@ -1097,94 +1169,48 @@ function renderDashboard(){
   const pctS=(n,d)=>d>0?`<span style="font-size:10px;color:var(--tx3);margin-left:2px">(${Math.round(n/d*100)}%)</span>`:'';
   if(!srcEntries.length){
     document.getElementById('chart-source').innerHTML='<div style="color:var(--tx3);font-size:12px;padding:8px">データなし</div>';
-  } else {
-    document.getElementById('chart-source').innerHTML=`
-      <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;font-size:12px">
-        <thead>
-          <tr style="background:var(--surf2)">
-            <th style="padding:7px 10px;text-align:left;font-weight:600;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap">流入経路</th>
-            <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--tx3);border-bottom:1px solid var(--bd)">応募</th>
-            <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--blue-tx);border-bottom:1px solid var(--bd)">面接実施</th>
-            <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--teal-tx);border-bottom:1px solid var(--bd)">内定</th>
-            <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--amber-tx);border-bottom:1px solid var(--bd)">承諾待ち</th>
-            <th style="padding:7px 8px;text-align:center;font-weight:600;color:#4527A0;border-bottom:1px solid var(--bd)">承諾</th>
-            <th style="padding:7px 8px;text-align:center;font-weight:600;color:#880E4F;border-bottom:1px solid var(--bd)">承諾後辞退</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${srcEntries.map(([src,d])=>`
-            <tr style="border-bottom:1px solid var(--bd)">
-              <td style="padding:7px 10px;font-weight:500;white-space:nowrap">${src}</td>
-              <td style="padding:7px 8px;text-align:center">${d.apply}</td>
-              <td style="padding:7px 8px;text-align:center;color:var(--blue-tx)">${d.done}${pctS(d.done,d.apply)}</td>
-              <td style="padding:7px 8px;text-align:center;color:var(--teal-tx)">${d.offer}${pctS(d.offer,d.done)}</td>
-              <td style="padding:7px 8px;text-align:center;color:var(--amber-tx)">${d.wait}${pctS(d.wait,d.offer)}</td>
-              <td style="padding:7px 8px;text-align:center;color:#4527A0;font-weight:600">${d.accept}${pctS(d.accept,d.offer)}</td>
-              <td style="padding:7px 8px;text-align:center;color:#880E4F">${d.afterDecline}${pctS(d.afterDecline,d.accept)}</td>
-            </tr>`).join('')}
-          <tr style="background:var(--surf2);font-weight:600;border-top:1.5px solid var(--bd2)">
-            <td style="padding:7px 10px">合計</td>
-            <td style="padding:7px 8px;text-align:center">${srcEntries.reduce((s,[,d])=>s+d.apply,0)}</td>
-            <td style="padding:7px 8px;text-align:center;color:var(--blue-tx)">${srcEntries.reduce((s,[,d])=>s+d.done,0)}</td>
-            <td style="padding:7px 8px;text-align:center;color:var(--teal-tx)">${srcEntries.reduce((s,[,d])=>s+d.offer,0)}</td>
-            <td style="padding:7px 8px;text-align:center;color:var(--amber-tx)">${srcEntries.reduce((s,[,d])=>s+d.wait,0)}</td>
-            <td style="padding:7px 8px;text-align:center;color:#4527A0;font-weight:700">${srcEntries.reduce((s,[,d])=>s+d.accept,0)}</td>
-            <td style="padding:7px 8px;text-align:center;color:#880E4F">${srcEntries.reduce((s,[,d])=>s+d.afterDecline,0)}</td>
-          </tr>
-        </tbody>
-      </table>
+  }else{
+    document.getElementById('chart-source').innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="background:var(--surf2)">
+        <th style="padding:7px 10px;text-align:left;font-weight:600;color:var(--tx3);border-bottom:1px solid var(--bd)">流入経路</th>
+        <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--tx3);border-bottom:1px solid var(--bd)">応募</th>
+        <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--blue-tx);border-bottom:1px solid var(--bd)">面接実施</th>
+        <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--teal-tx);border-bottom:1px solid var(--bd)">内定</th>
+        <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--amber-tx);border-bottom:1px solid var(--bd)">承諾待ち</th>
+        <th style="padding:7px 8px;text-align:center;font-weight:600;color:#4527A0;border-bottom:1px solid var(--bd)">承諾</th>
+        <th style="padding:7px 8px;text-align:center;font-weight:600;color:#880E4F;border-bottom:1px solid var(--bd)">承諾後辞退</th>
+      </tr></thead>
+      <tbody>${srcEntries.map(([src,d])=>`<tr style="border-bottom:1px solid var(--bd)">
+        <td style="padding:7px 10px;font-weight:500">${src}</td>
+        <td style="padding:7px 8px;text-align:center">${d.apply}</td>
+        <td style="padding:7px 8px;text-align:center;color:var(--blue-tx)">${d.done}${pctS(d.done,d.apply)}</td>
+        <td style="padding:7px 8px;text-align:center;color:var(--teal-tx)">${d.offer}${pctS(d.offer,d.done)}</td>
+        <td style="padding:7px 8px;text-align:center;color:var(--amber-tx)">${d.wait}${pctS(d.wait,d.offer)}</td>
+        <td style="padding:7px 8px;text-align:center;color:#4527A0;font-weight:600">${d.accept}${pctS(d.accept,d.offer)}</td>
+        <td style="padding:7px 8px;text-align:center;color:#880E4F">${d.afterDecline}${pctS(d.afterDecline,d.accept)}</td>
+      </tr>`).join('')}
+      <tr style="background:var(--surf2);font-weight:600;border-top:1.5px solid var(--bd2)">
+        <td style="padding:7px 10px">合計</td>
+        ${['apply','done','offer','wait','accept','afterDecline'].map(k=>`<td style="padding:7px 8px;text-align:center">${srcEntries.reduce((s,[,d])=>s+d[k],0)}</td>`).join('')}
+      </tr></tbody></table></div>`;
+  }
+
+  // Today's interviews
+  const todayInterviews=allCd.filter(c=>c.interviewDate===today);
+  const todayEl=document.getElementById('todays-interviews');
+  const countEl=document.getElementById('todays-interview-count');
+  if(countEl)countEl.textContent=`${todayInterviews.length}名`;
+  if(todayEl){
+    if(!todayInterviews.length){todayEl.innerHTML='<div style="color:var(--tx3);font-size:13px;text-align:center;padding:12px">本日の面談予定はありません</div>';}
+    else{todayEl.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">${todayInterviews.map(c=>{
+      const pt=c.photo?`<img src="${c.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--bd);flex-shrink:0">`:`<div class="av" style="width:36px;height:36px">${ini(c.name)}</div>`;
+      return`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surf2);border-radius:var(--rs);cursor:pointer" onclick="openCdModal(${c.id})">
+        ${pt}<div><div style="font-size:13px;font-weight:600">${c.name}</div><div style="font-size:11px;color:var(--tx3)">${c.interviewer||'担当未定'} / ${c.source||'—'}</div></div>
       </div>`;
+    }).join('')}</div>`;}
   }
-
-  // 本日の面談
-  const todayStr=new Date().toISOString().split('T')[0];
-  const todayInterviews=DB.candidates.filter(c=>c.interviewDate===todayStr);
-  const tic=document.getElementById('todays-interview-count');
-  if(tic)tic.textContent=todayInterviews.length+'名';
-  const tiv=document.getElementById('todays-interviews');
-  if(tiv){
-    if(todayInterviews.length===0){
-      tiv.innerHTML='<div style="color:var(--tx3);font-size:13px;text-align:center;padding:16px">本日の面談はありません</div>';
-    } else {
-      tiv.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">${todayInterviews.map(c=>{
-        const pt=c.photo?`<img src="${c.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--bd);flex-shrink:0">`:`<div style="width:36px;height:36px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
-        const bk=DB.bookings.find(b=>b.name===c.name&&b.date===todayStr);
-        const statusCls={pending:'b-nodone',confirmed:'b-done',completed:'b-hire',cancelled:'b-nohire'};
-        const statusLbl={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
-        return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openCdModal(${c.id})">
-          ${pt}
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.name}</div>
-            <div style="font-size:11px;color:var(--tx3)">${c.source||'—'}${bk?` | ${bk.time}`:''}</div>
-          </div>
-          ${bk?`<span class="badge ${statusCls[bk.status]||''}" style="font-size:10px">${statusLbl[bk.status]||''}</span>`:''}
-        </div>`;
-      }).join('')}</div>`;
-    }
-  }
-
-  // Interviewer breakdown
-  const allCd=DB.candidates;
-  document.getElementById('interviewer-cards').innerHTML=INTERVIEWERS.map(iv=>{
-    const ivc=allCd.filter(c=>c.interviewer===iv);
-    const total=ivc.length;
-    const ivPre=ivc.filter(c=>!c.interviewResult||c.interviewResult==='未接触').length;
-    const ivDone=ivc.filter(c=>c.interviewResult==='実施').length;
-    const ivOffer=ivc.filter(c=>c.afterStatus==='採用').length;
-    const ivAccept=ivc.filter(c=>c.offerStatus==='内定承諾').length;
-    const pct=(n,d)=>d>0?`（${Math.round(n/d*100)}％）`:'';
-    const pctStyle='font-size:11px;color:var(--tx3);margin-left:3px;font-weight:400';
-    return`<div class="interviewer-card">
-      <div class="iv-name">👤 ${iv}</div>
-      <div class="iv-row"><span class="iv-label">担当応募者</span><span class="iv-val">${total}名</span></div>
-      <div class="iv-row"><span class="iv-label">対応前</span><span class="iv-val" style="color:var(--amber)">${ivPre}名<span style="${pctStyle}">${pct(ivPre,total)}</span></span></div>
-      <div class="iv-row"><span class="iv-label">面接実施</span><span class="iv-val">${ivDone}名<span style="${pctStyle}">${pct(ivDone,total)}</span></span></div>
-      <div class="iv-row"><span class="iv-label">内定</span><span class="iv-val" style="color:var(--teal)">${ivOffer}名<span style="${pctStyle}">${pct(ivOffer,ivDone)}</span></span></div>
-      <div class="iv-row"><span class="iv-label">承諾</span><span class="iv-val" style="color:#4527A0">${ivAccept}名<span style="${pctStyle}">${pct(ivAccept,ivOffer)}</span></span></div>
-    </div>`;
-  }).join('');
 }
+
 
 /* ========== BOOKING ========== */
 const bkSL={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
@@ -1468,75 +1494,85 @@ function toB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.o
 
 /* ========== JOINED STAFF ========== */
 function renderJoined(){
-  const q=document.getElementById('jn-search').value.toLowerCase();
-  const mf=document.getElementById('jn-month-filter').value;
+  const q=(document.getElementById('jn-search')||{value:''}).value.toLowerCase();
+  const mf=(document.getElementById('jn-month-filter')||{value:''}).value;
 
-  // Build month filter options
-  const joinMonths=new Set();
-  DB.candidates.filter(c=>c.offerStatus==='内定承諾'&&c.joinDate).forEach(c=>joinMonths.add(c.joinDate.slice(0,7)));
-  const mfEl=document.getElementById('jn-month-filter');
-  const prevMf=mfEl.value;
-  const sortedMon=[...joinMonths].sort();
-  mfEl.innerHTML='<option value="">入社月（すべて）</option>'+sortedMon.map(m=>{const[y,mo]=m.split('-');return`<option value="${m}">${y}年${parseInt(mo)}月</option>`;}).join('');
-  if(prevMf&&sortedMon.includes(prevMf))mfEl.value=prevMf;
+  // Populate month filter
+  const monthSel=document.getElementById('jn-month-filter');
+  if(monthSel){
+    const prev=monthSel.value;
+    const months=new Set();
+    DB.candidates.filter(c=>c.offerStatus==='内定承諾'&&c.joinDate).forEach(c=>months.add(c.joinDate.slice(0,7)));
+    const sorted=[...months].sort();
+    monthSel.innerHTML='<option value="">全入社月</option>'+sorted.map(m=>{const[y,mo]=m.split('-');return`<option value="${m}">${y}年${parseInt(mo)}月</option>`;}).join('');
+    if(prev&&sorted.includes(prev))monthSel.value=prev;
+  }
 
-  let list=DB.candidates.filter(c=>c.offerStatus==='内定承諾'&&(!q||c.name.toLowerCase().includes(q)));
-  if(mf)list=list.filter(c=>c.joinDate&&c.joinDate.startsWith(mf));
-
-  // Sort by joinDate
-  list=[...list].sort((a,b)=>(a.joinDate||'9999').localeCompare(b.joinDate||'9999'));
+  const list=DB.candidates.filter(c=>
+    c.offerStatus==='内定承諾'&&
+    (!q||c.name.toLowerCase().includes(q))&&
+    (!mf||!c.joinDate||c.joinDate.startsWith(mf))
+  ).sort((a,b)=>(a.joinDate||'').localeCompare(b.joinDate||''));
 
   document.getElementById('jn-empty').style.display=list.length?'none':'block';
+  const PROGRESS_ITEMS=['入社連絡','LINEの登録','担当者連絡（挨拶）'];
 
-  // Group by joinDate month
+  // Group by joinDate
   const groups={};
   list.forEach(c=>{
-    const key=c.joinDate?c.joinDate.slice(0,7):'未定';
+    const key=c.joinDate||'入社日未定';
     if(!groups[key])groups[key]=[];
     groups[key].push(c);
   });
 
-  const PROGRESS_ITEMS=['入社連絡','LINEの登録','担当者連絡（挨拶）'];
-  const today=new Date().toISOString().split('T')[0];
-
-  document.getElementById('joined-list').innerHTML=Object.entries(groups).sort((a,b)=>a[0].localeCompare(b[0])).map(([month,members])=>{
-    const[y,mo]=month.split('-');
-    const monthLabel=month==='未定'?'入社日未定':`${y}年${parseInt(mo||0)}月 入社`;
-    return`<div style="margin-bottom:20px">
-      <div style="font-size:12px;font-weight:700;color:var(--c1d);text-transform:uppercase;letter-spacing:.5px;padding:6px 12px;background:var(--c1l);border-radius:var(--rs);margin-bottom:10px;display:inline-block">${monthLabel}（${members.length}名）</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
-        ${members.map(c=>{
-          const checklist=c.checklist||{};
-          const done=PROGRESS_ITEMS.filter((_,i)=>checklist[i]).length;
-          const pt=c.photo?`<img src="${c.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
-          const isToday=c.joinDate===today;
-          return`<div class="staff-card" style="${isToday?'border-color:var(--c1);box-shadow:0 0 0 2px var(--c1l)':''}">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-              ${pt}
-              <div style="flex:1">
-                <div style="font-size:14px;font-weight:600">${c.name}<span style="font-size:11px;font-weight:400;color:var(--tx3);margin-left:5px">${c.kana||''}</span></div>
-                <div style="font-size:11px;color:var(--tx3);margin-top:1px">入社：${c.joinDate||'未定'} ／ 担当：${c.interviewer||'—'}</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-                <div style="font-size:18px;font-weight:600;color:${done===PROGRESS_ITEMS.length?'var(--c1d)':'var(--amber)'}">${done}/${PROGRESS_ITEMS.length}</div>
-                <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px;padding:3px 8px">詳細</button>
-              </div>
-            </div>
-            <details style="background:var(--surf2);border-radius:8px;overflow:hidden">
-              <summary style="padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);list-style:none;display:flex;align-items:center;justify-content:space-between">
-                <span>進捗リスト（${done}/${PROGRESS_ITEMS.length} 完了）</span>
-                <span style="color:var(--tx3);font-size:10px">▼</span>
-              </summary>
-              <div style="padding:4px 12px 10px">
-                <ul class="checklist">${PROGRESS_ITEMS.map((item,i)=>`<li><input type="checkbox" id="ck-${c.id}-${i}" ${checklist[i]?'checked':''} onchange="toggleCheck(${c.id},${i},this.checked)"><label for="ck-${c.id}-${i}" class="${checklist[i]?'done':''}">${item}</label></li>`).join('')}</ul>
-              </div>
-            </details>
-          </div>`;
-        }).join('')}
+  document.getElementById('joined-list').innerHTML=Object.entries(groups).map(([dateKey,members])=>`
+    <div style="margin-bottom:20px">
+      <div style="font-size:13px;font-weight:600;color:var(--c1d);margin-bottom:10px;padding:6px 12px;background:var(--c1l);border-radius:var(--rs);display:inline-block">
+        入社日：${dateKey}
       </div>
-    </div>`;
-  }).join('');
+      ${members.map(c=>{
+        const checklist=c.checklist||{};
+        const done=PROGRESS_ITEMS.filter((_,i)=>checklist['prog_'+i]).length;
+        const pt=c.photo?`<img src="${c.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
+        return`<div class="staff-card" style="margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            ${pt}
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:600">${c.name}<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:6px">${c.kana||''}</span></div>
+              <div style="font-size:12px;color:var(--tx3);margin-top:1px">担当：${c.interviewer||'—'} ／ 流入：${c.source||'—'}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="text-align:right">
+                <div style="font-size:11px;color:var(--tx3)">進捗</div>
+                <div style="font-size:18px;font-weight:600;color:${done===PROGRESS_ITEMS.length?'var(--c1d)':'var(--amber)'}">${done}/${PROGRESS_ITEMS.length}</div>
+              </div>
+              <button class="btn btn-sm" onclick="openCdModal(${c.id})" title="応募者詳細を開く">詳細</button>
+            </div>
+          </div>
+          <details style="background:var(--surf2);border-radius:8px;overflow:hidden">
+            <summary style="padding:9px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--tx2);list-style:none;display:flex;align-items:center;justify-content:space-between">
+              <span>進捗リスト（${done}/${PROGRESS_ITEMS.length} 完了）</span>
+              <span style="color:var(--tx3);font-size:11px">▼ 展開</span>
+            </summary>
+            <div style="padding:4px 12px 10px">
+              <ul class="checklist">${PROGRESS_ITEMS.map((item,i)=>`<li>
+                <input type="checkbox" id="prg-${c.id}-${i}" ${checklist['prog_'+i]?'checked':''} onchange="toggleProgress(${c.id},${i},this.checked)">
+                <label for="prg-${c.id}-${i}" class="${checklist['prog_'+i]?'done':''}">${item}</label>
+              </li>`).join('')}</ul>
+            </div>
+          </details>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
 }
+function toggleProgress(cid,idx,val){
+  const c=DB.candidates.find(x=>x.id===cid);if(!c)return;
+  if(!c.checklist)c.checklist={};
+  c.checklist['prog_'+idx]=val;
+  saveDB();renderJoined();
+}
+
 function toggleCheck(cid,idx,val){const c=DB.candidates.find(x=>x.id===cid);if(!c)return;if(!c.checklist)c.checklist={};c.checklist[idx]=val;saveDB();renderJoined();}
 
 /* ========== AGENTS ========== */
@@ -1671,16 +1707,52 @@ function renderAgentPortal(){
   const list=DB.candidates.filter(c=>c.source===currentAgent||c.agent===currentAgent);
   const tbody=document.getElementById('agent-cd-list');
   document.getElementById('agent-cd-empty').style.display=list.length?'none':'block';
+
+  // Progress bar
+  const intro=list.length;
+  const waiting=list.filter(c=>c.interviewResult!=='実施'&&c.interviewResult!=='応募辞退').length;
+  const done=list.filter(c=>c.interviewResult==='実施').length;
+  const offer=list.filter(c=>c.afterStatus==='採用').length;
+  const accept=list.filter(c=>c.offerStatus==='内定承諾').length;
+  const progSteps=[
+    {l:'ご紹介数',n:intro,cls:'fb-apply'},
+    {l:'面接待ち',n:waiting,cls:'fb-no-contact'},
+    {l:'面接実施',n:done,cls:'fb-done'},
+    {l:'内定数',n:offer,cls:'fb-offer'},
+    {l:'内定承諾',n:accept,cls:'fb-accept'},
+  ];
+  const progEl=document.getElementById('agent-progress-steps');
+  if(progEl){
+    progEl.innerHTML=progSteps.map((s,i)=>
+      (i>0?'<div style="display:flex;align-items:center;color:var(--tx3);font-size:11px;padding:0 2px">▶</div>':'')
+      +`<div class="funnel-block ${s.cls}" style="border-radius:${i===0?'8px 0 0 8px':i===progSteps.length-1?'0 8px 8px 0':'0'}"><div class="funnel-num">${s.n}</div><div class="funnel-lbl" style="font-size:9px">${s.l}</div></div>`
+    ).join('');
+  }
+
   const irC2={実施:'b-done',応募辞退:'b-decline',未接触:'b-nocontact'};
-  // Find related bookings for this candidate
+  const docStatusColors={'書類選考通過':'b-hire','書類選考NG':'b-nohire','':''};
+
   tbody.innerHTML=list.map(c=>{
+    const isGray=c.docReviewStatus==='書類選考NG';
     const bk=DB.bookings.find(b=>b.name===c.name);
     const bkStatusOpts=['pending','confirmed','completed','cancelled'];
     const bkStatusLbl={pending:'調整中',confirmed:'確定',completed:'完了',cancelled:'キャンセル'};
-    const bkSel=bk?`<select style="padding:4px 8px;border:1px solid var(--bd);border-radius:5px;font-size:12px;font-family:inherit" onchange="agentUpdateBookingStatus(${bk.id},this.value)">${bkStatusOpts.map(s=>`<option value="${s}" ${bk.status===s?'selected':''}>${bkStatusLbl[s]}</option>`).join('')}</select>`:'<span style="color:var(--tx3);font-size:12px">予約なし</span>';
-    return`<tr><td>${c.photo?`<img src="${c.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av">${ini(c.name)}</div>`}</td><td>${c.name}</td><td style="color:var(--tx3);font-size:12px">${c.kana||'—'}</td><td>${c.applyDate||'—'}</td><td>${c.interviewDate||'—'}</td><td>${c.interviewResult?`<span class="badge ${irC2[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td><td>${bkSel}</td><td>${c.screeningResult==='pass'?'<span class="badge b-hire" style="font-size:10px">書類通過</span>':c.screeningResult==='ng'?'<span class="badge b-nohire" style="font-size:10px">書類NG</span>':'<span style="color:var(--tx3);font-size:11px">選考前</span>'}</td><td><button class="btn btn-sm" onclick="openAgentCdModal(${c.id})">編集</button></td></tr>`;
+    const bkSel=bk?`<select style="padding:4px 8px;border:1px solid var(--bd);border-radius:5px;font-size:12px;font-family:inherit" onchange="agentUpdateBookingStatus(${bk.id},this.value)">${bkStatusOpts.map(s2=>`<option value="${s2}" ${bk.status===s2?'selected':''}>${bkStatusLbl[s2]}</option>`).join('')}</select>`:'<span style="color:var(--tx3);font-size:12px">—</span>';
+    const rowStyle=isGray?'opacity:.5;background:#f5f5f5':'';
+    const docBadge=c.docReviewStatus?`<span class="badge ${docStatusColors[c.docReviewStatus]||''}">${c.docReviewStatus}</span>`:'<span style="color:var(--tx3);font-size:11px">未選考</span>';
+    return`<tr style="border-bottom:1px solid var(--bd);${rowStyle}">
+      <td style="padding:10px 12px">${c.photo?`<img src="${c.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av">${ini(c.name)}</div>`}</td>
+      <td style="padding:10px 12px;font-weight:500">${c.name}</td>
+      <td style="padding:10px 12px;color:var(--tx3);font-size:12px">${c.kana||'—'}</td>
+      <td style="padding:10px 12px;font-size:12px">${c.applyDate||'—'}</td>
+      <td style="padding:10px 12px">${docBadge}</td>
+      <td style="padding:10px 12px">${c.interviewResult?`<span class="badge ${irC2[c.interviewResult]||''}">${c.interviewResult}</span>`:'—'}</td>
+      <td style="padding:10px 12px">${bkSel}</td>
+      <td style="padding:10px 12px"><button class="btn btn-sm" onclick="openAgentCdModal(${c.id})">編集</button></td>
+    </tr>`;
   }).join('');
 }
+
 function openAgentCdModal(id=null){
   document.getElementById('agent-cd-modal').style.display='flex';
   document.getElementById('ag-cd-del-btn').style.display='none';
@@ -1694,7 +1766,16 @@ function openAgentCdModal(id=null){
     s('ag-cd-name',c.name);s('ag-cd-kana',c.kana||'');s('ag-cd-apply',c.applyDate||'');s('ag-cd-interview',c.interviewDate||'');
     s('ag-cd-tel1',c.tel1||'');s('ag-cd-tel2',c.tel2||'');s('ag-cd-email',c.email||'');
     s('ag-cd-pref',c.pref||'');s('ag-cd-city',c.city||'');s('ag-cd-addr',c.addr||'');
-    s('ag-cd-station',c.station||'');s('ag-cd-walk',c.walk||'');s('ag-cd-career',c.career||'');s('ag-cd-itime',c.interviewTime||'10:00');s('ag-cd-fee',c.fee||'');s('ag-cd-note',c.memo||'');
+    s('ag-cd-station',c.station||'');s('ag-cd-walk',c.walk||'');s('ag-cd-career',c.career||'');
+    // Candidate dates
+    const setV=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val||'';};
+    setV('ag-cand-date1',c.candDate1);setV('ag-cand-from1',c.candFrom1||'09:00');setV('ag-cand-to1',c.candTo1||'18:00');
+    setV('ag-cand-date2',c.candDate2);setV('ag-cand-from2',c.candFrom2||'09:00');setV('ag-cand-to2',c.candTo2||'18:00');
+    setV('ag-cand-date3',c.candDate3);setV('ag-cand-from3',c.candFrom3||'09:00');setV('ag-cand-to3',c.candTo3||'18:00');
+    s('ag-cd-fee',c.fee||'');s('ag-cd-note',c.memo||'');
+    // Show docReviewStatus (read-only)
+    const drs=document.getElementById('ag-doc-review-status');
+    if(drs){const st=c.docReviewStatus||'未選考';const colors={'書類選考通過':'color:var(--c1d);background:var(--c1l)','書類選考NG':'color:var(--red-tx);background:var(--red-bg)','未選考':'color:var(--tx3);background:var(--surf2)'};drs.style.cssText='padding:8px 10px;border-radius:var(--rs);font-size:13px;'+colors[st];drs.textContent=st;}
     if(c.photo){document.getElementById('ag-photo-img').src=c.photo;document.getElementById('ag-photo-img').style.display='block';document.getElementById('ag-photo-ph').style.display='none';document.getElementById('ag-photo-del').style.display='block';}
     document.getElementById('ag-cd-del-btn').style.display='block';
   }else{
@@ -1706,7 +1787,17 @@ function saveAgentCandidate(){
   const name=g('ag-cd-name');if(!name){alert('氏名は必須です');return;}
   const id=document.getElementById('agent-cd-id').value;
   const photoUrl=document.getElementById('ag-photo-img').style.display!=='none'?document.getElementById('ag-photo-img').src:'';
-  const data={name,kana:g('ag-cd-kana'),photo:photoUrl,applyDate:g('ag-cd-apply'),interviewDate:g('ag-cd-interview'),interviewTime:g('ag-cd-itime'),tel1:g('ag-cd-tel1').replace(/[^\d\-]/g,''),tel2:g('ag-cd-tel2').replace(/[^\d\-]/g,''),email:g('ag-cd-email'),pref:g('ag-cd-pref'),city:g('ag-cd-city'),addr:g('ag-cd-addr'),station:g('ag-cd-station'),walk:g('ag-cd-walk'),career:g('ag-cd-career'),source:currentAgent,agent:currentAgent,fee:g('ag-cd-fee')||0,memo:g('ag-cd-note')};
+  const candDate1=document.getElementById('ag-cand-date1')?.value||'';
+  const candFrom1=document.getElementById('ag-cand-from1')?.value||'';
+  const candTo1=document.getElementById('ag-cand-to1')?.value||'';
+  const candDate2=document.getElementById('ag-cand-date2')?.value||'';
+  const candFrom2=document.getElementById('ag-cand-from2')?.value||'';
+  const candTo2=document.getElementById('ag-cand-to2')?.value||'';
+  const candDate3=document.getElementById('ag-cand-date3')?.value||'';
+  const candFrom3=document.getElementById('ag-cand-from3')?.value||'';
+  const candTo3=document.getElementById('ag-cand-to3')?.value||'';
+  const data={name,kana:g('ag-cd-kana'),photo:photoUrl,applyDate:g('ag-cd-apply'),
+    candDate1,candFrom1,candTo1,candDate2,candFrom2,candTo2,candDate3,candFrom3,candTo3,tel1:g('ag-cd-tel1').replace(/[^\d\-]/g,''),tel2:g('ag-cd-tel2').replace(/[^\d\-]/g,''),email:g('ag-cd-email'),pref:g('ag-cd-pref'),city:g('ag-cd-city'),addr:g('ag-cd-addr'),station:g('ag-cd-station'),walk:g('ag-cd-walk'),career:g('ag-cd-career'),source:currentAgent,agent:currentAgent,fee:g('ag-cd-fee')||0,memo:g('ag-cd-note')};
   const newFiles=[];
   ['resume','career','other'].forEach(t=>{if(agUploads[t])newFiles.push({name:agUploads[t].name,type:t,size:agUploads[t].size});});
   if(id){const idx=DB.candidates.findIndex(c=>c.id==id);const ex=DB.candidates[idx];data.files=[...(ex.files||[]),...newFiles];data.checklist=ex.checklist||{};DB.candidates[idx]={...ex,...data};}
@@ -2178,26 +2269,45 @@ function saveTargets(){
 
 /* ========== NEW APPLICANTS ========== */
 function renderNewApplicants(){
-  // エージェントから登録されたが、まだ書類選考判定がない候補者
-  const list=DB.candidates.filter(c=>!c.screeningResult&&(c.source||c.agent));
-  document.getElementById('new-applicants-empty').style.display=list.length?'none':'block';
-  document.getElementById('new-applicants-list').innerHTML=list.map(c=>{
-    const pt=c.photo?`<img src="${c.photo}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:48px;height:48px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
-    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px;display:flex;align-items:center;gap:14px">
-      ${pt}
-      <div style="flex:1;min-width:0">
-        <div style="font-size:14px;font-weight:600">${c.name}<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:6px">${c.kana||''}</span></div>
-        <div style="font-size:12px;color:var(--tx3);margin-top:2px">流入：${c.source||'—'} ／ 応募日：${c.applyDate||'—'} ／ 担当：${c.interviewer||'—'}</div>
-        ${c.career?`<div style="font-size:12px;color:var(--tx2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.career}</div>`:''}
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-        <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px">詳細確認</button>
-        <button class="btn btn-sm btn-primary" onclick="setScreeningResult(${c.id},'pass')" style="font-size:11px;background:var(--c1);border-color:var(--c1);color:#fff">書類選考通過</button>
-        <button class="btn btn-sm btn-danger" onclick="setScreeningResult(${c.id},'ng')" style="font-size:11px">書類選考NG</button>
+  // Show candidates registered by agents without docReviewStatus
+  const list=DB.candidates.filter(c=>!c.docReviewStatus||c.docReviewStatus==='');
+  const el=document.getElementById('new-applicants-list');
+  if(!el)return;
+  document.getElementById('new-app-empty').style.display=list.length?'none':'block';
+  el.innerHTML=list.map(c=>{
+    const pt=c.photo?`<img src="${c.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av" style="width:40px;height:40px">${ini(c.name)}</div>`;
+    const files=c.files||[];
+    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh)">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        ${pt}
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+            <div style="font-size:14px;font-weight:600">${c.name}</div>
+            ${c.kana?`<div style="font-size:12px;color:var(--tx3)">${c.kana}</div>`:''}
+            ${c.source?`<span class="badge b-done">${c.source}</span>`:''}
+          </div>
+          <div style="font-size:12px;color:var(--tx3)">応募日：${c.applyDate||'—'} ／ 担当：${c.interviewer||'—'}</div>
+          ${c.career?`<div style="font-size:12px;color:var(--tx2);margin-top:4px">${c.career.slice(0,80)}${c.career.length>80?'…':''}</div>`:''}
+          ${files.length?`<div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">${files.map((f,i)=>`<span class="resume-chip" style="cursor:pointer" onclick="previewFile(${c.id},${i})" title="クリックでプレビュー"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${f.name}</span>`).join('')}</div>`:'<div style="font-size:11px;color:var(--tx3);margin-top:4px">書類なし</div>'}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button class="btn btn-sm" style="background:var(--c1);border-color:var(--c1);color:#fff" onclick="setDocReview(${c.id},'書類選考通過')">書類選考通過</button>
+          <button class="btn btn-sm btn-danger" onclick="setDocReview(${c.id},'書類選考NG')">書類選考NG</button>
+        </div>
       </div>
     </div>`;
   }).join('');
 }
+function setDocReview(cid, status){
+  const c=DB.candidates.find(x=>x.id===cid);if(!c)return;
+  c.docReviewStatus=status;
+  saveDB();
+  renderNewApplicants();
+  renderInProgress();
+  renderCandidates();
+  // If NG, no further action needed; if pass, show in 対応中
+}
+
 
 function setScreeningResult(cid, result){
   const c=DB.candidates.find(x=>x.id===cid);
@@ -2216,54 +2326,79 @@ function setScreeningResult(cid, result){
 
 /* ========== IN PROGRESS ========== */
 function renderInProgress(){
-  // 書類選考通過 & 面接日未確定
-  const list=DB.candidates.filter(c=>c.screeningResult==='pass'&&!c.interviewDate);
+  // Show passed candidates without confirmed interview date
+  const list=DB.candidates.filter(c=>
+    c.docReviewStatus==='書類選考通過' &&
+    (!c.interviewDate || c.interviewDate==='')
+  );
+  const el=document.getElementById('in-progress-list');
+  if(!el)return;
   document.getElementById('in-progress-empty').style.display=list.length?'none':'block';
-  document.getElementById('in-progress-list').innerHTML=list.map(c=>{
-    const pt=c.photo?`<img src="${c.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--bd);flex-shrink:0">`:`<div style="width:40px;height:40px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
-    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);margin-bottom:8px;display:flex;align-items:center;gap:12px">
-      ${pt}
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:600">${c.name}<span style="font-size:11px;font-weight:400;color:var(--tx3);margin-left:5px">${c.kana||''}</span></div>
-        <div style="font-size:11px;color:var(--tx3);margin-top:2px">流入：${c.source||'—'} ／ 応募日：${c.applyDate||'—'} ／ 担当：${c.interviewer||'—'}</div>
-        <div style="font-size:11px;margin-top:4px">
-          <span style="background:var(--c1l);color:var(--c1d);padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600">書類選考通過</span>
-          <span style="color:var(--amber-tx);font-size:11px;margin-left:6px">日程調整中</span>
+  el.innerHTML=list.map(c=>{
+    const pt=c.photo?`<img src="${c.photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av">${ini(c.name)}</div>`;
+    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh)">
+      <div style="display:flex;align-items:center;gap:10px">
+        ${pt}
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">${c.name} <span style="font-size:11px;color:var(--tx3)">${c.kana||''}</span></div>
+          <div style="font-size:12px;color:var(--tx3)">応募日：${c.applyDate||'—'} ／ ${c.source||'—'} ／ 担当：${c.interviewer||'—'}</div>
         </div>
-      </div>
-      <div style="display:flex;gap:6px;flex-shrink:0">
-        <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px">編集</button>
+        <div style="display:flex;align-items:center;gap:6px">
+          <input type="date" id="idate-${c.id}" style="padding:5px 8px;border:1px solid var(--bd);border-radius:var(--rs);font-size:12px;font-family:inherit" placeholder="面接日を入力">
+          <button class="btn btn-sm btn-primary" onclick="setInterviewDate(${c.id})">日程確定</button>
+          <button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button>
+        </div>
       </div>
     </div>`;
   }).join('');
 }
+function setInterviewDate(cid){
+  const c=DB.candidates.find(x=>x.id===cid);if(!c)return;
+  const dateEl=document.getElementById('idate-'+cid);
+  if(!dateEl||!dateEl.value){alert('面接日を入力してください');return;}
+  c.interviewDate=dateEl.value;
+  saveDB();renderInProgress();renderDashboard();
+  alert('面接日を設定しました。対応中から非表示になります。');
+}
+
 
 /* ========== PENDING ACCEPTANCE ========== */
 function renderPendingAcceptance(){
   const list=DB.candidates.filter(c=>c.offerStatus==='承諾待ち');
+  const el=document.getElementById('pending-list');
+  if(!el)return;
   document.getElementById('pending-empty').style.display=list.length?'none':'block';
-  document.getElementById('pending-list').innerHTML=list.map(c=>{
-    const pt=c.photo?`<img src="${c.photo}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--c1l);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--c1d);flex-shrink:0">${ini(c.name)}</div>`;
-    return`<div style="background:var(--surf);border:1.5px solid var(--amber);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:10px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+  el.innerHTML=list.map(c=>{
+    const pt=c.photo?`<img src="${c.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--bd)">`:`<div class="av" style="width:40px;height:40px">${ini(c.name)}</div>`;
+    return`<div style="background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh)">
+      <div style="display:flex;align-items:flex-start;gap:12px">
         ${pt}
         <div style="flex:1">
-          <div style="font-size:14px;font-weight:600">${c.name}<span style="font-size:12px;font-weight:400;color:var(--tx3);margin-left:6px">${c.kana||''}</span></div>
-          <div style="font-size:12px;color:var(--tx3);margin-top:2px">流入：${c.source||'—'} ／ 担当：${c.interviewer||'—'} ／ 内定通知：${c.offerNotice||'—'}</div>
+          <div style="font-size:14px;font-weight:600">${c.name} <span style="font-size:12px;color:var(--tx3)">${c.kana||''}</span></div>
+          <div style="font-size:12px;color:var(--tx3);margin-top:2px">
+            入社予定日：${c.joinDate||'未定'} ／ 担当：${c.interviewer||'—'} ／ 流入：${c.source||'—'}
+          </div>
+          ${c.memo?`<div style="font-size:12px;color:var(--tx2);margin-top:4px">${c.memo}</div>`:''}
         </div>
-        <button class="btn btn-sm" onclick="openCdModal(${c.id})" style="font-size:11px;flex-shrink:0">詳細</button>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="updateOfferStatus(${c.id},'内定承諾')" style="font-size:12px;background:var(--c1);border-color:var(--c1)">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>内定承諾
-        </button>
-        <button class="btn btn-danger" onclick="updateOfferStatus(${c.id},'内定辞退')" style="font-size:12px">
-          内定辞退
-        </button>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button class="btn btn-sm" style="background:#4527A0;border-color:#4527A0;color:#fff" onclick="setPendingStatus(${c.id},'内定承諾')">内定承諾</button>
+          <button class="btn btn-sm btn-danger" onclick="setPendingStatus(${c.id},'内定辞退')">内定辞退</button>
+          <button class="btn btn-sm" onclick="openCdModal(${c.id})">詳細</button>
+        </div>
       </div>
     </div>`;
   }).join('');
 }
+function setPendingStatus(cid, status){
+  const c=DB.candidates.find(x=>x.id===cid);if(!c)return;
+  if(!confirm(`「${status}」に変更し、一覧から非表示にします。よろしいですか？`))return;
+  c.offerStatus=status;
+  saveDB();
+  renderPendingAcceptance();
+  renderCandidates();
+  renderDashboard();
+}
+
 
 function updateOfferStatus(cid, newStatus){
   const c=DB.candidates.find(x=>x.id===cid);
